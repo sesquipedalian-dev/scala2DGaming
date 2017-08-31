@@ -1,0 +1,51 @@
+/**
+  * Copyright 2017 sesquipedalian.dev@gmail.com
+  *
+  * Licensed under the Apache License, Version 2.0 (the "License");
+  * you may not use this file except in compliance with the License.
+  * You may obtain a copy of the License at
+  *
+  * http://www.apache.org/licenses/LICENSE-2.0
+  *
+  * Unless required by applicable law or agreed to in writing, software
+  * distributed under the License is distributed on an "AS IS" BASIS,
+  * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
+  * See the License for the specific language governing permissions and
+  * limitations under the License.
+  */
+package org.sesquipedalian_dev.lwjgl
+
+object Main {
+//  final val SCREEN_WIDTH: Int = 640
+//  final val SCREEN_HEIGHT: Int = 480
+//  final val SCREEN_WIDTH: Int = 1920
+//  final val SCREEN_HEIGHT: Int = 1080
+  final val SCREEN_WIDTH: Int = 600
+  final val SCREEN_HEIGHT: Int = 600
+  final val TEXTURE_SIZE: Int = 512
+
+  final val WORLD_WIDTH: Int = 50
+  final val WORLD_HEIGHT: Int = 50
+
+  var window: GLFWWindow = null
+  var renderer: GLRenderer = null
+  var inputHandler: GLFWKeyInputHandler = null
+
+  def main(args: Array[String]): Unit = {
+    println("Hello World")
+
+    window = new GLFWWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tut")
+    renderer = new GLRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
+    window.init()
+    renderer.init()
+
+    window.mainLoop(update, renderer.render)
+
+    window.cleanup()
+    renderer.cleanup()
+  }
+
+  def update(deltaTimeSeconds: Double): Unit = {
+
+  }
+}
