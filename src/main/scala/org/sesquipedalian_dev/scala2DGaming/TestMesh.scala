@@ -169,20 +169,6 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
   }
 
   def render(): Unit = {
-    // check errors each frame
-    def checkNextError(): Unit = {
-      val glErrorEnum = glGetError()
-      if (glErrorEnum != GL_NO_ERROR) {
-        println(s"hit a GL error $glErrorEnum")
-        checkNextError()
-      }
-    }
-    checkNextError()
-
-    // clear the screen for the new render
-    glClear(GL_COLOR_BUFFER_BIT)
-    glClearColor(0f, 0f, 0f, 1f) // black background
-
     (vao zip programHandle).foreach(p2 => {
       val (v, p) = p2
       glBindVertexArray(v)

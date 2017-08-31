@@ -31,7 +31,16 @@ object Renderable {
   val all: ListBuffer[Renderable] = ListBuffer()
   def setProgram(progHandle: Int): Unit = all.foreach(_.programHandle = Some(progHandle))
   def init(): Unit = all.foreach(r => {r.init(); checkError(r, 1)})
-  def render(): Unit = all.foreach(r => {r.render(); checkError(r, 2)})
+  def render(): Unit = {
+    // clear the screen for the new render
+    glClear(GL_COLOR_BUFFER_BIT)
+    glClearColor(0f, 0f, 0f, 1f) // black background
+
+    all.foreach(r => {
+      r.render()
+      checkError(r, 2)
+    })
+  }
   def cleanup(): Unit = all.foreach(r => {r.cleanup(); checkError(r, 3)})
 
   def checkError(self: Renderable, step: Int): Unit = {
