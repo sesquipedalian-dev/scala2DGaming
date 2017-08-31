@@ -13,10 +13,12 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.lwjgl
+package org.sesquipedalian_dev.scala2DGaming.graphics
+
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw.{GLFWErrorCallback, GLFWKeyCallback}
 import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
 
 // wrap GLFW window creation
 class GLFWWindow(width: Int, height: Int, name: String) {
@@ -54,7 +56,16 @@ class GLFWWindow(width: Int, height: Int, name: String) {
     );
 
     // create a keyboard input handler
-    keyCallback = Some(new GLFWKeyInputHandler(window))
+    keyCallback = Some(new GLFWKeyCallback() {
+      override def invoke(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
+        if(action == GLFW_RELEASE) { // on key release, check handlers until we find one that consumes it
+          InputHandler.all.foldLeft(false)({
+            case (false, handler) => handler.handleInput(key)
+            case (true, _) => true
+          })
+        }
+      }
+    })
     keyCallback.foreach(kc => glfwSetKeyCallback(window, kc))
 
     // bind openGL to the window we made

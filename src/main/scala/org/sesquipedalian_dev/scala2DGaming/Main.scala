@@ -13,7 +13,10 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.lwjgl
+package org.sesquipedalian_dev.scala2DGaming
+
+import org.sesquipedalian_dev.scala2DGaming.graphics.{Camera2D, GLFWWindow, Renderable}
+import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 
 object Main {
 //  final val SCREEN_WIDTH: Int = 640
@@ -28,21 +31,25 @@ object Main {
   final val WORLD_HEIGHT: Int = 50
 
   var window: GLFWWindow = null
-  var renderer: GLRenderer = null
-  var inputHandler: GLFWKeyInputHandler = null
 
   def main(args: Array[String]): Unit = {
     println("Hello World")
 
     window = new GLFWWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tut")
-    renderer = new GLRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
     window.init()
-    renderer.init()
 
-    window.mainLoop(update, renderer.render)
+    // make input handlers
+    window.glfwWindow.foreach(w => new CloseHandler(w))
+
+    // make renderables - order matters for initialization
+    val renderer = new TestMesh(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
+    val camera = new Camera2D(SCREEN_WIDTH, SCREEN_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
+    Renderable.init()
+
+    window.mainLoop(update, Renderable.render)
 
     window.cleanup()
-    renderer.cleanup()
+    Renderable.cleanup()
   }
 
   def update(deltaTimeSeconds: Double): Unit = {

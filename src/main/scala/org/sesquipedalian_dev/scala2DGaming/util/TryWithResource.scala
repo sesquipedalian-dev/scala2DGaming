@@ -13,10 +13,26 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.lwjgl
+package org.sesquipedalian_dev.scala2DGaming.util
 
-package object util {
-  implicit def cleanly[A <% AutoCloseable](rsc: => A)(doWork: (A) => Unit): Unit = {
-    TryWithResource[A, Unit](rsc)(_.close())(doWork)
+import scala.util.{Failure, Success, Try}
+
+// source: https://www.phdata.io/try-with-resources-in-scala/
+object TryWithResource {
+  def apply[A, B](resource: => A)(cleanup: A => Unit)(doWork: A => B): Try[B] = {
+    var r: Option[A] = None
+    try {
+      r = Some(resource)
+      r.map(rsc => Success(doWork(rsc))).getOrElse(Failure(new Exception("probably making rsc")))
+    } catch {
+      case e: Exception => Failure(e)
+    }
+    finally {
+      try {
+        r.foreach(cleanup)
+      } catch {
+        case e: Exception => println(e) // should be logged
+      }
+    }
   }
 }

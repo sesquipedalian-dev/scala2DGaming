@@ -13,37 +13,28 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.lwjgl
+package org.sesquipedalian_dev.scala2DGaming
 
 import java.nio.{FloatBuffer, IntBuffer}
 
 import org.joml.Matrix4f
-import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize, glfwSwapBuffers}
+import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
 import org.lwjgl.opengl.GL
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20.{glGetAttribLocation, glGetUniformLocation, glUniformMatrix4fv, _}
 import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
 import org.lwjgl.system.MemoryStack
-import util.{cleanly, _}
+import org.sesquipedalian_dev.scala2DGaming.graphics.Renderable
+import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 
 // wrap GL
-class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
-  final val MAX_ZOOM: Float = 1f
-
+class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Renderable {
   // vertex array object - keep track of memory layout of vertex array buffers
   var vao: Option[Int] = None
 
-  // shader program handle
-  var programHandle: Option[Int] = None
-
   // vertex buffer object - communicate vertices to GFX
   var vbo: Option[Int] = None
-
-  // zoom factor for camera
-  var zoom: Float = MAX_ZOOM
-  var cameraXTranslate: Float = 0f
-  var cameraYTranslate: Float = 0f
 
   def init(): Unit = {
     GL.createCapabilities()
@@ -52,14 +43,7 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
     vao.foreach(glBindVertexArray)
 
     // set up a Vertex Buffer Object with a triangle
-    // NOTE: for reasons unclear to me, moving this to later in the init routine causes access violations
     cleanly(MemoryStack.stackPush())(stack => {
-//      val vertices: FloatBuffer = stack.mallocFloat(3 * 6)
-//      vertices.put(0f).put(0f).put(0f).put(1f).put(0f).put(0f)
-//      vertices.put(textureSize).put(0f).put(0f).put(0f).put(1f).put(0f)
-//      vertices.put(0f).put(textureSize).put(0f).put(0f).put(0f).put(1f)
-//      vertices.flip()
-
       val vertices: FloatBuffer = stack.mallocFloat(12 * 6)
       // top left
       vertices.put(0f).put(0f).put(0f).put(0f).put(0f).put(1f)
@@ -82,7 +66,6 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
       vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(0f).put(1f)
 
       vertices.flip()
-
 
       vbo = Some(glGenBuffers())
       vbo.foreach(glBindBuffer(GL_ARRAY_BUFFER, _))
@@ -119,7 +102,7 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
     })
 
     // create shader program and attach the shaders we created
-    programHandle = Some(glCreateProgram())
+    Renderable.setProgram(glCreateProgram())
     programHandle.foreach(glAttachShader(_, vertexShaderHandle))
     programHandle.foreach(glAttachShader(_, fragmentShaderHandle))
 
@@ -151,16 +134,6 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
       glVertexAttribPointer(col, 3, GL_FLOAT, false, 6 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
     })
 
-    // set model-to-world transform matrix - identity for now
-    val uniModelAttrib = programHandle.map(glGetUniformLocation(_, "model"))
-    val model = new Matrix4f()
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      model.get(buf)
-      uniModelAttrib.foreach(glUniformMatrix4fv(_, false, buf))
-    })
-
-    setCamera()
     updateScreenSize()
   }
 
@@ -195,49 +168,21 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
     // and world coords map 1-to-1 to screen coords
   }
 
-  // returns current x translate, y translate, and zoom for camera
-  def getCamera(): (Float, Float, Float) = (cameraXTranslate, cameraYTranslate, zoom)
-
-  def setCamera(xTranslate: Float = 0, yTranslate: Float = 0, _zoom: Float = 2f): Unit = {
-    val maxZ = MAX_ZOOM
-    val minZ = Main.SCREEN_WIDTH.toFloat / (textureSize * worldWidth)
-    zoom = math.max(minZ, math.min(_zoom, maxZ))
-
-    // limit translation to not move beyond the bounds of the world space
-    val minX = 0f
-    val minY = 0f
-
-    val screenScale = (zoom / minZ)
-
-    // the idea here is to find how many world pixels one screen takes up - then you can move
-    // that many screens in world coordinates (minus 1 for the screen starting at the origin
-    val oneScreenX = worldWidth * textureSize / screenScale
-    val maxX = (screenScale - 1) * oneScreenX * -1
-    val oneScreenY = worldHeight * textureSize / screenScale
-    val maxY = (screenScale - 1) * oneScreenY * -1
-
-    cameraXTranslate = math.min(0f, math.max(maxX, xTranslate))
-    cameraYTranslate = math.min(0f, math.max(maxY, yTranslate))
-  }
-
   def render(): Unit = {
+    // check errors each frame
+    def checkNextError(): Unit = {
+      val glErrorEnum = glGetError()
+      if (glErrorEnum != GL_NO_ERROR) {
+        println(s"hit a GL error $glErrorEnum")
+        checkNextError()
+      }
+    }
+    checkNextError()
+
     // clear the screen for the new render
     glClear(GL_COLOR_BUFFER_BIT)
     glClearColor(0f, 0f, 0f, 1f) // black background
 
-    // set world-to-camera transform - also identity
-    val uniView = programHandle.map(glGetUniformLocation(_, "view"))
-    val viewMatrix = new Matrix4f
-    viewMatrix.scale(zoom, zoom, 1f) // zoom
-    viewMatrix.translate(cameraXTranslate, cameraYTranslate, 0f) // translate
-
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      viewMatrix.get(buf)
-      uniView.foreach(glUniformMatrix4fv(_, false, buf))
-    })
-
-    // render anything
     (vao zip programHandle).foreach(p2 => {
       val (v, p) = p2
       glBindVertexArray(v)
@@ -247,8 +192,8 @@ class GLRenderer(textureSize: Int, worldWidth: Int, worldHeight: Int) {
   }
 
   def cleanup(): Unit = {
-    vbo.foreach(glDeleteBuffers)
     vao.foreach(glDeleteVertexArrays)
+    vbo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
   }
 }
