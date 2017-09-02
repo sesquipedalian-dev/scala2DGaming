@@ -51,8 +51,11 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
   var ebo: Option[Int] = None
 
   // texture handle
-  var textureHandle: Option[Int] = None
+  var textureHandles: List[Int] = Nil
+
   var textureBytes: ByteBuffer = MemoryUtil.memAlloc(textureSize * textureSize * 4 /* BPP */)
+
+  val textureFileNames = List("/testTex.bmp", "/testTex2.bmp")
 
   def init(): Unit = {
     GL.createCapabilities()
@@ -61,75 +64,62 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
 
     vao.foreach(glBindVertexArray)
 
-    // generate texture
-    textureHandle = Some(glGenTextures())
-    textureHandle.foreach(glBindTexture(GL_TEXTURE_2D, _))
+    // generate textures
+    textureFileNames.foreach(texFile => {
+      val texHandle = glGenTextures()
+      glBindTexture(GL_TEXTURE_2D, texHandle)
+      textureHandles :+= texHandle
 
-    // load texture data (pixels)
-    val q = cleanly(MemoryStack.stackPush())(stack => {
-      // load the texture file and get it into a byte buffer that STBI can use
-      val stream = new BufferedInputStream(getClass.getResourceAsStream("/testTex.bmp"))
-      val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
-      val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
-      byteBuffer.put(byteArray)
-      byteBuffer.flip()
+      // load texture data (pixels)
+      val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {
+        // load the texture file and get it into a byte buffer that STBI can use
+        val stream = new BufferedInputStream(getClass.getResourceAsStream(texFile))
+        val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
+        val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
+        byteBuffer.put(byteArray)
+        byteBuffer.flip()
 
-      // define some buffers for stbi to fill in details of the texture
-      val texWidth = stack.mallocInt(1)
-      val texHeight = stack.mallocInt(1)
-      val channels = stack.mallocInt(1)
+        // define some buffers for stbi to fill in details of the texture
+        val texWidth = stack.mallocInt(1)
+        val texHeight = stack.mallocInt(1)
+        val channels = stack.mallocInt(1)
 
-      // load image with STBI - since we're flipping our Y axis
-      stbi_set_flip_vertically_on_load(true)
-      val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
-      if(pixels == null) {
-        throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
+        // load image with STBI - since we're flipping our Y axis
+        stbi_set_flip_vertically_on_load(true)
+        val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
+        if(pixels == null) {
+          throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
+        }
+
+        glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels)
+        checkError()
+      })
+      texLoadResult match {
+        case Success(_) =>
+        case Failure(e) => println("problemas"); e.printStackTrace()
       }
 
-      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels)
-      checkError()
+      // how to unpack the RGBA bytes
+      glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+
+      // texture parameters
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+      glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+
+      glBindTexture(GL_TEXTURE_2D, 0)
     })
-    q match {
-      case Success(_) =>
-      case Failure(e) => println("problemas"); e.printStackTrace()
-    }
 
-    // how to unpack the RGBA bytes
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-
-    // texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 
     // set up a Vertex Buffer Object with a triangle
     cleanly(MemoryStack.stackPush())(stack => {
+      // set up vertex data - x / y / z position and texture coord
       val vertices: FloatBuffer = stack.mallocFloat(4 * 5)
-      // top left
       vertices.put(0f).put(0f).put(0f).put(0f).put(1f)
       vertices.put(textureSize).put(0f).put(0f).put(1f).put(1f)
       vertices.put(textureSize).put(textureSize).put(0f).put(1f).put(0f)
       vertices.put(0f).put(textureSize).put(0f).put(0f).put(0f)
-
-//      // bottom right
-//      vertices.put((worldWidth - 1) * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
-//      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
-//      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
-//      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
-//
-//      // bottom left
-//      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
-//      vertices.put(textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
-//      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
-//      vertices.put(0).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
-//
-//      // top right
-//      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(1f)
-//      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(1f)
-//      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(1f).put(0f)
-//      vertices.put((worldWidth - 1) * textureSize).put(textureSize).put(0f).put(0f).put(0f)
-
       vertices.flip()
 
       vbo = Some(glGenBuffers())
@@ -139,23 +129,8 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
 
     cleanly(MemoryStack.stackPush())(stack => {
       val elements: IntBuffer = stack.mallocInt(2 * 3)
-
-      // top left
       elements.put(0).put(1).put(2)
       elements.put(2).put(3).put(0)
-
-//      // bottom right
-//      elements.put(4).put(5).put(6)
-//      elements.put(6).put(7).put(4)
-//
-//      // bottom left
-//      elements.put(8).put(9).put(10)
-//      elements.put(10).put(11).put(8)
-//
-//      // top right
-//      elements.put(12).put(13).put(14)
-//      elements.put(14).put(15).put(12)
-
       elements.flip()
 
       ebo = Some(glGenBuffers())
@@ -275,28 +250,32 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       glUseProgram(p)
 
       // top left
-      drawAGuy(0, 0)
+      drawAGuy(0, 0, 0)
       // top right
-      drawAGuy((worldWidth - 1) * textureSize, 0)
+      drawAGuy((worldWidth - 1) * textureSize, 0, 1)
       // bottom right
-      drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize)
+      drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize, 0)
       // bottom left
-      drawAGuy(0, (worldHeight - 1) * textureSize)
+      drawAGuy(0, (worldHeight - 1) * textureSize, 1)
     })
   }
 
-  def drawAGuy(x: Float, y: Float): Unit = {
-    // set camera-to-projection transform - ortho
-    val uniProjection = programHandle.map(glGetUniformLocation(_, "model"))
-    val model = new Matrix4f()
-    model.translate(x, y, 0)
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      model.get(buf)
-      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
-    })
+  def drawAGuy(x: Float, y: Float, texIndex: Int): Unit = {
+    textureHandles.drop(texIndex).headOption.foreach(texture => {
+      glBindTexture(GL_TEXTURE_2D, texture)
 
-    glDrawElements(GL_TRIANGLES, 6 * 1, GL_UNSIGNED_INT, 0)
+      // set camera-to-projection transform - ortho
+      val uniProjection = programHandle.map(glGetUniformLocation(_, "model"))
+      val model = new Matrix4f()
+      model.translate(x, y, 0)
+      cleanly(MemoryStack.stackPush())(stack => {
+        val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+        model.get(buf)
+        uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+      })
+
+      glDrawElements(GL_TRIANGLES, 6 * 1, GL_UNSIGNED_INT, 0)
+    })
   }
 
 
@@ -305,7 +284,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     vbo.foreach(glDeleteBuffers)
     ebo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
-    textureHandle.foreach(glDeleteTextures)
+    textureHandles.foreach(glDeleteTextures)
     MemoryUtil.memFree(textureBytes)
   }
 }
