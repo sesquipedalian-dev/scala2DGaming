@@ -15,7 +15,8 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
-import java.nio.{FloatBuffer, IntBuffer}
+import java.io.BufferedInputStream
+import java.nio.{ByteBuffer, FloatBuffer, IntBuffer}
 
 import org.joml.Matrix4f
 import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
@@ -24,46 +25,103 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20.{glGetAttribLocation, glGetUniformLocation, glUniformMatrix4fv, _}
 import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
-import org.lwjgl.system.MemoryStack
+import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.graphics.Renderable
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
+import org.lwjgl.stb.STBImage._
+
+import scala.util.{Failure, Success}
 
 // wrap GL
 class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Renderable {
+  def checkError(): Unit = {
+    val glErrorEnum = glGetError()
+    if(glErrorEnum != GL_NO_ERROR) {
+      throw new Exception(s"TestMesh got error $glErrorEnum")
+    }
+  }
+
   // vertex array object - keep track of memory layout of vertex array buffers
   var vao: Option[Int] = None
 
   // vertex buffer object - communicate vertices to GFX
   var vbo: Option[Int] = None
 
+  // texture handle
+  var textureHandle: Option[Int] = None
+  var textureBytes: ByteBuffer = MemoryUtil.memAlloc(textureSize * textureSize * 4 /* BPP */)
+
   def init(): Unit = {
     GL.createCapabilities()
 
     vao = Some(glGenVertexArrays())
+
     vao.foreach(glBindVertexArray)
+
+    // generate texture
+    textureHandle = Some(glGenTextures())
+    textureHandle.foreach(glBindTexture(GL_TEXTURE_2D, _))
+
+    // load texture data (pixels)
+    val q = cleanly(MemoryStack.stackPush())(stack => {
+      // load the texture file and get it into a byte buffer that STBI can use
+      val stream = new BufferedInputStream(getClass.getResourceAsStream("/testTex.bmp"))
+      val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
+      val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
+      byteBuffer.put(byteArray)
+      byteBuffer.flip()
+
+      // define some buffers for stbi to fill in details of the texture
+      val texWidth = stack.mallocInt(1)
+      val texHeight = stack.mallocInt(1)
+      val channels = stack.mallocInt(1)
+
+      // load image with STBI - since we're flipping our Y axis
+      stbi_set_flip_vertically_on_load(true)
+      val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
+      if(pixels == null) {
+        throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
+      }
+
+      glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, textureSize, textureSize, 0, GL_RGBA, GL_UNSIGNED_BYTE, pixels)
+      checkError()
+    })
+    q match {
+      case Success(_) =>
+      case Failure(e) => println("problemas"); e.printStackTrace()
+    }
+
+    // how to unpack the RGBA bytes
+    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
+
+    // texture parameters
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 
     // set up a Vertex Buffer Object with a triangle
     cleanly(MemoryStack.stackPush())(stack => {
-      val vertices: FloatBuffer = stack.mallocFloat(12 * 6)
+      val vertices: FloatBuffer = stack.mallocFloat(12 * 8)
       // top left
-      vertices.put(0f).put(0f).put(0f).put(0f).put(0f).put(1f)
-      vertices.put(textureSize).put(0f).put(0f).put(0f).put(1f).put(0f)
-      vertices.put(0f).put(textureSize).put(0f).put(1f).put(0f).put(0f)
+      vertices.put(0f).put(0f).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f)
+      vertices.put(textureSize).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f).put(1f)
+      vertices.put(0f).put(textureSize).put(0f).put(1f).put(0f).put(0f).put(0f).put(0f)
 
       // bottom right
-      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(1f).put(0f)
-      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(0f).put(1f)
+      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f).put(1f).put(0f)
+      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(0f)
+      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(0f).put(1f).put(1f).put(1f)
 
       // bottom left
-      vertices.put(0).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f)
-      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f).put(0f)
-      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f).put(1f)
+      vertices.put(0).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f).put(0f).put(0f)
+      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(1f)
+      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f).put(1f).put(1f).put(0f)
 
       // top right
-      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f)
-      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(0f).put(1f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(0f).put(1f)
+      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(1f).put(1f)
+      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(0f).put(1f).put(0f).put(1f).put(0f)
+      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f)
 
       vertices.flip()
 
@@ -97,7 +155,8 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       glGetShaderiv(fragmentShaderHandle, GL_COMPILE_STATUS, fragmentCompiled)
 
       if((vertexCompiled.get(0) <= 0) || (fragmentCompiled.get(0) <= 0)) {
-        throw new Exception("error compiling shaders!")
+        println(s"error compiling shaders! ${glGetShaderInfoLog(vertexShaderHandle)} ${glGetShaderInfoLog(fragmentShaderHandle)}")
+
       }
     })
 
@@ -125,13 +184,28 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     val posAttrib = programHandle.map(glGetAttribLocation(_, "position"))
     posAttrib.foreach(pos => {
       glEnableVertexAttribArray(pos)
-      glVertexAttribPointer(pos, 3, GL_FLOAT, false, 6 * java.lang.Float.BYTES, 0)
+      glVertexAttribPointer(pos, 3, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 0)
     })
 
     val colAttrib = programHandle.map(glGetAttribLocation(_, "color"))
     colAttrib.foreach(col => {
       glEnableVertexAttribArray(col)
-      glVertexAttribPointer(col, 3, GL_FLOAT, false, 6 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
+      glVertexAttribPointer(col, 3, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
+    })
+
+    val texAttrib = programHandle.map(glGetAttribLocation(_, "texCoord"))
+    texAttrib.foreach(tex => {
+      glEnableVertexAttribArray(tex)
+      glVertexAttribPointer(tex, 2, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 6 * java.lang.Float.BYTES)
+    })
+
+    // set the texture image uniform
+    val texIUniform = programHandle.map(glGetUniformLocation(_, "texImage"))
+    cleanly(MemoryStack.stackPush())(stack => {
+      texIUniform.foreach(uniform => {
+        textureHandle.foreach(texH => println(s"should we bind texture to handle? $texH"))
+        glUniform1i(uniform, 0)
+      })
     })
 
     updateScreenSize()
@@ -181,5 +255,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     vao.foreach(glDeleteVertexArrays)
     vbo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
+    textureHandle.foreach(glDeleteTextures)
+    MemoryUtil.memFree(textureBytes)
   }
 }
