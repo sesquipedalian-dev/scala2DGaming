@@ -105,30 +105,30 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
 
     // set up a Vertex Buffer Object with a triangle
     cleanly(MemoryStack.stackPush())(stack => {
-      val vertices: FloatBuffer = stack.mallocFloat(16 * 5)
+      val vertices: FloatBuffer = stack.mallocFloat(4 * 5)
       // top left
       vertices.put(0f).put(0f).put(0f).put(0f).put(1f)
       vertices.put(textureSize).put(0f).put(0f).put(1f).put(1f)
       vertices.put(textureSize).put(textureSize).put(0f).put(1f).put(0f)
       vertices.put(0f).put(textureSize).put(0f).put(0f).put(0f)
 
-      // bottom right
-      vertices.put((worldWidth - 1) * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
-      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
-      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
-
-      // bottom left
-      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
-      vertices.put(textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
-      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
-      vertices.put(0).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
-
-      // top right
-      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(1f)
-      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(1f)
-      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(1f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(textureSize).put(0f).put(0f).put(0f)
+//      // bottom right
+//      vertices.put((worldWidth - 1) * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
+//      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
+//      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
+//      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
+//
+//      // bottom left
+//      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
+//      vertices.put(textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
+//      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
+//      vertices.put(0).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
+//
+//      // top right
+//      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(1f)
+//      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(1f)
+//      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(1f).put(0f)
+//      vertices.put((worldWidth - 1) * textureSize).put(textureSize).put(0f).put(0f).put(0f)
 
       vertices.flip()
 
@@ -138,23 +138,23 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     })
 
     cleanly(MemoryStack.stackPush())(stack => {
-      val elements: IntBuffer = stack.mallocInt(8 * 3)
+      val elements: IntBuffer = stack.mallocInt(2 * 3)
 
       // top left
       elements.put(0).put(1).put(2)
       elements.put(2).put(3).put(0)
 
-      // bottom right
-      elements.put(4).put(5).put(6)
-      elements.put(6).put(7).put(4)
-
-      // bottom left
-      elements.put(8).put(9).put(10)
-      elements.put(10).put(11).put(8)
-
-      // top right
-      elements.put(12).put(13).put(14)
-      elements.put(14).put(15).put(12)
+//      // bottom right
+//      elements.put(4).put(5).put(6)
+//      elements.put(6).put(7).put(4)
+//
+//      // bottom left
+//      elements.put(8).put(9).put(10)
+//      elements.put(10).put(11).put(8)
+//
+//      // top right
+//      elements.put(12).put(13).put(14)
+//      elements.put(14).put(15).put(12)
 
       elements.flip()
 
@@ -273,10 +273,32 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       val (v, p) = p2
       glBindVertexArray(v)
       glUseProgram(p)
-//      glDrawArrays(GL_TRIANGLES, 0, 12)
-      glDrawElements(GL_TRIANGLES, 6 * 4, GL_UNSIGNED_INT, 0)
+
+      // top left
+      drawAGuy(0, 0)
+      // top right
+      drawAGuy((worldWidth - 1) * textureSize, 0)
+      // bottom right
+      drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize)
+      // bottom left
+      drawAGuy(0, (worldHeight - 1) * textureSize)
     })
   }
+
+  def drawAGuy(x: Float, y: Float): Unit = {
+    // set camera-to-projection transform - ortho
+    val uniProjection = programHandle.map(glGetUniformLocation(_, "model"))
+    val model = new Matrix4f()
+    model.translate(x, y, 0)
+    cleanly(MemoryStack.stackPush())(stack => {
+      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+      model.get(buf)
+      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+    })
+
+    glDrawElements(GL_TRIANGLES, 6 * 1, GL_UNSIGNED_INT, 0)
+  }
+
 
   def cleanup(): Unit = {
     vao.foreach(glDeleteVertexArrays)
