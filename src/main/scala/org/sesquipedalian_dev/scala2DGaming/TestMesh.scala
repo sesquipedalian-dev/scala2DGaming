@@ -47,6 +47,9 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
   // vertex buffer object - communicate vertices to GFX
   var vbo: Option[Int] = None
 
+  // element array buffer - once vertices are defined in the buffer, elements let us reuse those vertices.
+  var ebo: Option[Int] = None
+
   // texture handle
   var textureHandle: Option[Int] = None
   var textureBytes: ByteBuffer = MemoryUtil.memAlloc(textureSize * textureSize * 4 /* BPP */)
@@ -102,32 +105,62 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
 
     // set up a Vertex Buffer Object with a triangle
     cleanly(MemoryStack.stackPush())(stack => {
-      val vertices: FloatBuffer = stack.mallocFloat(12 * 8)
+      val vertices: FloatBuffer = stack.mallocFloat(16 * 5)
       // top left
-      vertices.put(0f).put(0f).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f)
-      vertices.put(textureSize).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f).put(1f)
-      vertices.put(0f).put(textureSize).put(0f).put(1f).put(0f).put(0f).put(0f).put(0f)
+      vertices.put(0f).put(0f).put(0f).put(0f).put(1f)
+      vertices.put(textureSize).put(0f).put(0f).put(1f).put(1f)
+      vertices.put(textureSize).put(textureSize).put(0f).put(1f).put(0f)
+      vertices.put(0f).put(textureSize).put(0f).put(0f).put(0f)
 
       // bottom right
-      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f).put(1f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(0f)
-      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(0f).put(1f).put(1f).put(1f)
+      vertices.put((worldWidth - 1) * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
+      vertices.put(worldWidth * textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
+      vertices.put(worldWidth * textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
+      vertices.put((worldWidth - 1) * textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
 
       // bottom left
-      vertices.put(0).put(worldHeight * textureSize).put(0f).put(1f).put(0f).put(0f).put(0f).put(0f)
-      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(1f)
-      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(0f).put(0f).put(1f).put(1f).put(0f)
+      vertices.put(0).put((worldHeight - 1) * textureSize).put(0f).put(0f).put(1f)
+      vertices.put(textureSize).put((worldHeight - 1) * textureSize).put(0f).put(1f).put(1f)
+      vertices.put(textureSize).put(worldHeight * textureSize).put(0f).put(1f).put(0f)
+      vertices.put(0).put(worldHeight * textureSize).put(0f).put(0f).put(0f)
 
       // top right
-      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(0f).put(0f).put(1f).put(1f)
-      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(0f).put(1f).put(0f).put(1f).put(0f)
-      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(0f).put(1f).put(0f).put(1f)
+      vertices.put((worldWidth - 1) * textureSize).put(0f).put(0f).put(0f).put(1f)
+      vertices.put(worldWidth * textureSize).put(0f).put(0f).put(1f).put(1f)
+      vertices.put(worldWidth * textureSize).put(textureSize).put(0f).put(1f).put(0f)
+      vertices.put((worldWidth - 1) * textureSize).put(textureSize).put(0f).put(0f).put(0f)
 
       vertices.flip()
 
       vbo = Some(glGenBuffers())
       vbo.foreach(glBindBuffer(GL_ARRAY_BUFFER, _))
       glBufferData(GL_ARRAY_BUFFER, vertices, GL_STATIC_DRAW)
+    })
+
+    cleanly(MemoryStack.stackPush())(stack => {
+      val elements: IntBuffer = stack.mallocInt(8 * 3)
+
+      // top left
+      elements.put(0).put(1).put(2)
+      elements.put(2).put(3).put(0)
+
+      // bottom right
+      elements.put(4).put(5).put(6)
+      elements.put(6).put(7).put(4)
+
+      // bottom left
+      elements.put(8).put(9).put(10)
+      elements.put(10).put(11).put(8)
+
+      // top right
+      elements.put(12).put(13).put(14)
+      elements.put(14).put(15).put(12)
+
+      elements.flip()
+
+      ebo = Some(glGenBuffers())
+      ebo.foreach(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _))
+      glBufferData(GL_ELEMENT_ARRAY_BUFFER, elements, GL_STATIC_DRAW)
     })
 
     // create vertex shader, load up the source for it, and compile
@@ -184,26 +217,19 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     val posAttrib = programHandle.map(glGetAttribLocation(_, "position"))
     posAttrib.foreach(pos => {
       glEnableVertexAttribArray(pos)
-      glVertexAttribPointer(pos, 3, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 0)
-    })
-
-    val colAttrib = programHandle.map(glGetAttribLocation(_, "color"))
-    colAttrib.foreach(col => {
-      glEnableVertexAttribArray(col)
-      glVertexAttribPointer(col, 3, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
+      glVertexAttribPointer(pos, 3, GL_FLOAT, false, 5 * java.lang.Float.BYTES, 0)
     })
 
     val texAttrib = programHandle.map(glGetAttribLocation(_, "texCoord"))
     texAttrib.foreach(tex => {
       glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 2, GL_FLOAT, false, 8 * java.lang.Float.BYTES, 6 * java.lang.Float.BYTES)
+      glVertexAttribPointer(tex, 2, GL_FLOAT, false, 5 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
     })
 
     // set the texture image uniform
     val texIUniform = programHandle.map(glGetUniformLocation(_, "texImage"))
     cleanly(MemoryStack.stackPush())(stack => {
       texIUniform.foreach(uniform => {
-        textureHandle.foreach(texH => println(s"should we bind texture to handle? $texH"))
         glUniform1i(uniform, 0)
       })
     })
@@ -247,13 +273,15 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       val (v, p) = p2
       glBindVertexArray(v)
       glUseProgram(p)
-      glDrawArrays(GL_TRIANGLES, 0, 12)
+//      glDrawArrays(GL_TRIANGLES, 0, 12)
+      glDrawElements(GL_TRIANGLES, 6 * 4, GL_UNSIGNED_INT, 0)
     })
   }
 
   def cleanup(): Unit = {
     vao.foreach(glDeleteVertexArrays)
     vbo.foreach(glDeleteBuffers)
+    ebo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
     textureHandle.foreach(glDeleteTextures)
     MemoryUtil.memFree(textureBytes)
