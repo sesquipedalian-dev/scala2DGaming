@@ -116,10 +116,10 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     cleanly(MemoryStack.stackPush())(stack => {
       // set up vertex data - x / y / z position and texture coord
       val vertices: FloatBuffer = stack.mallocFloat(4 * 5)
-      vertices.put(0f).put(0f).put(0f).put(0f).put(1f)
-      vertices.put(textureSize).put(0f).put(0f).put(1f).put(1f)
-      vertices.put(textureSize).put(textureSize).put(0f).put(1f).put(0f)
-      vertices.put(0f).put(textureSize).put(0f).put(0f).put(0f)
+      vertices.put(0f).put(0f).put(0f).put(1f)
+      vertices.put(textureSize).put(0f).put(1f).put(1f)
+      vertices.put(textureSize).put(textureSize).put(1f).put(0f)
+      vertices.put(0f).put(textureSize).put(0f).put(0f)
       vertices.flip()
 
       vbo = Some(glGenBuffers())
@@ -192,13 +192,13 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     val posAttrib = programHandle.map(glGetAttribLocation(_, "position"))
     posAttrib.foreach(pos => {
       glEnableVertexAttribArray(pos)
-      glVertexAttribPointer(pos, 3, GL_FLOAT, false, 5 * java.lang.Float.BYTES, 0)
+      glVertexAttribPointer(pos, 2, GL_FLOAT, false, 4 * java.lang.Float.BYTES, 0)
     })
 
     val texAttrib = programHandle.map(glGetAttribLocation(_, "texCoord"))
     texAttrib.foreach(tex => {
       glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 2, GL_FLOAT, false, 5 * java.lang.Float.BYTES, 3 * java.lang.Float.BYTES)
+      glVertexAttribPointer(tex, 2, GL_FLOAT, false, 4 * java.lang.Float.BYTES, 2 * java.lang.Float.BYTES)
     })
 
     // set the texture image uniform
@@ -260,20 +260,10 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     })
   }
 
+
   def drawAGuy(x: Float, y: Float, texIndex: Int): Unit = {
     textureHandles.drop(texIndex).headOption.foreach(texture => {
       glBindTexture(GL_TEXTURE_2D, texture)
-
-      // set camera-to-projection transform - ortho
-      val uniProjection = programHandle.map(glGetUniformLocation(_, "model"))
-      val model = new Matrix4f()
-      model.translate(x, y, 0)
-      cleanly(MemoryStack.stackPush())(stack => {
-        val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-        model.get(buf)
-        uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
-      })
-
       glDrawElements(GL_TRIANGLES, 6 * 1, GL_UNSIGNED_INT, 0)
     })
   }
