@@ -1,10 +1,10 @@
 #version 150 core
 
-in vec2 textureCoord;
+in vec3 textureCoord;
 
 out vec4 fragColor;
 
-uniform sampler2D texImage;
+uniform sampler2DArray texImage;
 
 void main() {
     vec4 textureColor = texture(texImage, textureCoord);
