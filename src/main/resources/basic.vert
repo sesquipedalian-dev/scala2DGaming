@@ -2,7 +2,7 @@
 
 in vec2 position;
 in vec2 texCoord;
-in int texIndex;
+in float texIndex;
 
 out vec3 textureCoord;
 

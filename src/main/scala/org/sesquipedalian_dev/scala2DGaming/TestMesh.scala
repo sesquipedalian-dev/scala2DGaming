@@ -63,7 +63,8 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
   var textureHandle: Option[Int] = None
 
   // file names containing textures we might use
-  val textureFileNames = List("/testTex.bmp", "/testTex2.bmp")
+  val textureFileNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
+//    val textureFileNames = List("/testTex.bmp", "/terraPortrait.bmp", "/testTex2.bmp")
 
   def init(): Unit = {
     GL.createCapabilities()
@@ -91,6 +92,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
 
     textureFileNames.zipWithIndex.foreach(pair => {
       val (texFile, index) = pair
+      println(s"loading texture $texFile $index")
 
       // load texture data (pixels)
       val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {
@@ -112,6 +114,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
         if (pixels == null) {
           throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
         }
+        MemoryUtil.memFree(byteBuffer)
 
         // send the pixels to the GPU
         glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
@@ -122,6 +125,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
           GL_UNSIGNED_BYTE,
           pixels
         )
+        checkError()
 
         // free the texel info since we've sent it to the GPU
         MemoryUtil.memFree(pixels)
@@ -191,7 +195,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     programHandle.foreach(glUseProgram)
 
     // tell shader program where to bind the shader attributes to the buffer data we're going to pass in
-    val stride = 4 * java.lang.Float.BYTES + java.lang.Integer.BYTES
+    val stride = 5 * java.lang.Float.BYTES
     val posAttrib = programHandle.map(glGetAttribLocation(_, "position"))
     posAttrib.foreach(pos => {
       glEnableVertexAttribArray(pos)
@@ -207,7 +211,7 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     val texIAttrib = programHandle.map(glGetAttribLocation(_, "texIndex"))
     texIAttrib.foreach(tex => {
       glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 1, GL_UNSIGNED_INT, false, stride, 4 * java.lang.Float.BYTES)
+      glVertexAttribPointer(tex, 1, GL_FLOAT, false, stride, 4 * java.lang.Float.BYTES)
     })
 
     // set the texture image uniform
@@ -270,7 +274,21 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       drawAGuy(0, (worldHeight - 1) * textureSize, 1)
 
       // middle
-      drawAGuyWorld(25, 25, 1)
+//      drawAGuyWorld(25, 25, 2)
+
+//       do all the terra
+      for {
+        _x <- 0 until worldWidth
+        _y <- 0 until worldHeight
+        (x, y) <- Some(_x, _y) if !List(
+          (0, 0),
+          (0, worldHeight - 1),
+          (worldWidth - 1, 0),
+          (worldWidth - 1, worldHeight - 1)
+        ).contains((x, y))
+      } {
+        drawAGuyWorld(x, y, 2)
+      }
 
       // drawAGuy has modified our buffer arrays - now feed it to the GPU
 
@@ -306,13 +324,13 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     }
 
     vertexBuffer.put(x * textureSize).put(y * textureSize)
-      .put(0f).put(1f).put(texIndex)
+      .put(0f).put(1f).put(texIndex.toFloat)
     vertexBuffer.put((x + 1) * textureSize).put(y * textureSize)
-      .put(1f).put(1f).put(texIndex)
+      .put(1f).put(1f).put(texIndex.toFloat)
     vertexBuffer.put((x + 1) * textureSize).put((y + 1) * textureSize)
-      .put(1f).put(0f).put(texIndex)
+      .put(1f).put(0f).put(texIndex.toFloat)
     vertexBuffer.put(x * textureSize).put((y + 1) * textureSize)
-      .put(0f).put(0f).put(texIndex)
+      .put(0f).put(0f).put(texIndex.toFloat)
 
     val currentVertIndex = numObjectsThisDraw * VERTICES_PER_THING
     elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
@@ -326,10 +344,10 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
       flushVertexData()
     }
 
-    vertexBuffer.put(0f + x).put(0f + y).put(0f).put(1f).put(texIndex)
-    vertexBuffer.put(textureSize + x).put(0f + y).put(1f).put(1f).put(texIndex)
-    vertexBuffer.put(textureSize + x).put(textureSize + y).put(1f).put(0f).put(texIndex)
-    vertexBuffer.put(0f + x).put(textureSize + y).put(0f).put(0f).put(texIndex)
+    vertexBuffer.put(0f + x).put(0f + y).put(0f).put(1f).put(texIndex.toFloat)
+    vertexBuffer.put(textureSize + x).put(0f + y).put(1f).put(1f).put(texIndex.toFloat)
+    vertexBuffer.put(textureSize + x).put(textureSize + y).put(1f).put(0f).put(texIndex.toFloat)
+    vertexBuffer.put(0f + x).put(textureSize + y).put(0f).put(0f).put(texIndex.toFloat)
 
     val currentVertIndex = numObjectsThisDraw * VERTICES_PER_THING
     elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
