@@ -17,6 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw.{GLFWErrorCallback, GLFWKeyCallback}
+import org.lwjgl.opengl.GL
 import org.lwjgl.system.MemoryUtil
 import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
 
@@ -75,6 +76,8 @@ class GLFWWindow(width: Int, height: Int, name: String) {
     glfwSwapInterval(1)
 
     glfwWindow = Some(window)
+
+    GL.createCapabilities()
   }
 
   def mainLoop(update: (Double) => Unit, render: () => Unit): Unit = {

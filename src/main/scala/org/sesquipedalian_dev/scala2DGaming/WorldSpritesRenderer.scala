@@ -29,26 +29,24 @@ import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
 import org.lwjgl.opengl.GL42._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.graphics.Renderable
-import org.sesquipedalian_dev.scala2DGaming.util.cleanly
+import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 import org.lwjgl.stb.STBImage._
 
 import scala.util.{Failure, Success}
 
-// wrap GL
-class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Renderable {
+class WorldSpritesRenderer(
+  textureSize: Int,
+  worldWidth: Int,
+  worldHeight: Int
+) extends Renderable
+  with ThrowsExceptionOnGLError
+{
   final val VERTICES_PER_THING = 4
   final val MAX_THINGS_PER_DRAW = 1024 / (VERTICES_PER_THING + 1);
   final val ELEMENTS_PER_THING = 6
 
   val vertexBuffer = MemoryUtil.memAllocFloat(MAX_THINGS_PER_DRAW)
   val elBuffer = MemoryUtil.memAllocInt(MAX_THINGS_PER_DRAW * ELEMENTS_PER_THING)
-
-  def checkError(): Unit = {
-    val glErrorEnum = glGetError()
-    if(glErrorEnum != GL_NO_ERROR) {
-      throw new Exception(s"TestMesh got error $glErrorEnum")
-    }
-  }
 
   // vertex array object - keep track of memory layout of vertex array buffers
   var vao: Option[Int] = None
@@ -59,16 +57,8 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
   // element array buffer - once vertices are defined in the buffer, elements let us reuse those vertices.
   var ebo: Option[Int] = None
 
-  // handle to the GL texture unit that we'll use
-  var textureHandle: Option[Int] = None
-
-  // file names containing textures we might use
-  val textureFileNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
-//    val textureFileNames = List("/testTex.bmp", "/terraPortrait.bmp", "/testTex2.bmp")
-
   def init(): Unit = {
-    GL.createCapabilities()
-
+    // set up Vertex Array Object - defines memory layout for sending vertex data to GPU
     vao = Some(glGenVertexArrays())
     vao.foreach(glBindVertexArray)
 
@@ -81,69 +71,6 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     ebo = Some(glGenBuffers())
     ebo.foreach(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _))
     glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBuffer.capacity() * java.lang.Integer.BYTES, GL_STATIC_DRAW)
-
-    // generate textures
-    val texHandle = glGenTextures()
-    textureHandle = Some(texHandle)
-    glBindTexture(GL_TEXTURE_2D_ARRAY, texHandle)
-    // set up storage for all the textures we'll use as a big array. that way each vertex can refer to its
-    // index in the array.  The actual texel data will be loaded after
-    glTexStorage3D(GL_TEXTURE_2D_ARRAY, 1, GL_RGBA8, textureSize, textureSize, textureFileNames.size)
-
-    textureFileNames.zipWithIndex.foreach(pair => {
-      val (texFile, index) = pair
-      println(s"loading texture $texFile $index")
-
-      // load texture data (pixels)
-      val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {
-        // load the texture file and get it into a byte buffer that STBI can use
-        val stream = new BufferedInputStream(getClass.getResourceAsStream(texFile))
-        val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
-        val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
-        byteBuffer.put(byteArray)
-        byteBuffer.flip()
-
-        // define some buffers for stbi to fill in details of the texture
-        val texWidth = stack.mallocInt(1)
-        val texHeight = stack.mallocInt(1)
-        val channels = stack.mallocInt(1)
-
-        // load image with STBI - since we're flipping our Y axis
-        stbi_set_flip_vertically_on_load(true)
-        val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
-        if (pixels == null) {
-          throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
-        }
-        MemoryUtil.memFree(byteBuffer)
-
-        // send the pixels to the GPU
-        glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
-          0, // mipmap id
-          0, 0, index, // x, y, layer offsets
-          textureSize, textureSize, 1, // x, y, depth sizes
-          GL_RGBA,
-          GL_UNSIGNED_BYTE,
-          pixels
-        )
-        checkError()
-
-        // free the texel info since we've sent it to the GPU
-        MemoryUtil.memFree(pixels)
-      })
-      texLoadResult match {
-        case Success(_) =>
-        case Failure(e) => println("problemas"); e.printStackTrace()
-      }
-    })
-
-    // how to unpack the RGBA bytes
-    glPixelStorei(GL_UNPACK_ALIGNMENT, 1)
-
-    // texture parameters
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
 
     // create vertex shader, load up the source for it, and compile
     val vertexShaderHandle: Int = glCreateShader(GL_VERTEX_SHADER)
@@ -362,6 +289,5 @@ class TestMesh(textureSize: Int, worldWidth: Int, worldHeight: Int) extends Rend
     vbo.foreach(glDeleteBuffers)
     ebo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
-    textureHandle.foreach(glDeleteTextures)
   }
 }

@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
-import org.sesquipedalian_dev.scala2DGaming.graphics.{Camera2D, GLFWWindow, Renderable}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{Camera2D, GLFWWindow, Renderable, TextureArray}
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 
 object Main {
@@ -42,14 +42,20 @@ object Main {
     window.glfwWindow.foreach(w => new CloseHandler(w))
 
     // make renderables - order matters for initialization
-    val renderer = new TestMesh(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
+    val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
     val camera = new Camera2D(SCREEN_WIDTH, SCREEN_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
     Renderable.init()
+
+    // initialize texture array
+    val testTextureNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
+    val textureArray = new TextureArray(TEXTURE_SIZE)
+    testTextureNames.foreach(textureArray.addTextureResource)
 
     window.mainLoop(update, Renderable.render)
 
     window.cleanup()
     Renderable.cleanup()
+    textureArray.cleanup()
   }
 
   def update(deltaTimeSeconds: Double): Unit = {
