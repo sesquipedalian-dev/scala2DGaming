@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.FloatBuffer
+import java.nio.{FloatBuffer, IntBuffer}
 
 import org.joml.Matrix4f
 import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
@@ -23,17 +23,32 @@ import org.lwjgl.opengl.GL20.{glGetUniformLocation, glUniformMatrix4fv}
 import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
-import org.sesquipedalian_dev.scala2DGaming.util.cleanly
+import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 import org.lwjgl.glfw.GLFW._
+import org.lwjgl.opengl.GL11.glViewport
+
+class UICamera(
+  worldWidth: Int,
+  worldHeight: Int,
+  textureSize: Int
+) extends Camera2D(worldWidth, worldHeight, textureSize) {
+  override def setCamera(requestedXTranslate: Float = 0, requestedYTranslate: Float = 0, _zoom: Float = 2f): Unit = {
+    // UI camera doesn't allow zoom or translate
+  }
+
+  override def handleInput(key: Int): Boolean = {
+    // UI camera doesn't allow zoom or translate
+    false
+  }
+}
 
 class Camera2D(
-  screenWidth: Int,
-  screenHeight: Int,
   worldWidth: Int,
   worldHeight: Int,
   textureSize: Int
 ) extends Renderable
   with InputHandler
+  with ThrowsExceptionOnGLError
 {
   final val MAX_ZOOM: Float = 1f
   final val CAMERA_TRANSLATE_SPEED: Float = textureSize
@@ -43,12 +58,27 @@ class Camera2D(
   var xTranslate: Float = 0f
   var yTranslate: Float = 0f
 
+  var programHandle: Option[Int] = None
+
   // returns current x translate, y translate, and zoom for camera
   def getCamera(): (Float, Float, Float) = (xTranslate, yTranslate, zoom)
 
   def setCamera(requestedXTranslate: Float = 0, requestedYTranslate: Float = 0, _zoom: Float = 2f): Unit = {
+    // get screen height / width for ortho projection
+    var width: Float = 0f
+    var height: Float = 0f
+    cleanly(MemoryStack.stackPush())(stack => {
+      val wh = glfwGetCurrentContext()
+      val w: IntBuffer = stack.mallocInt(1)
+      val h: IntBuffer = stack.mallocInt(1)
+      glfwGetFramebufferSize(wh, w, h)
+      width = w.get()
+      height = h.get()
+    })
+
+    // set up zoom range
     val maxZ = MAX_ZOOM
-    val minZ = screenWidth.toFloat / (textureSize * worldWidth)
+    val minZ = width / (textureSize * worldWidth)
     zoom = math.max(minZ, math.min(_zoom, maxZ))
 
     // limit translation to not move beyond the bounds of the world space
@@ -65,24 +95,11 @@ class Camera2D(
     yTranslate = math.min(0f, math.max(maxY, requestedYTranslate))
   }
 
-  override def init(): Unit = {
-    setCamera()
+  def init(progHandle: Int): Unit = {
+    programHandle = Some(progHandle)
   }
 
   override def render(): Unit = {
-//    println(s"rendering camera $xTranslate $yTranslate $zoom")
-
-    // set world-to-camera transform - also identity
-    val uniView = programHandle.map(glGetUniformLocation(_, "view"))
-    val viewMatrix = new Matrix4f
-    viewMatrix.scale(zoom, zoom, 1f) // zoom
-    viewMatrix.translate(xTranslate, yTranslate, 0f) // translate
-
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      viewMatrix.get(buf)
-      uniView.foreach(glUniformMatrix4fv(_, false, buf))
-    })
   }
 
   override def handleInput(key: Int): Boolean = {
@@ -119,5 +136,51 @@ class Camera2D(
 
   override def cleanup(): Unit = {
     // Nop
+  }
+
+  def updateScreenSize(viewUniformName: String, projectionUniformName: String): Unit = {
+    // set world-to-camera transform - also identity
+    val uniView = programHandle.map(glGetUniformLocation(_, viewUniformName))
+    val viewMatrix = new Matrix4f
+    viewMatrix.scale(zoom, zoom, 1f) // zoom
+    viewMatrix.translate(xTranslate, yTranslate, 0f) // translate
+
+    cleanly(MemoryStack.stackPush())(stack => {
+      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+      viewMatrix.get(buf)
+      uniView.foreach(glUniformMatrix4fv(_, false, buf))
+    })
+
+    // get screen height / width for ortho projection
+    var width: Float = 0f
+    var height: Float = 0f
+    cleanly(MemoryStack.stackPush())(stack => {
+      val wh = glfwGetCurrentContext()
+      val w: IntBuffer = stack.mallocInt(1)
+      val h: IntBuffer = stack.mallocInt(1)
+      glfwGetFramebufferSize(wh, w, h)
+      width = w.get()
+      height = h.get()
+    })
+
+    // set camera-to-projection transform - ortho
+    val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
+    checkError()
+    val projection = new Matrix4f()
+    projection.ortho2D(0, width, height, 0)
+    cleanly(MemoryStack.stackPush())(stack => {
+      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+      projection.get(buf)
+      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+      checkError()
+    })
+
+    // set window viewport so ortho projection lines up
+    glViewport(0, 0, width.toInt, height.toInt)
+    checkError()
+
+    // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
+    // +x = right, +y = down,
+    // and world coords map 1-to-1 to screen coords
   }
 }

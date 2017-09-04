@@ -19,24 +19,23 @@ import scala.collection.mutable.ListBuffer
 import org.lwjgl.opengl.GL11._
 
 trait Renderable {
-  var programHandle: Option[Int] = None
-  def init(): Unit
   def render(): Unit
   def cleanup(): Unit
 
-  Renderable.all += this
+  def register(): Unit = {
+    Renderable.all += this
+  }
 }
 
 object Renderable {
   val all: ListBuffer[Renderable] = ListBuffer()
-  def setProgram(progHandle: Int): Unit = all.foreach(_.programHandle = Some(progHandle))
-  def init(): Unit = all.foreach(r => {r.init(); checkError(r, 1)})
   def render(): Unit = {
     // clear the screen for the new render
     glClear(GL_COLOR_BUFFER_BIT)
     glClearColor(0f, 0f, 0f, 1f) // black background
 
     all.foreach(r => {
+//      println(s"rendering: $r")
       r.render()
       checkError(r, 2)
     })

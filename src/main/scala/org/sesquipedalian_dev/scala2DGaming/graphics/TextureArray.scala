@@ -56,7 +56,6 @@ class TextureArray(
       }
 
       val index = textureFiles.size
-      println(s"loading texture $resourceName $index")
 
       // load texture data (pixels)
       val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {

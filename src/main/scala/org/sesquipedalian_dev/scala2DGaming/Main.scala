@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
-import org.sesquipedalian_dev.scala2DGaming.graphics.{Camera2D, GLFWWindow, Renderable, TextureArray}
+import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 
 object Main {
@@ -43,8 +43,9 @@ object Main {
 
     // make renderables - order matters for initialization
     val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
-    val camera = new Camera2D(SCREEN_WIDTH, SCREEN_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
-    Renderable.init()
+    renderer.init()
+    val uiRenderer = new UIRenderer()
+    uiRenderer.init()
 
     // loop until terminated
     window.mainLoop(update, Renderable.render)
