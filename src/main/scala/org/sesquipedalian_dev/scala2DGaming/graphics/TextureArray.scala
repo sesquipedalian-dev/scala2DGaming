@@ -45,56 +45,62 @@ class TextureArray(
 
   // add a resource file to our set of loaded textures
   def addTextureResource(resourceName: String): Unit = {
-    // if we've loaded too many texture, resize and reload the whole thing
-    if(textureFiles.lengthCompare(capacity) > 0) {
-      capacity *= 2
-      resize()
-      textureFiles.foreach(addTextureResource)
-    }
+    textureHandle.foreach(th => {
+      glBindTexture(GL_TEXTURE_2D_ARRAY, th)
 
-    val index = textureFiles.size
-    println(s"loading texture $resourceName $index")
-
-    // load texture data (pixels)
-    val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {
-      // load the texture file and get it into a byte buffer that STBI can use
-      val stream = new BufferedInputStream(getClass.getResourceAsStream(resourceName))
-      val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
-      val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
-      byteBuffer.put(byteArray)
-      byteBuffer.flip()
-
-      // define some buffers for stbi to fill in details of the texture
-      val texWidth = stack.mallocInt(1)
-      val texHeight = stack.mallocInt(1)
-      val channels = stack.mallocInt(1)
-
-      // load image with STBI - since we're flipping our Y axis
-      stbi_set_flip_vertically_on_load(true)
-      val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
-      if (pixels == null) {
-        throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
+      // if we've loaded too many texture, resize and reload the whole thing
+      if(textureFiles.lengthCompare(capacity) > 0) {
+        capacity *= 2
+        resize()
+        textureFiles.foreach(addTextureResource)
       }
-      MemoryUtil.memFree(byteBuffer)
 
-      // send the pixels to the GPU
-      glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
-        0, // mipmap id
-        0, 0, index, // x, y, layer offsets
-        textureSize, textureSize, 1, // x, y, depth sizes
-        GL_RGBA,
-        GL_UNSIGNED_BYTE,
-        pixels
-      )
-      checkError()
+      val index = textureFiles.size
+      println(s"loading texture $resourceName $index")
 
-      // free the texel info since we've sent it to the GPU
-      MemoryUtil.memFree(pixels)
+      // load texture data (pixels)
+      val texLoadResult = cleanly(MemoryStack.stackPush())(stack => {
+        // load the texture file and get it into a byte buffer that STBI can use
+        val stream = new BufferedInputStream(getClass.getResourceAsStream(resourceName))
+        val byteArray = Stream.continually(stream.read).takeWhile(-1 != _).map(_.toByte).toArray
+        val byteBuffer = MemoryUtil.memAlloc(byteArray.size)
+        byteBuffer.put(byteArray)
+        byteBuffer.flip()
+
+        // define some buffers for stbi to fill in details of the texture
+        val texWidth = stack.mallocInt(1)
+        val texHeight = stack.mallocInt(1)
+        val channels = stack.mallocInt(1)
+
+        // load image with STBI - since we're flipping our Y axis
+        stbi_set_flip_vertically_on_load(true)
+        val pixels = stbi_load_from_memory(byteBuffer, texWidth, texHeight, channels, 4)
+        if (pixels == null) {
+          throw new Exception(s"couldn't load bitmap pixels: ${stbi_failure_reason()}")
+        }
+        MemoryUtil.memFree(byteBuffer)
+
+        // send the pixels to the GPU
+        glTexSubImage3D(GL_TEXTURE_2D_ARRAY,
+          0, // mipmap id
+          0, 0, index, // x, y, layer offsets
+          textureSize, textureSize, 1, // x, y, depth sizes
+          GL_RGBA,
+          GL_UNSIGNED_BYTE,
+          pixels
+        )
+        checkError()
+
+        // free the texel info since we've sent it to the GPU
+        MemoryUtil.memFree(pixels)
+      })
+      texLoadResult match {
+        case Success(_) => textureFiles :+= resourceName
+        case Failure(e) => println("problemas loading texture"); e.printStackTrace()
+      }
+
+      glBindTexture(GL_TEXTURE_2D_ARRAY, 0)
     })
-    texLoadResult match {
-      case Success(_) => textureFiles :+= resourceName
-      case Failure(e) => println("problemas loading texture"); e.printStackTrace()
-    }
   }
 
   // resize the bound texture -
@@ -124,6 +130,9 @@ class TextureArray(
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
     checkError()
+
+    // unbind this texture unit
+    glBindTexture(GL_TEXTURE_2D_ARRAY, 0)
   }
 
   def cleanup(): Unit = {

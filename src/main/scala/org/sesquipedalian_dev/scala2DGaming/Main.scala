@@ -46,16 +46,12 @@ object Main {
     val camera = new Camera2D(SCREEN_WIDTH, SCREEN_HEIGHT, WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
     Renderable.init()
 
-    // initialize texture array
-    val testTextureNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
-    val textureArray = new TextureArray(TEXTURE_SIZE)
-    testTextureNames.foreach(textureArray.addTextureResource)
-
+    // loop until terminated
     window.mainLoop(update, Renderable.render)
 
+    // clean up
     window.cleanup()
     Renderable.cleanup()
-    textureArray.cleanup()
   }
 
   def update(deltaTimeSeconds: Double): Unit = {

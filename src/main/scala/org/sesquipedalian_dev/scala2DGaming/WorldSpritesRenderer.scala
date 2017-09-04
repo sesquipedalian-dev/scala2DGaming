@@ -28,9 +28,10 @@ import org.lwjgl.opengl.GL20.{glGetAttribLocation, glGetUniformLocation, glUnifo
 import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
 import org.lwjgl.opengl.GL42._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.graphics.Renderable
+import org.sesquipedalian_dev.scala2DGaming.graphics.{Renderable, TextureArray}
 import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 import org.lwjgl.stb.STBImage._
+import org.sesquipedalian_dev.scala2DGaming.Main.TEXTURE_SIZE
 
 import scala.util.{Failure, Success}
 
@@ -56,6 +57,9 @@ class WorldSpritesRenderer(
 
   // element array buffer - once vertices are defined in the buffer, elements let us reuse those vertices.
   var ebo: Option[Int] = None
+
+  // world sprites will be assumed to live in this texture array
+  var textureArray: Option[TextureArray] = None
 
   def init(): Unit = {
     // set up Vertex Array Object - defines memory layout for sending vertex data to GPU
@@ -150,6 +154,10 @@ class WorldSpritesRenderer(
     })
 
     updateScreenSize()
+
+    val testTextureNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
+    textureArray = Some(new TextureArray(textureSize))
+    testTextureNames.foreach(fn => textureArray.foreach(_.addTextureResource(fn)))
   }
 
   def updateScreenSize(): Unit = {
@@ -186,10 +194,11 @@ class WorldSpritesRenderer(
   var numObjectsThisDraw: Int = 0
 
   def render(): Unit = {
-    (vao zip programHandle).foreach(p2 => {
-      val (v, p) = p2
+    vao.flatMap(v => programHandle.flatMap(ph => textureArray.flatMap(ta => ta.textureHandle.map(th => (v, ph, th))))).foreach(t => {
+      val (v, p, ta) = t
       glBindVertexArray(v)
       glUseProgram(p)
+      glBindTexture(GL_TEXTURE_2D_ARRAY, ta)
 
       // top left
       drawAGuy(0, 0, 0)
@@ -289,5 +298,6 @@ class WorldSpritesRenderer(
     vbo.foreach(glDeleteBuffers)
     ebo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
+    textureArray.foreach(_.cleanup)
   }
 }
