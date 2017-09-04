@@ -79,7 +79,7 @@ class WorldSpritesRenderer(
     // create vertex shader, load up the source for it, and compile
     val vertexShaderHandle: Int = glCreateShader(GL_VERTEX_SHADER)
     val vertexShaderSource = io.Source.fromInputStream(
-      getClass.getResourceAsStream("/basic.vert")
+      getClass.getResourceAsStream("/shaders/textureArray.vert")
     ).mkString
     glShaderSource(vertexShaderHandle, vertexShaderSource)
     glCompileShader(vertexShaderHandle)
@@ -87,7 +87,7 @@ class WorldSpritesRenderer(
     // create fragment shader, load up the source for it, and compile
     val fragmentShaderHandle: Int = glCreateShader(GL_FRAGMENT_SHADER)
     val fragmentShaderSource = io.Source.fromInputStream(
-      getClass.getResourceAsStream("/basic.frag")
+      getClass.getResourceAsStream("/shaders/textureArray.frag")
     ).mkString
     glShaderSource(fragmentShaderHandle, fragmentShaderSource)
     glCompileShader(fragmentShaderHandle)
@@ -155,7 +155,7 @@ class WorldSpritesRenderer(
 
     updateScreenSize()
 
-    val testTextureNames = List("/testTex.bmp", "/testTex2.bmp", "/terraPortrait.bmp")
+    val testTextureNames = List("/textures/testTex.bmp", "/textures/testTex2.bmp", "/textures/terraPortrait.bmp")
     textureArray = Some(new TextureArray(textureSize))
     testTextureNames.foreach(fn => textureArray.foreach(_.addTextureResource(fn)))
   }
