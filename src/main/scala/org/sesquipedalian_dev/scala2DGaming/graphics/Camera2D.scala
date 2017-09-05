@@ -30,8 +30,8 @@ import org.lwjgl.opengl.GL11.glViewport
 class UICamera(
   worldWidth: Int,
   worldHeight: Int,
-  textureSize: Int
-) extends Camera2D(worldWidth, worldHeight, textureSize) {
+  worldCameraScale: Int
+) extends Camera2D(worldWidth, worldHeight, worldCameraScale) {
   override def setCamera(requestedXTranslate: Float = 0, requestedYTranslate: Float = 0, _zoom: Float = 2f): Unit = {
     // UI camera doesn't allow zoom or translate
   }
@@ -45,13 +45,13 @@ class UICamera(
 class Camera2D(
   worldWidth: Int,
   worldHeight: Int,
-  textureSize: Int
+  worldCameraScale: Int
 ) extends Renderable
   with InputHandler
   with ThrowsExceptionOnGLError
 {
   final val MAX_ZOOM: Float = 1f
-  final val CAMERA_TRANSLATE_SPEED: Float = textureSize
+  final val CAMERA_TRANSLATE_SPEED: Float = worldCameraScale
   final val CAMERA_ZOOM_SPEED: Float = 2f
 
   var zoom: Float = MAX_ZOOM
@@ -78,21 +78,24 @@ class Camera2D(
 
     // set up zoom range
     val maxZ = MAX_ZOOM
-    val minZ = width / (textureSize * worldWidth)
+    val minZ = width / (worldCameraScale * worldWidth)
     zoom = math.max(minZ, math.min(_zoom, maxZ))
-
-    // limit translation to not move beyond the bounds of the world space
-    val screenScale = (zoom / minZ) // this tells us how much of the world we can see on one screen
 
     // the idea here is to find how many world pixels one screen takes up - then you can move
     // that many screens in world coordinates (minus 1 for the screen starting at the origin
-    val oneScreenX = worldWidth * textureSize / screenScale
-    val maxX = (screenScale - 1) * oneScreenX * -1
-    val oneScreenY = worldHeight * textureSize / screenScale
-    val maxY = (screenScale - 1) * oneScreenY * -1
+    val zoomScale = 1 / zoom
+    val oneScreenX = zoom * worldWidth * worldCameraScale
+    val minX = (zoomScale - 1) * oneScreenX / 2
+    val maxX = (zoomScale - 1) * oneScreenX / -2
 
-    xTranslate = math.min(0f, math.max(maxX, requestedXTranslate))
-    yTranslate = math.min(0f, math.max(maxY, requestedYTranslate))
+    val oneScreenY = zoom * worldHeight * worldCameraScale
+    val minY = (zoomScale - 1) * oneScreenY / 2
+    val maxY = (zoomScale - 1) * oneScreenY / -2
+
+    println(s"SetCamera: zoom=$zoom, min/max X: $minX/$maxX currentX=$xTranslate desiredX=$requestedXTranslate , $yTranslate")
+
+    xTranslate = math.min(minX, math.max(maxX, requestedXTranslate))
+    yTranslate = math.min(minY, math.max(maxY, requestedYTranslate))
   }
 
   def init(progHandle: Int): Unit = {
@@ -138,19 +141,7 @@ class Camera2D(
     // Nop
   }
 
-  def updateScreenSize(viewUniformName: String, projectionUniformName: String): Unit = {
-    // set world-to-camera transform - also identity
-    val uniView = programHandle.map(glGetUniformLocation(_, viewUniformName))
-    val viewMatrix = new Matrix4f
-    viewMatrix.scale(zoom, zoom, 1f) // zoom
-    viewMatrix.translate(xTranslate, yTranslate, 0f) // translate
-
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      viewMatrix.get(buf)
-      uniView.foreach(glUniformMatrix4fv(_, false, buf))
-    })
-
+  def updateScreenSize(projectionUniformName: String): Unit = {
     // get screen height / width for ortho projection
     var width: Float = 0f
     var height: Float = 0f
@@ -163,21 +154,25 @@ class Camera2D(
       height = h.get()
     })
 
-    // set camera-to-projection transform - ortho
     val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
     checkError()
     val projection = new Matrix4f()
-    projection.ortho2D(0, width, height, 0)
+    val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
+    val aspectRatio = worldWidth / worldHeight
+//    val aspectRatio = width / height // TODO - we seem to have to do this to make the textures square
+    val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom * aspectRatio
+    projection.scale(cameraXScale, -cameraYScale, 1f)
+    projection.translate(
+      -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,
+      -worldHeight.toFloat * worldCameraScale / 2 + yTranslate,
+      0f
+    )
     cleanly(MemoryStack.stackPush())(stack => {
       val buf: FloatBuffer = stack.mallocFloat(4 * 4)
       projection.get(buf)
       uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
       checkError()
     })
-
-    // set window viewport so ortho projection lines up
-    glViewport(0, 0, width.toInt, height.toInt)
-    checkError()
 
     // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
     // +x = right, +y = down,

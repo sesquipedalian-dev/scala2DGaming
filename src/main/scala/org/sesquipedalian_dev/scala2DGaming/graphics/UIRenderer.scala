@@ -35,7 +35,7 @@ class UIRenderer extends Renderer {
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
-  final val TEXT_SIZE = 16
+  final val TEXT_SIZE = 32
   def MAX_CHARS_PER_DRAW = 1024 / (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def vertexBufferSize: Int = MAX_CHARS_PER_DRAW * (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def elementBufferSize: Int = MAX_CHARS_PER_DRAW * EL_PER_CHAR
@@ -87,7 +87,8 @@ class UIRenderer extends Renderer {
     fontTexture.foreach(_.init)
 
     // create our camera
-    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1))
+//    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1))
+    camera = Some(new Camera2D(UI_WIDTH, UI_HEIGHT, 1))
     camera.foreach(camera => {
       camera.register()
       programHandle.foreach(camera.init)
@@ -97,12 +98,17 @@ class UIRenderer extends Renderer {
 
   override def render(): Unit = {
     programHandle.foreach(glUseProgram)
-    camera.foreach(_.updateScreenSize("view", "projection"))
+    camera.foreach(_.updateScreenSize("projection"))
 
     drawTextOnWorld(0, 0, "TL", Color.RED)
     drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), 0, "TR", Color.PINK)
     drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), UI_HEIGHT - TEXT_SIZE, "BR", Color.CYAN)
     drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "BL", Color.YELLOW)
+
+//    drawTextOnWorld(0, 0, "A", Color.RED)
+//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, 0, "B", Color.PINK)
+//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, UI_HEIGHT - TEXT_SIZE, "C", Color.CYAN)
+//    drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "D", Color.YELLOW)
 
     super.render()
   }

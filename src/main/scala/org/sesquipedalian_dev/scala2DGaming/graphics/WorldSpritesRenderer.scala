@@ -94,7 +94,8 @@ class WorldSpritesRenderer(
 
   override def render(): Unit = {
     programHandle.foreach(glUseProgram)
-    camera.foreach(_.updateScreenSize("view", "projection"))
+    camera.foreach(_.updateScreenSize("projection"))
+
 
     // top left
     drawAGuy(0, 0, 0)
@@ -119,6 +120,7 @@ class WorldSpritesRenderer(
     } {
       drawAGuyWorld(x, y, 2)
     }
+
 
     super.render()
   }

@@ -23,8 +23,8 @@ object Main {
 //  final val SCREEN_HEIGHT: Int = 480
 //  final val SCREEN_WIDTH: Int = 1920
 //  final val SCREEN_HEIGHT: Int = 1080
-  final val SCREEN_WIDTH: Int = 600
-  final val SCREEN_HEIGHT: Int = 600
+  final val SCREEN_WIDTH: Int = 1024
+  final val SCREEN_HEIGHT: Int = 576
   final val TEXTURE_SIZE: Int = 512
 
   final val WORLD_WIDTH: Int = 50

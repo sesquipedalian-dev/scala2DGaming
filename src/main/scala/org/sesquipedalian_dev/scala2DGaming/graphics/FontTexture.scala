@@ -69,7 +69,6 @@ class FontTexture(
     var totalHeight = 0
     val charImages = for {
       asciiIndex <- 32 until 127
-//      asciiIndex <- List(66, 76, 82, 84)
     } yield {
       val c = asciiIndex.toChar
       val cImage: BufferedImage = createCharImage(sizedFont, fontMetrics, c)
@@ -78,18 +77,6 @@ class FontTexture(
       totalHeight = math.max(totalHeight, cImage.getHeight())
       (c -> cImage)
     }
-
-//    // pad total height / width to power of 2
-//    var currentPo2 = 1
-//    while({
-//      val cur = math.pow(2, currentPo2)
-//      cur < totalWidth && cur < totalHeight
-//    }) {
-//      currentPo2 += 1
-//    }
-//    totalWidth = math.pow(2, currentPo2).toInt
-//    totalHeight = math.pow(2, currentPo2).toInt
-//    println(s"padded to Po2: $currentPo2")
 
     // now that we've got the overall height, we can create the texture atlas (combined together all the glyphs)
     val textureAtlas = new BufferedImage(totalWidth, totalHeight, BufferedImage.TYPE_INT_ARGB)
@@ -107,7 +94,7 @@ class FontTexture(
         (currentXIndex + cWidth).toFloat / totalWidth,
         (cHeight).toFloat / totalHeight
       )
-      println(s"creating glyph $char $newGlyph")
+//      println(s"creating glyph $char $newGlyph")
 
       g2.drawImage(charImage, currentXIndex, 0, null)
       glyphs += (char -> newGlyph)
@@ -120,6 +107,7 @@ class FontTexture(
     transform.translate(0, -totalHeight)
     val operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR)
     val flippedTextureAtlas = operation.filter(textureAtlas, null)
+//    val flippedTextureAtlas = textureAtlas
 
     // put pixels into a byte buffer to send to the GPU
     val pixelBuffer = MemoryUtil.memAlloc(totalHeight * totalWidth)
@@ -140,7 +128,8 @@ class FontTexture(
     textureHandle.foreach(glBindTexture(GL_TEXTURE_2D, _))
     checkError()
 
-    println(s"font thing ${pixelBuffer.remaining()}")
+//    println(s"font thing ${pixelBuffer.remaining()}")
+
     // load up the texture data
     glTexImage2D(GL_TEXTURE_2D, 0,
       GL_R8,
