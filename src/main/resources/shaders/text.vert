@@ -1,16 +1,18 @@
 #version 150 core
 
 in vec2 position;
-in vec2 texCoord;
-in float texIndex;
+in vec3 textColor;
+in vec2 texCoordinate;
 
-out vec3 textureCoord;
+out vec2 textureCoord;
+out vec3 outTextColor;
 
 uniform mat4 view;
 uniform mat4 projection;
 
 void main() {
-    textureCoord = vec3(texCoord, texIndex);
+    outTextColor = textColor;
+    textureCoord = texCoordinate;
     mat4 mvp = projection * view;
     gl_Position = mvp * vec4(position, 0.0, 1.0);
 }
