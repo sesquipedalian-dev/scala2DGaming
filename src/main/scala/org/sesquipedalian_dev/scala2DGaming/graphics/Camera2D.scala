@@ -83,16 +83,19 @@ class Camera2D(
 
     // the idea here is to find how many world pixels one screen takes up - then you can move
     // that many screens in world coordinates (minus 1 for the screen starting at the origin
-    val zoomScale = 1 / zoom
+    val numScreensX = 1 / zoom
     val oneScreenX = zoom * worldWidth * worldCameraScale
-    val minX = (zoomScale - 1) * oneScreenX / 2
-    val maxX = (zoomScale - 1) * oneScreenX / -2
+    val minX = (numScreensX - 1) * oneScreenX / 2
+    val maxX = (numScreensX - 1) * oneScreenX / -2
 
-    val oneScreenY = zoom * worldHeight * worldCameraScale
-    val minY = (zoomScale - 1) * oneScreenY / 2
-    val maxY = (zoomScale - 1) * oneScreenY / -2
+    val aspectRatio = width / height
+    val oneScreenY = worldHeight * worldCameraScale * zoom
+    val numScreensY = aspectRatio / zoom
+    val minY = (numScreensY - 1) * oneScreenY / 2 / aspectRatio
+    val maxY = (numScreensY - 1) * oneScreenY / -2 / aspectRatio
 
-    println(s"SetCamera: zoom=$zoom, min/max X: $minX/$maxX currentX=$xTranslate desiredX=$requestedXTranslate , $yTranslate")
+//    println(s"SetCamera: zoom=$zoom, min/max X: $minX/$maxX currentX=$xTranslate desiredX=$requestedXTranslate")
+//    println(s"SetCamera: zoom=$zoom, min/max Y: $minY/$maxY currentY=$yTranslate desiredY=$requestedYTranslate oneScreen=$oneScreenY numScreens=$numScreensY")
 
     xTranslate = math.min(minX, math.max(maxX, requestedXTranslate))
     yTranslate = math.min(minY, math.max(maxY, requestedYTranslate))
@@ -158,9 +161,9 @@ class Camera2D(
     checkError()
     val projection = new Matrix4f()
     val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
-    val aspectRatio = worldWidth / worldHeight
-//    val aspectRatio = width / height // TODO - we seem to have to do this to make the textures square
+    val aspectRatio = width / height
     val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom * aspectRatio
+//    println(s"updating screen size $aspectRatio $cameraXScale, $cameraYScale")
     projection.scale(cameraXScale, -cameraYScale, 1f)
     projection.translate(
       -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,
