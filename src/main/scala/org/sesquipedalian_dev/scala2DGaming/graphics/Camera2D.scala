@@ -33,12 +33,50 @@ class UICamera(
   worldCameraScale: Int
 ) extends Camera2D(worldWidth, worldHeight, worldCameraScale) {
   override def setCamera(requestedXTranslate: Float = 0, requestedYTranslate: Float = 0, _zoom: Float = 2f): Unit = {
-    // UI camera doesn't allow zoom or translate
+//     UI camera doesn't allow zoom or translate
   }
 
   override def handleInput(key: Int): Boolean = {
-    // UI camera doesn't allow zoom or translate
+//     UI camera doesn't allow zoom or translate
     false
+  }
+
+  // UI camera doesn't use aspect ratio for scale
+  override def updateScreenSize(projectionUniformName: String): Unit = {
+    // get screen height / width for ortho projection
+    var width: Float = 0f
+    var height: Float = 0f
+    cleanly(MemoryStack.stackPush())(stack => {
+      val wh = glfwGetCurrentContext()
+      val w: IntBuffer = stack.mallocInt(1)
+      val h: IntBuffer = stack.mallocInt(1)
+      glfwGetFramebufferSize(wh, w, h)
+      width = w.get()
+      height = h.get()
+    })
+
+    val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
+    checkError()
+    val projection = new Matrix4f()
+    val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
+    val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom
+    //    println(s"updating screen size $aspectRatio $cameraXScale, $cameraYScale")
+    projection.scale(cameraXScale, -cameraYScale, 1f)
+    projection.translate(
+      -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,
+      -worldHeight.toFloat * worldCameraScale / 2 + yTranslate,
+      0f
+    )
+    cleanly(MemoryStack.stackPush())(stack => {
+      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+      projection.get(buf)
+      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+      checkError()
+    })
+
+    // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
+    // +x = right, +y = down,
+    // and world coords map 1-to-1 to screen coords
   }
 }
 
@@ -99,6 +137,9 @@ class Camera2D(
 
     xTranslate = math.min(minX, math.max(maxX, requestedXTranslate))
     yTranslate = math.min(minY, math.max(maxY, requestedYTranslate))
+
+//    xTranslate = requestedXTranslate
+//    yTranslate = requestedYTranslate
   }
 
   def init(progHandle: Int): Unit = {

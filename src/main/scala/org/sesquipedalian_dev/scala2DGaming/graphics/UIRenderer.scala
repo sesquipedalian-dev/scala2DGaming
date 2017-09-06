@@ -30,8 +30,10 @@ import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 class UIRenderer extends Renderer {
 //  final val UI_WIDTH = 2560
 //  final val UI_HEIGHT = 1440
-  final val UI_WIDTH = 1600
-  final val UI_HEIGHT = 900
+//  final val UI_WIDTH = 1600
+//  final val UI_HEIGHT = 900
+  final val UI_WIDTH = 1024
+  final val UI_HEIGHT = 576
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
@@ -87,8 +89,7 @@ class UIRenderer extends Renderer {
     fontTexture.foreach(_.init)
 
     // create our camera
-//    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1))
-    camera = Some(new Camera2D(UI_WIDTH, UI_HEIGHT, 1))
+    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1))
     camera.foreach(camera => {
       camera.register()
       programHandle.foreach(camera.init)
