@@ -28,12 +28,12 @@ import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 
 class UIRenderer extends Renderer {
-//  final val UI_WIDTH = 2560
-//  final val UI_HEIGHT = 1440
+  final val UI_WIDTH = 2560
+  final val UI_HEIGHT = 1440
 //  final val UI_WIDTH = 1600
 //  final val UI_HEIGHT = 900
-  final val UI_WIDTH = 1024
-  final val UI_HEIGHT = 576
+//  final val UI_WIDTH = 1024
+//  final val UI_HEIGHT = 576
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
