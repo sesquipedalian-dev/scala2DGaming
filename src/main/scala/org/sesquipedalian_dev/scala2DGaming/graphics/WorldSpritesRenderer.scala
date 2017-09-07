@@ -96,7 +96,6 @@ class WorldSpritesRenderer(
     programHandle.foreach(glUseProgram)
     camera.foreach(_.updateScreenSize("projection"))
 
-
     // top left
     drawAGuy(0, 0, 0)
     // top right
@@ -105,7 +104,6 @@ class WorldSpritesRenderer(
     drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize, 0)
     // bottom left
     drawAGuy(0, (worldHeight - 1) * textureSize, 1)
-
 
     // do all the terra
     for {
@@ -120,7 +118,6 @@ class WorldSpritesRenderer(
     } {
       drawAGuyWorld(x, y, 2)
     }
-
 
     super.render()
   }

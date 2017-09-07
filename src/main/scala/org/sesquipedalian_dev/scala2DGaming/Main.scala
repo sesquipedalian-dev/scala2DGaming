@@ -17,6 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming
 
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
+import org.sesquipedalian_dev.scala2DGaming.ui.FPSCounter
 
 object Main {
 //  final val SCREEN_WIDTH: Int = 640
@@ -47,15 +48,13 @@ object Main {
     val uiRenderer = new UIRenderer()
     uiRenderer.init()
 
+    new FPSCounter()
+
     // loop until terminated
-    window.mainLoop(update, Renderable.render)
+    window.mainLoop(HasGameUpdate.update, Renderable.render)
 
     // clean up
     window.cleanup()
     Renderable.cleanup()
-  }
-
-  def update(deltaTimeSeconds: Double): Unit = {
-
   }
 }

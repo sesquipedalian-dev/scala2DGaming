@@ -16,28 +16,19 @@
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import java.awt.Color
-import java.nio.{FloatBuffer, IntBuffer}
 
-import org.joml.Matrix4f
-import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
-import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture, glViewport}
-import org.lwjgl.opengl.GL15._
+import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
 import org.lwjgl.opengl.GL20._
-import org.lwjgl.opengl.GL30.{GL_TEXTURE_2D_ARRAY, glBindVertexArray, glGenVertexArrays}
 import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 
 class UIRenderer extends Renderer {
   final val UI_WIDTH = 2560
   final val UI_HEIGHT = 1440
-//  final val UI_WIDTH = 1600
-//  final val UI_HEIGHT = 900
-//  final val UI_WIDTH = 1024
-//  final val UI_HEIGHT = 576
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
-  final val TEXT_SIZE = 32
+  final val TEXT_SIZE = 64
   def MAX_CHARS_PER_DRAW = 1024 / (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def vertexBufferSize: Int = MAX_CHARS_PER_DRAW * (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def elementBufferSize: Int = MAX_CHARS_PER_DRAW * EL_PER_CHAR
@@ -101,11 +92,12 @@ class UIRenderer extends Renderer {
     programHandle.foreach(glUseProgram)
     camera.foreach(_.updateScreenSize("projection"))
 
-    drawTextOnWorld(0, 0, "TL", Color.RED)
-    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), 0, "TR", Color.PINK)
-    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), UI_HEIGHT - TEXT_SIZE, "BR", Color.CYAN)
-    drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "BL", Color.YELLOW)
-
+    HasUiRendering.render(this)
+//    drawTextOnWorld(0, 0, "TL", Color.RED)
+//    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), 0, "TR", Color.PINK)
+//    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), UI_HEIGHT - TEXT_SIZE, "BR", Color.CYAN)
+//    drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "BL", Color.YELLOW)
+//
 //    drawTextOnWorld(0, 0, "A", Color.RED)
 //    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, 0, "B", Color.PINK)
 //    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, UI_HEIGHT - TEXT_SIZE, "C", Color.CYAN)

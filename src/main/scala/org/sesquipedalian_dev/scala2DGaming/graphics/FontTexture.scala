@@ -17,11 +17,11 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import java.awt.Font.TRUETYPE_FONT
 import java.awt.geom.AffineTransform
-import java.awt.{FontMetrics, Graphics2D, RenderingHints}
+import java.awt.{Font, FontMetrics, Graphics2D, RenderingHints}
 import java.awt.image.{AffineTransformOp, BufferedImage}
+import javax.swing.text.StyledEditorKit.BoldAction
 
 import org.lwjgl.system.MemoryUtil
-
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL12._
 import org.lwjgl.opengl.GL30._
@@ -54,7 +54,7 @@ class FontTexture(
     // load font from ttf file
     val resourceStream = getClass.getResourceAsStream(resourceFontFile)
     val initialFont = java.awt.Font.createFont(TRUETYPE_FONT, resourceStream)
-    val sizedFont = initialFont.deriveFont(point.toFloat) // TODO style? bold, italic etc
+    val sizedFont = initialFont.deriveFont(Font.BOLD, point.toFloat) // TODO style? bold, italic etc
 
     // get the font metrics on a graphics context to determine the true height / width of this character
     val textureImage = new BufferedImage(1, 1, BufferedImage.TYPE_INT_ARGB)
