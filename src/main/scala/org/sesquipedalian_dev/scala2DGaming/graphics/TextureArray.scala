@@ -44,8 +44,9 @@ class TextureArray(
   var capacity: Int = initialCapacity
 
   // add a resource file to our set of loaded textures
-  def addTextureResource(resourceName: String): Unit = {
-    textureHandle.foreach(th => {
+  // returns the new index of the texture, if successfully added
+  def addTextureResource(resourceName: String): Option[Int] = {
+    textureHandle.map(th => {
       glBindTexture(GL_TEXTURE_2D_ARRAY, th)
 
       // if we've loaded too many texture, resize and reload the whole thing
@@ -93,13 +94,14 @@ class TextureArray(
         // free the texel info since we've sent it to the GPU
         MemoryUtil.memFree(pixels)
       })
-      texLoadResult match {
-        case Success(_) => textureFiles :+= resourceName
-        case Failure(e) => println("problemas loading texture"); e.printStackTrace()
+      val result = texLoadResult match {
+        case Success(_) => textureFiles :+= resourceName; Some(index)
+        case Failure(e) => println("problemas loading texture"); e.printStackTrace(); None
       }
 
       glBindTexture(GL_TEXTURE_2D_ARRAY, 0)
-    })
+      result
+    }).flatten
   }
 
   // resize the bound texture -

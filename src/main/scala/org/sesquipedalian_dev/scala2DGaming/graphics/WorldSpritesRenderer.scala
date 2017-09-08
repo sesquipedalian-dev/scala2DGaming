@@ -96,28 +96,30 @@ class WorldSpritesRenderer(
     programHandle.foreach(glUseProgram)
     camera.foreach(_.updateScreenSize("projection"))
 
-    // top left
-    drawAGuy(0, 0, 0)
-    // top right
-    drawAGuy((worldWidth - 1) * textureSize, 0, 1)
-    // bottom right
-    drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize, 0)
-    // bottom left
-    drawAGuy(0, (worldHeight - 1) * textureSize, 1)
+    HasWorldSpriteRendering.render(this)
 
-    // do all the terra
-    for {
-      _x <- 0 until worldWidth
-      _y <- 0 until worldHeight
-      (x, y) <- Some(_x, _y) if !List(
-        (0, 0),
-        (0, worldHeight - 1),
-        (worldWidth - 1, 0),
-        (worldWidth - 1, worldHeight - 1)
-      ).contains((x, y))
-    } {
-      drawAGuyWorld(x, y, 2)
-    }
+//    // top left
+//    drawAGuy(0, 0, 0)
+//    // top right
+//    drawAGuy((worldWidth - 1) * textureSize, 0, 1)
+//    // bottom right
+//    drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize, 0)
+//    // bottom left
+//    drawAGuy(0, (worldHeight - 1) * textureSize, 1)
+//
+//    // do all the terra
+//    for {
+//      _x <- 0 until worldWidth
+//      _y <- 0 until worldHeight
+//      (x, y) <- Some(_x, _y) if !List(
+//        (0, 0),
+//        (0, worldHeight - 1),
+//        (worldWidth - 1, 0),
+//        (worldWidth - 1, worldHeight - 1)
+//      ).contains((x, y))
+//    } {
+//      drawAGuyWorld(x, y, 2)
+//    }
 
     super.render()
   }
