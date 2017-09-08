@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{Location, WorldMap}
+import org.sesquipedalian_dev.scala2DGaming.entities.{BadGuy, Location, WorldMap}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 import org.sesquipedalian_dev.scala2DGaming.ui.FPSCounter
@@ -51,8 +51,12 @@ object Main {
 
     new FPSCounter()
 
-    val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT), TEXTURE_SIZE)
+    val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
+
+    // test bad guy
+    new BadGuy(Location(0, 25), None, "/textures/badguy.bmp")
+    new BadGuy(Location(0, 20), Some(Math.PI.toFloat / 4), "/textures/badguy.bmp")
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)
