@@ -31,7 +31,55 @@ class BadGuy(
     directionRadians.foreach(direction => {
       val newX = location.x + (Math.cos(direction) * speed * deltaTimeSeconds)
       val newY = location.y + (Math.sin(direction) * speed * deltaTimeSeconds)
-      location = Location(newX.toFloat, newY.toFloat)
+      val newLocation = Location(newX.toFloat, newY.toFloat)
+      val newLocInt = Location(Math.floor(newX).toFloat, Math.floor(newY).toFloat)
+      val currentLocInt = Location(Math.floor(location.x).toFloat, Math.floor(location.y).toFloat)
+
+      if(newLocInt != currentLocInt) {
+        // if we move into a new grid location, check if we can CONTINUE moving in the same direction
+        // if not, we have to move around an obstacle
+
+        val xDir = Math.cos(direction)
+        val yDir = Math.sin(direction)
+        val evenNewerX = newLocation.x + (xDir / Math.abs(xDir))
+        val evenNewerY = newLocation.y + (yDir / Math.abs(yDir))
+        val evenNewerLocation = Location(Math.floor(evenNewerX).toFloat, Math.floor(evenNewerY).toFloat)
+        val traversable = WorldMap.instance.flatMap(world => {
+          world.worldLocations.get(evenNewerLocation).map(_.traversable)
+        }).getOrElse(false)
+
+        if(!traversable) {
+          // ok, we can't go that way - move the closest direction to where we were trying to go that is traversable
+
+          val directions = List( // cardinal directions we could move
+            0f,             // +x
+            Math.PI / 2,    // +y
+            Math.PI,        // -x
+            3 * Math.PI / 2 // -y
+          )
+          val (d, _) = directions.map(d => { // figure out whether each direction is traversable
+            val newLocX = newLocInt.x + Math.cos(d)
+            val newLocY = newLocInt.y + Math.sin(d)
+            val newLocCombined = Location(Math.floor(newLocX).toFloat, Math.floor(newLocY).toFloat)
+            val traversable = WorldMap.instance.flatMap(world => {
+              world.worldLocations.get(newLocCombined).map(_.traversable)
+            }).getOrElse(false)
+            (d, traversable)
+          })
+            .filter(p => p._2) // only pick a direction that is traversable
+            .sortBy(p => Math.abs(direction - p._1)) // pick the direction that is closest to where we were already trying to go
+            .head
+
+          // go new direction instead
+          val newX = location.x + (Math.cos(d) * speed * deltaTimeSeconds)
+          val newY = location.y + (Math.sin(d) * speed * deltaTimeSeconds)
+          location = Location(newX.toFloat, newY.toFloat)
+        } else {
+          location = Location(newX.toFloat, newY.toFloat)
+        }
+      } else {
+        location = Location(newX.toFloat, newY.toFloat)
+      }
     })
   }
 

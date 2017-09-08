@@ -126,4 +126,10 @@ class WorldMap(worldSize: Location) extends HasWorldSpriteRendering {
       WorldLoc(Location(x, y), traversable = traversable, texFile)
     }).map(p => p.location -> p).toMap
   }
+
+  WorldMap.instance = Some(this)
+}
+
+object WorldMap {
+  var instance: Option[WorldMap] = None
 }

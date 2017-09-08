@@ -55,7 +55,7 @@ object Main {
     world.initTestData()
 
     // test bad guy
-    new BadGuy(Location(0, 25), None, "/textures/badguy.bmp")
+    new BadGuy(Location(0, 25), Some(0), "/textures/badguy.bmp")
     new BadGuy(Location(0, 20), Some(Math.PI.toFloat / 4), "/textures/badguy.bmp")
 
     // loop until terminated
