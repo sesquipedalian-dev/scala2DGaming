@@ -15,14 +15,38 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
+
+trait HasSingleWorldSpriteRendering extends HasWorldSpriteRendering {
+  var textureIndex: Option[Int] = None
+  def textureFile: String
+  def location: Location
+  def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {
+    if(textureIndex.isEmpty) {
+      worldSpritesRenderer.textureArray.foreach(ta => {
+        val currentLoc = ta.textureFiles.indexOf(textureFile)
+        if(currentLoc == -1) {
+          textureIndex = ta.addTextureResource(textureFile)
+        } else {
+          textureIndex = Some(currentLoc)
+        }
+      })
+    }
+    textureIndex.foreach(ti => worldSpritesRenderer.drawAGuyWorld(location.x, location.y, ti))
+  }
+}
+
 trait HasWorldSpriteRendering {
-  def render(worldSpritesRenderer: WorldSpritesRenderer): Unit
   HasWorldSpriteRendering.all :+= this
+  def render(worldSpritesRenderer: WorldSpritesRenderer): Unit
 }
 
 object HasWorldSpriteRendering {
   var all: List[HasWorldSpriteRendering] = Nil
   def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {
     all.foreach(_.render(worldSpritesRenderer))
+  }
+  def unregister(x: HasWorldSpriteRendering): Unit = {
+    all = all.filterNot(_ == x)
   }
 }

@@ -16,19 +16,33 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasWorldSpriteRendering, WorldSpritesRenderer}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
 
 class BadGuy(
   var location: Location,
   var direction: Option[Location], // expected to be +/- 1 (or 0) in each axis
-  textureFile: String,
-  worldSize: Location
-) extends HasGameUpdate with HasWorldSpriteRendering {
+  worldSize: Location,
+  var health: Int
+) extends HasGameUpdate with HasSingleWorldSpriteRendering {
+  override val textureFile: String = "/textures/badguy.bmp"
   final val speed: Float = 2f // blocks / sec
-  var textureIndex: Option[Int] = None
-
 
   override def update(deltaTimeSeconds: Double): Unit = {
+    if(health <= 0) {
+      // killed!
+      HasGameUpdate.unregister(this)
+      HasWorldSpriteRendering.unregister(this)
+
+      // any other projectiles that may have been chasing us can go away
+      HasGameUpdate.all.foreach({
+        case x: Projectile if x.target == this => {
+          HasGameUpdate.unregister(x)
+          HasWorldSpriteRendering.unregister(x)
+        }
+        case _ =>
+      })
+    }
+
     direction.foreach(targetDirection => {
       val deltaX = (targetDirection.x * speed * deltaTimeSeconds.toFloat)
       val deltaY = (targetDirection.y * speed * deltaTimeSeconds.toFloat)

@@ -25,4 +25,7 @@ object HasGameUpdate {
   def update(deltaTimeSeconds: Double): Unit = {
     all.foreach(_.update(deltaTimeSeconds))
   }
+  def unregister(x: HasGameUpdate): Unit = {
+    all = all.filterNot(_ == x)
+  }
 }
