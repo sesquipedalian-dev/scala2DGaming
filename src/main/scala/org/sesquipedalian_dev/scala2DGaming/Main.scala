@@ -55,8 +55,9 @@ object Main {
     world.initTestData()
 
     // test bad guy
-    new BadGuy(Location(0, 25), Some(0), "/textures/badguy.bmp")
-    new BadGuy(Location(0, 20), Some(Math.PI.toFloat / 4), "/textures/badguy.bmp")
+    new BadGuy(Location(0, 25), Some(Location(1, 0)), "/textures/badguy.bmp", Location(WORLD_WIDTH, WORLD_HEIGHT))
+    new BadGuy(Location(0, 20), Some(Location(1, 1)), "/textures/badguy.bmp", Location(WORLD_WIDTH, WORLD_HEIGHT))
+    new BadGuy(Location(0, 40), Some(Location(1, -1)), "/textures/badguy.bmp", Location(WORLD_WIDTH, WORLD_HEIGHT))
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

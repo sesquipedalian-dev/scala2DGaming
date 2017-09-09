@@ -20,65 +20,97 @@ import org.sesquipedalian_dev.scala2DGaming.graphics.{HasWorldSpriteRendering, W
 
 class BadGuy(
   var location: Location,
-  var directionRadians: Option[Float], // radians
-  textureFile: String
+  var direction: Option[Location], // expected to be +/- 1 (or 0) in each axis
+  textureFile: String,
+  worldSize: Location
 ) extends HasGameUpdate with HasWorldSpriteRendering {
-  final val speed: Float = 1 // blocks / sec
+  final val speed: Float = 2f // blocks / sec
   var textureIndex: Option[Int] = None
 
 
   override def update(deltaTimeSeconds: Double): Unit = {
-    directionRadians.foreach(direction => {
-      val newX = location.x + (Math.cos(direction) * speed * deltaTimeSeconds)
-      val newY = location.y + (Math.sin(direction) * speed * deltaTimeSeconds)
-      val newLocation = Location(newX.toFloat, newY.toFloat)
-      val newLocInt = Location(Math.floor(newX).toFloat, Math.floor(newY).toFloat)
-      val currentLocInt = Location(Math.floor(location.x).toFloat, Math.floor(location.y).toFloat)
+    direction.foreach(targetDirection => {
+      val deltaX = (targetDirection.x * speed * deltaTimeSeconds.toFloat)
+      val deltaY = (targetDirection.y * speed * deltaTimeSeconds.toFloat)
 
-      if(newLocInt != currentLocInt) {
-        // if we move into a new grid location, check if we can CONTINUE moving in the same direction
-        // if not, we have to move around an obstacle
+      if(deltaX > 1 || deltaY > 1) {
+        // don't allow jumping multi grid locations on one update - we probably had a graphics hitch
+        return
+      }
 
-        val xDir = Math.cos(direction)
-        val yDir = Math.sin(direction)
-        val evenNewerX = newLocation.x + (xDir / Math.abs(xDir))
-        val evenNewerY = newLocation.y + (yDir / Math.abs(yDir))
-        val evenNewerLocation = Location(Math.floor(evenNewerX).toFloat, Math.floor(evenNewerY).toFloat)
-        val traversable = WorldMap.instance.flatMap(world => {
-          world.worldLocations.get(evenNewerLocation).map(_.traversable)
-        }).getOrElse(false)
+      // check if moving 1 in the direction would be traversable
+      val oneTileX = if(targetDirection.x < 0) {
+        Math.ceil(location.x).toFloat + targetDirection.x
+      } else {
+        Math.floor(location.x).toFloat + targetDirection.x
+      }
+      val oneTileY = if(targetDirection.y < 0) {
+        Math.ceil(location.y).toFloat + targetDirection.y
+      } else {
+        Math.floor(location.y).toFloat + targetDirection.y
+      }
+      val oneTileInDirection = Location(oneTileX, oneTileY)
 
-        if(!traversable) {
-          // ok, we can't go that way - move the closest direction to where we were trying to go that is traversable
+      // if we move into a new grid location, check if we can move into that block
+      // if not, we have to move around an obstacle
+      val traversable = WorldMap.instance.flatMap(world => {
+        val tile = world.worldLocations.get(oneTileInDirection)
+//        println(s"tile is traversable $tile")
+        tile.map(_.traversable)
+      }).getOrElse(false)
 
-          val directions = List( // cardinal directions we could move
-            0f,             // +x
-            Math.PI / 2,    // +y
-            Math.PI,        // -x
-            3 * Math.PI / 2 // -y
-          )
-          val (d, _) = directions.map(d => { // figure out whether each direction is traversable
-            val newLocX = newLocInt.x + Math.cos(d)
-            val newLocY = newLocInt.y + Math.sin(d)
-            val newLocCombined = Location(Math.floor(newLocX).toFloat, Math.floor(newLocY).toFloat)
+//      println(s"moving a bad guy! $location $oneTileInDirection $traversable")
+
+      if(!traversable) {
+        // ok, we can't go that way - move the closest direction to where we were trying to go that is traversable
+
+        val directions = List( // cardinal directions we could move
+          Location(1, 0),  // +x
+          Location(0, 1),  // +y
+          Location(-1, 0), // -x
+          Location(0, -1)  // -y
+        ).filter(_ != targetDirection)
+        val (d, _) = directions
+          .map(d => { // figure out whether each direction is traversable
+            // check if moving 1 in the direction would be traversable
+            val oneTileNewDX = if(d.x < 0) {
+              Math.ceil(location.x).toFloat + d.x
+            } else {
+              Math.floor(location.x).toFloat + d.x
+            }
+            val oneTileNewDY = if(d.y < 0) {
+              Math.ceil(location.y).toFloat + d.y
+            } else {
+              Math.floor(location.y).toFloat + d.y
+            }
+            val oneTileInNewDirection = Location(oneTileNewDX, oneTileNewDY)
             val traversable = WorldMap.instance.flatMap(world => {
-              world.worldLocations.get(newLocCombined).map(_.traversable)
+              world.worldLocations.get(oneTileInNewDirection).map(_.traversable)
             }).getOrElse(false)
             (d, traversable)
           })
-            .filter(p => p._2) // only pick a direction that is traversable
-            .sortBy(p => Math.abs(direction - p._1)) // pick the direction that is closest to where we were already trying to go
-            .head
+          .filter(p => {
+//            println(s"valid alternate direction? $p")
+            p._2
+          }) // only pick a direction that is traversable
+          .sortBy(p => {
+            val angle = Math.atan2(p._1.y, p._1.x)
+            val angleDiff = Math.abs(p._1.x - targetDirection.x) + Math.abs(p._1.y - targetDirection.y)
+//            println(s"sorting alternate direction $p by $angleDiff")
+            angleDiff
+          }) // pick the direction that is closest to where we were already trying to go
+          .head
 
-          // go new direction instead
-          val newX = location.x + (Math.cos(d) * speed * deltaTimeSeconds)
-          val newY = location.y + (Math.sin(d) * speed * deltaTimeSeconds)
-          location = Location(newX.toFloat, newY.toFloat)
-        } else {
-          location = Location(newX.toFloat, newY.toFloat)
-        }
+        // go new direction instead
+        val newX = location.x + (d.x * speed * deltaTimeSeconds)
+        val newY = location.y + (d.y * speed * deltaTimeSeconds)
+//        println(s"going diff direction: $d $speed $deltaTimeSeconds $location $newX $newY")
+        location = Location(Math.max(0, Math.min(worldSize.x - 1, newX)).toFloat, Math.max(0, Math.min(worldSize.y - 1, newY)).toFloat)
       } else {
-        location = Location(newX.toFloat, newY.toFloat)
+        location = Location(
+          Math.max(0, Math.min(worldSize.x - 1, location.x + deltaX)),
+          Math.max(0, Math.min(worldSize.y - 1, location.y + deltaY))
+        )
       }
     })
   }
