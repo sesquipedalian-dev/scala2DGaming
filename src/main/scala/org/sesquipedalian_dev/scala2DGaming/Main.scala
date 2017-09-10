@@ -15,10 +15,14 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
+import java.util.Date
+
 import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 import org.sesquipedalian_dev.scala2DGaming.ui.FPSCounter
+
+import scala.util.Random
 
 object Main {
 //  final val SCREEN_WIDTH: Int = 640
@@ -34,8 +38,14 @@ object Main {
 
   var window: GLFWWindow = null
 
+  var random: Option[Random] = None
+
   def main(args: Array[String]): Unit = {
     println("Hello World")
+
+    // TODO allow us to initialize random with a specific seed (for replay)
+    val seed: Long = new Date().getTime
+    random = Some(new Random(new java.util.Random(seed)))
 
     window = new GLFWWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tut")
     window.init()

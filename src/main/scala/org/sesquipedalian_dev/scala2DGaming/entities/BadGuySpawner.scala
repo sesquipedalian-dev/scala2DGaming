@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
 import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 
 import scala.util.Random
@@ -32,11 +32,11 @@ class BadGuySpawner(
       spawnTimer = secondsPerSpawn
 
       // test bad guy
-      Random.nextInt(3) match {
+      Main.random.foreach(r => r.nextInt(3) match {
         case 0 => new BadGuy(location, Some(Location(1, 0)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
         case 1 => new BadGuy(location, Some(Location(1, 1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
         case 2 => new BadGuy(location, Some(Location(1, -1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-      }
+      })
     }
   }
 }
