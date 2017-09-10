@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class Projectile(
@@ -37,8 +37,8 @@ class Projectile(
     val normalY = Math.sin(angle)
 
     val direction = Location(normalX.toFloat, normalY.toFloat)
-    val deltaX = (direction.x * speed * deltaTimeSeconds.toFloat)
-    val deltaY = (direction.y * speed * deltaTimeSeconds.toFloat)
+    val deltaX = (direction.x * speed * deltaTimeSeconds.toFloat / TimeOfDay.SLOW.toFloat)
+    val deltaY = (direction.y * speed * deltaTimeSeconds.toFloat / TimeOfDay.SLOW.toFloat)
     location = Location(location.x + deltaX, location.y + deltaY)
 
     // if we've gotten to the target, hit them and delete us

@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
 
 class BadGuy(
@@ -25,7 +25,7 @@ class BadGuy(
   var health: Int
 ) extends HasGameUpdate with HasSingleWorldSpriteRendering {
   override val textureFile: String = "/textures/badguy.bmp"
-  final val speed: Float = 1f // blocks / sec
+  final val speed: Float = 1f / TimeOfDay.SLOW.toFloat // blocks / sec
 
   override def update(deltaTimeSeconds: Double): Unit = {
     if(health <= 0) {

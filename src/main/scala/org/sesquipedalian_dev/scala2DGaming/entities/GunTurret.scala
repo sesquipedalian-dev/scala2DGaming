@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
 
 case class RangeArc(
@@ -35,13 +35,13 @@ class GunTurret(
 {
   override val textureFile: String = "/textures/gun.bmp"
 
-  var shotTimer = secondsPerShot
+  var shotTimer = secondsPerShot * TimeOfDay.SLOW
 
   override def update(deltaTimeSeconds: Double): Unit = {
-    shotTimer -= deltaTimeSeconds
-    if(shotTimer < 0) {
-      user.foreach(g => { // can only shoot if we have a gunner
-        shotTimer = secondsPerShot
+    user.foreach(g => { // can only shoot if we have a gunner
+      shotTimer -= (deltaTimeSeconds * g.needEffectiveness) // slows down rounds / sec based on effectiveness
+      if(shotTimer < 0) {
+        shotTimer = secondsPerShot * TimeOfDay.SLOW
 
         // look for a nearby BadGuy to shoot
         val target = HasWorldSpriteRendering.all.collectFirst({
@@ -51,8 +51,8 @@ class GunTurret(
         target.foreach(badGuy => {
           new Projectile(location, badGuy, damagePerShot, speed = 5f)
         })
-      })
-    }
+      }
+    })
   }
 
   def badGuyInRange(badGuy: BadGuy): Boolean = {

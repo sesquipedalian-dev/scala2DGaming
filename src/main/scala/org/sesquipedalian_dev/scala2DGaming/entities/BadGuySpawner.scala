@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 
 import scala.util.Random
@@ -25,11 +25,11 @@ class BadGuySpawner(
   location: Location,
   secondsPerSpawn: Float
 ) extends HasGameUpdate {
-  var spawnTimer = secondsPerSpawn
+  var spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
   override def update(deltaTimeSeconds: Double): Unit = {
     spawnTimer -= deltaTimeSeconds.toFloat
     if(spawnTimer <= 0) {
-      spawnTimer = secondsPerSpawn
+      spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
 
       // test bad guy
       Main.random.foreach(r => r.nextInt(3) match {

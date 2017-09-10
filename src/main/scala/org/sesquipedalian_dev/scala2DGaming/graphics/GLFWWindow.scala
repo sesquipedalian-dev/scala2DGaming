@@ -19,6 +19,7 @@ import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw.{GLFWErrorCallback, GLFWKeyCallback}
 import org.lwjgl.opengl.GL
 import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
 
 // wrap GLFW window creation
@@ -91,7 +92,11 @@ class GLFWWindow(width: Int, height: Int, name: String) {
 
       glfwPollEvents() // get input
 
-      deltaTime.foreach(update) // only update if this isn't the first loop
+      (deltaTime zip TimeOfDay.instance).foreach(p => {
+        val (dt, tod) = p
+        // adjust game speed for time-of-day
+        update(dt * tod.speed)
+      }) // only update if this isn't the first loop
 
       render()
       glfwWindow.foreach(glfwSwapBuffers)

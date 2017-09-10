@@ -16,6 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
 
 class GoodGuy(
@@ -23,6 +24,12 @@ class GoodGuy(
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
 {
+  // TODO make needs init more flexible - some good guys could have traits that adjust how their needs work,
+  // or what needs they even have
+  var needs: List[Need] = List(
+    SleepNeed(this)
+  )
+
   var equipmentImUsing: Option[Equipment] = None
   override def textureFile: String = "/textures/MilitaryMan.bmp"
 
@@ -37,5 +44,13 @@ class GoodGuy(
     // man the new thing
     equipment.user = Some(this)
     equipmentImUsing = Some(equipment)
+  }
+
+  def needEffectiveness: Double = {
+    if(needs.nonEmpty) {
+      needs.map(need => 100 - need.degree).sum / needs.size / 100
+    } else {
+      1f
+    }
   }
 }

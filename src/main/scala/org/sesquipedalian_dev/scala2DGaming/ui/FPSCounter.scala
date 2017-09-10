@@ -17,7 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 
 import java.awt.Color
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, UIRenderer}
 
 // track fps
@@ -31,11 +31,13 @@ with HasUiRendering
 
   var currentFps: Double = 0d
   def update(deltaTimeSeconds: Double): Unit = {
-    updateTimer -= deltaTimeSeconds
-    if(updateTimer <= 0) {
-      currentFps = 1 / deltaTimeSeconds
-      updateTimer = UPDATE_TIMER_MAX
-    }
+    TimeOfDay.instance.foreach(tod => {
+      updateTimer -= (deltaTimeSeconds / tod.speed)
+      if(updateTimer <= 0) {
+        currentFps = 1 / deltaTimeSeconds * tod.speed
+        updateTimer = UPDATE_TIMER_MAX
+      }
+    })
   }
 
   def render(uiRenderer: UIRenderer): Unit = {

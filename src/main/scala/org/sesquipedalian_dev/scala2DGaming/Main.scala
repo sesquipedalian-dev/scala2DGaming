@@ -60,6 +60,7 @@ object Main {
     uiRenderer.init()
 
     new FPSCounter()
+    new TimeOfDay()
 
     val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
