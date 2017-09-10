@@ -25,15 +25,15 @@ class PauseButton extends HasSingleUiSpriteRendering {
 
 class SlowButton extends HasSingleUiSpriteRendering {
   override def textureFile = "/textures/slow.bmp"
-  override def location = Location(2240, 30)
+  override def location = Location(2270, 30)
 }
 
 class MediumButton extends HasSingleUiSpriteRendering {
   override def textureFile = "/textures/medium.bmp"
-  override def location = Location(2280, 30)
+  override def location = Location(2340, 30)
 }
 
 class FastButton extends HasSingleUiSpriteRendering {
   override def textureFile = "/textures/fast.bmp"
-  override def location = Location(2320, 30)
+  override def location = Location(2410, 30)
 }

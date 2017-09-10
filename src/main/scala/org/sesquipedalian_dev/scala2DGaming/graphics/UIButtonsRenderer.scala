@@ -32,7 +32,7 @@ class UIButtonsRenderer(
 ) extends Renderer
   with ThrowsExceptionOnGLError
 {
-  val textureSize: Int = 32
+  val textureSize: Int = 64
   final val VERTICES_PER_THING = 4
   final val MAX_THINGS_PER_DRAW = 1024 / (VERTICES_PER_THING + 1);
   final val ELEMENTS_PER_THING = 6
@@ -136,7 +136,6 @@ class UIButtonsRenderer(
       flushVertexData()
     }
 
-    println(s"UI button print $x $y $texIndex")
     vertexBuffer.put(x).put(y)
       .put(0f).put(1f).put(texIndex.toFloat)
     vertexBuffer.put(x + textureSize).put(y)
