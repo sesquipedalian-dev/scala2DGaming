@@ -30,9 +30,9 @@ import org.lwjgl.opengl.GL11.glViewport
 class UICamera(
   worldWidth: Int,
   worldHeight: Int,
-  worldCameraScale: Int,
-  user: UIRenderer
+  worldCameraScale: Int
 ) extends Camera2D(worldWidth, worldHeight, worldCameraScale) {
+  var aspectRatio: Option[Float] = None
   override def setCamera(requestedXTranslate: Float = 0, requestedYTranslate: Float = 0, _zoom: Float = 2f): Unit = {
 //     UI camera doesn't allow zoom or translate
   }
@@ -55,23 +55,20 @@ class UICamera(
       width = w.get()
       height = h.get()
     })
-    val aspectRatio = width / height
-
-    // adjust renderer UI height to render correctly with aspect ratio
-    user.aspectRatio = Some(aspectRatio)
+    aspectRatio = Some(width / height)
 
     val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
     checkError()
 
     val viewWidth: Float = worldWidth
-    val viewHeight: Float = worldWidth / aspectRatio
+    val viewHeight: Float = worldWidth / aspectRatio.get
     val projection = new Matrix4f()
 
     projection.ortho2D(-viewWidth / 2, viewWidth / 2, viewHeight / 2, -viewHeight / 2)
 
     val view = new Matrix4f
     view.translate(-viewWidth / 2, -viewHeight / 2, 0)
-    view.scale(1f, aspectRatio, 1f)
+    view.scale(1f, aspectRatio.get, 1f)
 
     projection.mul(view)
 

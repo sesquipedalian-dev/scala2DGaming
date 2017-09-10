@@ -17,13 +17,13 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 
 
 trait HasUiRendering {
-  def render(uiRenderer: UIRenderer): Unit
+  def render(uiRenderer: UITextRenderer): Unit
   HasUiRendering.all :+= this
 }
 
 object HasUiRendering {
   var all: List[HasUiRendering] = Nil
-  def render(uiRenderer: UIRenderer): Unit = {
+  def render(uiRenderer: UITextRenderer): Unit = {
     all.foreach(_.render(uiRenderer))
   }
 }

@@ -17,14 +17,14 @@ package org.sesquipedalian_dev.scala2DGaming
 
 import java.awt.Color
 
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, UIRenderer}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, UITextRenderer}
 
 // map game time to 'day time'
 class TimeOfDay()
   extends HasUiRendering
   with HasGameUpdate
 {
-  var speed: Double = TimeOfDay.FAST
+  var speed: Double = TimeOfDay.MEDIUM
 
   def translateGameTimeToTimeOfDay(deltaTimeSeconds: Double): Double = {
     deltaTimeSeconds * speed
@@ -41,15 +41,16 @@ class TimeOfDay()
     }
   }
 
-  override def render(uiRenderer: UIRenderer): Unit = {
+  override def render(uiRenderer: UITextRenderer): Unit = {
     val minutes = currentTimeOfDay / 60
     val hours = Math.floor(minutes / 60).toInt
     val minutesInHour = Math.floor(minutes - (hours * 60)).toInt
-    uiRenderer.drawTextOnWorld(uiRenderer.UI_WIDTH - 800, 0, String.format("Time: %02d:%02d", new Integer(hours), new Integer(minutesInHour)), Color.CYAN)
+    uiRenderer.drawTextOnWorld(uiRenderer.uiWidth - (uiRenderer.TEXT_SIZE * 11), 0, String.format("Time: %02d:%02d", new Integer(hours), new Integer(minutesInHour)), Color.CYAN)
   }
 }
 
 object TimeOfDay {
+  val PAUSE = 0.0
   val SLOW = 60.0    // 1 sec = 1 min real time
   val MEDIUM = 120.0 // 1 sec = 2 min real time
   val FAST = 360.0   // 1 sec = 5 min real time

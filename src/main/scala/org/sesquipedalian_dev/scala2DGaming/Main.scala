@@ -20,11 +20,14 @@ import java.util.Date
 import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
-import org.sesquipedalian_dev.scala2DGaming.ui.FPSCounter
+import org.sesquipedalian_dev.scala2DGaming.ui._
 
 import scala.util.Random
 
 object Main {
+  final val UI_WIDTH = 2560
+  final val UI_HEIGHT = 1440
+
 //  final val SCREEN_WIDTH: Int = 640
 //  final val SCREEN_HEIGHT: Int = 480
 //  final val SCREEN_WIDTH: Int = 1920
@@ -56,11 +59,16 @@ object Main {
     // make renderables - order matters for initialization
     val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
     renderer.init()
-    val uiRenderer = new UIRenderer()
+    val uiRenderer = new UITextRenderer(UI_WIDTH, UI_HEIGHT)
     uiRenderer.init()
+    new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
     new TimeOfDay()
+    new PauseButton()
+    new SlowButton()
+    new MediumButton()
+    new FastButton()
 
     val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
