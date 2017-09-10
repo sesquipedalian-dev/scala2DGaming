@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{BadGuy, GunTurret, Location, WorldMap}
+import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
 import org.sesquipedalian_dev.scala2DGaming.ui.FPSCounter
@@ -59,8 +59,12 @@ object Main {
     new BadGuy(Location(0, 20), Some(Location(1, 1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
     new BadGuy(Location(0, 40), Some(Location(1, -1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
 
-    new GunTurret(Location(5, 24), 1, 10)
-    new GunTurret(Location(5, 27), 1, 10)
+    // test guns
+//    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat, Math.PI.toFloat * 2, 4))
+//    new GunTurret(Location(5, 27), 1, 10, RangeArc(0, Math.PI.toFloat, 4))
+
+    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
+    new GunTurret(Location(5, 27), 1, 10, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

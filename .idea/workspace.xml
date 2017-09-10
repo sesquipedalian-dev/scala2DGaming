@@ -72,11 +72,11 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GunTurret.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GunTurret.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GunTurret.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="476">
-              <caret line="42" column="65" lean-forward="false" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
+            <state relative-caret-position="435">
+              <caret line="69" column="96" lean-forward="true" selection-start-line="69" selection-start-column="96" selection-end-line="69" selection-end-column="96" />
               <folding>
                 <element signature="e#678#735#0" expanded="true" />
               </folding>
@@ -87,8 +87,8 @@
       <file leaf-file-name="Projectile.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/Projectile.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="367">
-              <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+            <state relative-caret-position="153">
+              <caret line="23" column="14" lean-forward="true" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
               <folding>
                 <element signature="e#678#735#0" expanded="true" />
               </folding>
@@ -109,9 +109,13 @@
       <file leaf-file-name="Math.java" pinned="false" current-in-tab="false">
         <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="315">
-              <caret line="515" column="25" lean-forward="false" selection-start-line="515" selection-start-column="25" selection-end-line="515" selection-end-column="25" />
+            <state relative-caret-position="213">
+              <caret line="642" column="25" lean-forward="false" selection-start-line="642" selection-start-column="25" selection-end-line="642" selection-end-column="25" />
               <folding>
+                <element signature="e#5875#5876#0" expanded="true" />
+                <element signature="e#5956#5957#0" expanded="true" />
+                <element signature="e#8525#8526#0" expanded="true" />
+                <element signature="e#8607#8608#0" expanded="true" />
                 <element signature="e#17181#17182#0" expanded="true" />
                 <element signature="e#17264#17265#0" expanded="true" />
               </folding>
@@ -119,13 +123,13 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.scala" pinned="false" current-in-tab="false">
+      <file leaf-file-name="Main.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="364">
-              <caret line="58" column="46" lean-forward="true" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+            <state relative-caret-position="435">
+              <caret line="65" column="93" lean-forward="false" selection-start-line="65" selection-start-column="93" selection-end-line="65" selection-end-column="93" />
               <folding>
-                <element signature="e#669#761#0" expanded="true" />
+                <element signature="e#669#723#0" expanded="true" />
               </folding>
             </state>
           </provider>
@@ -221,9 +225,9 @@
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/HasGameUpdate.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/BadGuy.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/Projectile.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GunTurret.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
       </list>
     </option>
   </component>
@@ -1075,43 +1079,47 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/Projectile.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="364">
-          <caret line="58" column="46" lean-forward="true" selection-start-line="58" selection-start-column="46" selection-end-line="58" selection-end-column="46" />
+        <state relative-caret-position="153">
+          <caret line="23" column="14" lean-forward="true" selection-start-line="23" selection-start-column="14" selection-end-line="23" selection-end-column="14" />
           <folding>
-            <element signature="e#669#761#0" expanded="true" />
+            <element signature="e#678#735#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="315">
-          <caret line="515" column="25" lean-forward="false" selection-start-line="515" selection-start-column="25" selection-end-line="515" selection-end-column="25" />
+        <state relative-caret-position="213">
+          <caret line="642" column="25" lean-forward="false" selection-start-line="642" selection-start-column="25" selection-end-line="642" selection-end-column="25" />
           <folding>
+            <element signature="e#5875#5876#0" expanded="true" />
+            <element signature="e#5956#5957#0" expanded="true" />
+            <element signature="e#8525#8526#0" expanded="true" />
+            <element signature="e#8607#8608#0" expanded="true" />
             <element signature="e#17181#17182#0" expanded="true" />
             <element signature="e#17264#17265#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/Projectile.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GunTurret.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="367">
-          <caret line="42" column="0" lean-forward="true" selection-start-line="42" selection-start-column="0" selection-end-line="42" selection-end-column="0" />
+        <state relative-caret-position="435">
+          <caret line="69" column="96" lean-forward="true" selection-start-line="69" selection-start-column="96" selection-end-line="69" selection-end-column="96" />
           <folding>
             <element signature="e#678#735#0" expanded="true" />
           </folding>
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GunTurret.scala">
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="476">
-          <caret line="42" column="65" lean-forward="false" selection-start-line="42" selection-start-column="65" selection-end-line="42" selection-end-column="65" />
+        <state relative-caret-position="435">
+          <caret line="65" column="93" lean-forward="false" selection-start-line="65" selection-start-column="93" selection-end-line="65" selection-end-column="93" />
           <folding>
-            <element signature="e#678#735#0" expanded="true" />
+            <element signature="e#669#723#0" expanded="true" />
           </folding>
         </state>
       </provider>
