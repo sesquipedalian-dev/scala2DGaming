@@ -25,7 +25,7 @@ class BadGuy(
   var health: Int
 ) extends HasGameUpdate with HasSingleWorldSpriteRendering {
   override val textureFile: String = "/textures/badguy.bmp"
-  final val speed: Float = 2f // blocks / sec
+  final val speed: Float = 1f // blocks / sec
 
   override def update(deltaTimeSeconds: Double): Unit = {
     if(health <= 0) {

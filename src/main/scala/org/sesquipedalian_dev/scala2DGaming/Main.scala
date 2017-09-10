@@ -54,10 +54,7 @@ object Main {
     val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
 
-    // test bad guy
-    new BadGuy(Location(0, 25), Some(Location(1, 0)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-    new BadGuy(Location(0, 20), Some(Location(1, 1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-    new BadGuy(Location(0, 40), Some(Location(1, -1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+    new BadGuySpawner(Location(0, 26), 2.5f)
 
     // test guns
 //    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat, Math.PI.toFloat * 2, 4))
@@ -67,9 +64,9 @@ object Main {
     val gun2 = new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
 
     val gunner1 = new GoodGuy(Location(6, 24))
-    gunner1.man(gun1)
+    gunner1.use(gun1)
     val gunner2 = new GoodGuy(Location(6, 27))
-    gunner2.man(gun2)
+    gunner2.use(gun2)
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

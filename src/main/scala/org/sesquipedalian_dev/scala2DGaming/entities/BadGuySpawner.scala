@@ -16,26 +16,27 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
-import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 
-class GoodGuy(
-  var location: Location
-) extends HasSingleWorldSpriteRendering
-  with HasGameUpdate
-{
-  var equipmentImUsing: Option[Equipment] = None
-  override def textureFile: String = "/textures/MilitaryMan.bmp"
+import scala.util.Random
 
+// thing to make bad guys on some timer
+class BadGuySpawner(
+  location: Location,
+  secondsPerSpawn: Float
+) extends HasGameUpdate {
+  var spawnTimer = secondsPerSpawn
   override def update(deltaTimeSeconds: Double): Unit = {
+    spawnTimer -= deltaTimeSeconds.toFloat
+    if(spawnTimer <= 0) {
+      spawnTimer = secondsPerSpawn
 
-  }
-
-  def use(equipment: Equipment): Unit = {
-    // unman whatever we were already manning
-    equipmentImUsing.foreach(e => e.user = None)
-
-    // man the new thing
-    equipment.user = Some(this)
-    equipmentImUsing = Some(equipment)
+      // test bad guy
+      Random.nextInt(3) match {
+        case 0 => new BadGuy(location, Some(Location(1, 0)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+        case 1 => new BadGuy(location, Some(Location(1, 1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+        case 2 => new BadGuy(location, Some(Location(1, -1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+      }
+    }
   }
 }
