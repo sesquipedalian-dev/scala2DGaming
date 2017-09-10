@@ -20,7 +20,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
 
 // Needs - soldiers have needs that adjust their effectiveness at manning equipment
 // all needs range in degree from 0 (no problem) to 100 (need to do something about it)
-//   ** TODO ** it's likely we want a non-linear affectiveness modifier - being ready to sleep is MUCH worse than being at 50% sleep need
+//   ** TODO ** it's likely we want a non-linear effectiveness modifier - being at 100% need to sleep is MUCH worse than being at 50% sleep need
 // the need defines how it updates over time - examples include:
 // - simple ticking one direction or another over time
 // - ticking based on equipment being used

@@ -23,12 +23,20 @@ import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 
 class UIRenderer extends Renderer {
+  var aspectRatio: Option[Float] = None
   final val UI_WIDTH = 2560
   final val UI_HEIGHT = 1440
+  def uiHeight: Float = {
+    aspectRatio.map(f => {
+      val result: Float = UI_HEIGHT.toFloat / f
+      println(s"uiHeight calc $UI_HEIGHT $f = $result")
+      result
+    }).getOrElse(UI_HEIGHT)
+  }
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
-  final val TEXT_SIZE = 64
+  final val TEXT_SIZE = 32
   def MAX_CHARS_PER_DRAW = 1024 / (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def vertexBufferSize: Int = MAX_CHARS_PER_DRAW * (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def elementBufferSize: Int = MAX_CHARS_PER_DRAW * EL_PER_CHAR
@@ -80,7 +88,7 @@ class UIRenderer extends Renderer {
     fontTexture.foreach(_.init)
 
     // create our camera
-    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1))
+    camera = Some(new UICamera(UI_WIDTH, UI_HEIGHT, 1, this))
     camera.foreach(camera => {
       camera.register()
       programHandle.foreach(camera.init)
@@ -100,8 +108,9 @@ class UIRenderer extends Renderer {
 //
 //    drawTextOnWorld(0, 0, "A", Color.RED)
 //    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, 0, "B", Color.PINK)
-//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, UI_HEIGHT - TEXT_SIZE, "C", Color.CYAN)
-//    drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "D", Color.YELLOW)
+//    println(s"trying to render C & D $uiHeight $TEXT_SIZE $UI_HEIGHT $aspectRatio")
+//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, uiHeight - TEXT_SIZE, "C", Color.CYAN)
+//    drawTextOnWorld(0, uiHeight - TEXT_SIZE, "D", Color.YELLOW)
 
     super.render()
   }
@@ -118,20 +127,15 @@ class UIRenderer extends Renderer {
       vertexBuffer.put(x + (TEXT_SIZE * index)).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.height)
-//        .put(0).put(1)
       vertexBuffer.put(x + (TEXT_SIZE * (index + 1))).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.width).put(glyph.height)
-//          .put(1).put(1)
       vertexBuffer.put(x + (TEXT_SIZE * (index + 1))).put(y + TEXT_SIZE)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.width).put(glyph.y)
-//        .put(1).put(0)
       vertexBuffer.put(x + (TEXT_SIZE * (index))).put(y + TEXT_SIZE)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.y)
-//        .put(0).put(0)
-
 
       val currentVertIndex = numObjectsThisDraw / EL_PER_CHAR * VERTEX_PER_CHAR
       elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
