@@ -31,6 +31,6 @@ case class SleepNeed(target: GoodGuy) extends Need(target) {
     } else {
       100.toFloat / 16 / 60 / 60 // being awake for 16 hours fully exacerbates this need
     }
-    adjustByRate(TimeOfDay.translateGameTimeToTimeOfDay(deltaTimeSeconds), tickRate)
+    adjustByRate(deltaTimeSeconds, tickRate)
   }
 }

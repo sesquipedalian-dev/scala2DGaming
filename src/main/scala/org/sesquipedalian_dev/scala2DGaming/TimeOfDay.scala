@@ -24,7 +24,7 @@ class TimeOfDay()
   extends HasUiRendering
   with HasGameUpdate
 {
-  var speed: Double = TimeOfDay.SLOW
+  var speed: Double = TimeOfDay.FAST
 
   def translateGameTimeToTimeOfDay(deltaTimeSeconds: Double): Double = {
     deltaTimeSeconds * speed
