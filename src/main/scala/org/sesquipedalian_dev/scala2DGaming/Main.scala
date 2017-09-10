@@ -63,8 +63,13 @@ object Main {
 //    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat, Math.PI.toFloat * 2, 4))
 //    new GunTurret(Location(5, 27), 1, 10, RangeArc(0, Math.PI.toFloat, 4))
 
-    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
-    new GunTurret(Location(5, 27), 1, 10, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
+    val gun1 = new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
+    val gun2 = new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
+
+    val gunner1 = new GoodGuy(Location(6, 24))
+    gunner1.man(gun1)
+    val gunner2 = new GoodGuy(Location(6, 27))
+    gunner2.man(gun2)
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)
@@ -74,3 +79,4 @@ object Main {
     Renderable.cleanup()
   }
 }
+

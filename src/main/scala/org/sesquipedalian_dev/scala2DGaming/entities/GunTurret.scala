@@ -31,6 +31,7 @@ class GunTurret(
   rangeArc: RangeArc
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
+  with Equipment
 {
   override val textureFile: String = "/textures/gun.bmp"
 
@@ -39,15 +40,17 @@ class GunTurret(
   override def update(deltaTimeSeconds: Double): Unit = {
     shotTimer -= deltaTimeSeconds
     if(shotTimer < 0) {
-      shotTimer = secondsPerShot
+      user.foreach(g => { // can only shoot if we have a gunner
+        shotTimer = secondsPerShot
 
-      // look for a nearby BadGuy to shoot
-      val target = HasWorldSpriteRendering.all.collectFirst({
-        case badGuy: BadGuy if badGuyInRange(badGuy) => badGuy
-      })
+        // look for a nearby BadGuy to shoot
+        val target = HasWorldSpriteRendering.all.collectFirst({
+          case badGuy: BadGuy if badGuyInRange(badGuy) => badGuy
+        })
 
-      target.foreach(badGuy => {
-        new Projectile(location, badGuy, damagePerShot, speed = 5f)
+        target.foreach(badGuy => {
+          new Projectile(location, badGuy, damagePerShot, speed = 5f)
+        })
       })
     }
   }
