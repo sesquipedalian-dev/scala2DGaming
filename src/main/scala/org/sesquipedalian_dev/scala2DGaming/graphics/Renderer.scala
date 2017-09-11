@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.IntBuffer
+import java.nio.{ByteBuffer, FloatBuffer, IntBuffer}
 
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL15._
@@ -24,14 +24,21 @@ import org.lwjgl.opengl.GL30.{GL_TEXTURE_2D_ARRAY, glBindVertexArray, glDeleteVe
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 
+case class DrawCallInfo(
+  elBuffer: IntBuffer,
+  vertexBuffer: FloatBuffer,
+  var numObjectsThisDraw: Int,
+  callback: () => Unit // perform any necessary setup
+)
+
 trait Renderer extends Renderable with ThrowsExceptionOnGLError {
   def vertexBufferSize: Int
   def elementBufferSize: Int
   def vertexShaderRscName: String
   def fragmentShaderRscName: String
 
-  val vertexBuffer = MemoryUtil.memAllocFloat(vertexBufferSize)
-  val elBuffer = MemoryUtil.memAllocInt(elementBufferSize)
+  // give easy way to reference the draw call info - text index
+  var drawCalls: Map[String, DrawCallInfo] = Map()
 
   var programHandle: Option[Int] = None
 
@@ -43,9 +50,6 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
 
   // element array buffer - once vertices are defined in the buffer, elements let us reuse those vertices.
   var ebo: Option[Int] = None
-
-  // keep track of how many objects we've drawn this time around
-  var numObjectsThisDraw: Int = 0
 
   def init(): Unit = {
     glEnable(GL_BLEND)
@@ -59,11 +63,11 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
 
     vbo = Some(glGenBuffers())
     vbo.foreach(glBindBuffer(GL_ARRAY_BUFFER, _))
-    glBufferData(GL_ARRAY_BUFFER, vertexBuffer.capacity() * java.lang.Float.BYTES, GL_STATIC_DRAW)
+    glBufferData(GL_ARRAY_BUFFER, vertexBufferSize * java.lang.Float.BYTES, GL_STATIC_DRAW)
 
     ebo = Some(glGenBuffers())
     ebo.foreach(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _))
-    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elBuffer.capacity() * java.lang.Integer.BYTES, GL_STATIC_DRAW)
+    glBufferData(GL_ELEMENT_ARRAY_BUFFER, elementBufferSize * java.lang.Integer.BYTES, GL_STATIC_DRAW)
 
     // create vertex shader, load up the source for it, and compile
     val vertexShaderHandle: Int = glCreateShader(GL_VERTEX_SHADER)
@@ -116,7 +120,7 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
 
   def render(): Unit = {
     // if we've set up stuff to draw this frame, send it to the GPU
-    flushVertexData()
+    drawCalls.keys.foreach(flushVertexData)
   }
 
   def cleanup(): Unit = {
@@ -126,31 +130,39 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
     programHandle.foreach(glDeleteProgram)
   }
 
-  def flushVertexData(): Unit = {
-    if(numObjectsThisDraw > 0) {
-      vao.flatMap(v => programHandle.map(ph => (v, ph))).foreach(t => {
-        val (v, p) = t
-        glBindVertexArray(v)
-        glUseProgram(p)
+  def flushVertexData(key: String): Unit = {
+    drawCalls.get(key).foreach(drawCall => {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
+      val numObjectsThisDraw = drawCall.numObjectsThisDraw
 
-        vbo.foreach(glBindBuffer(GL_ARRAY_BUFFER, _))
-        vertexBuffer.flip()
-        glBufferSubData(GL_ARRAY_BUFFER, 0, vertexBuffer)
-        checkError()
+      if(numObjectsThisDraw > 0) {
+        vao.flatMap(v => programHandle.map(ph => (v, ph))).foreach(t => {
+          val (v, p) = t
+          glBindVertexArray(v)
+          glUseProgram(p)
 
-        ebo.foreach(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _))
-        elBuffer.flip()
-        glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elBuffer)
-        checkError()
+          drawCall.callback()
 
-        glDrawElements(GL_TRIANGLES, numObjectsThisDraw, GL_UNSIGNED_INT, 0)
-        checkError()
+          vbo.foreach(glBindBuffer(GL_ARRAY_BUFFER, _))
+          vertexBuffer.flip()
+          glBufferSubData(GL_ARRAY_BUFFER, 0, vertexBuffer)
+          checkError()
 
-        // clear the vertex data for this pass
-        vertexBuffer.clear()
-        elBuffer.clear()
-        numObjectsThisDraw = 0
-      })
-    }
+          ebo.foreach(glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, _))
+          elBuffer.flip()
+          glBufferSubData(GL_ELEMENT_ARRAY_BUFFER, 0, elBuffer)
+          checkError()
+
+          glDrawElements(GL_TRIANGLES, numObjectsThisDraw, GL_UNSIGNED_INT, 0)
+          checkError()
+
+          // clear the vertex data for this pass
+          vertexBuffer.clear()
+          elBuffer.clear()
+          drawCall.numObjectsThisDraw = 0
+        })
+      }
+    })
   }
 }

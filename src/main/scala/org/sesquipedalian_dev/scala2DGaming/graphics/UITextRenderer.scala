@@ -19,7 +19,7 @@ import java.awt.Color
 
 import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
 import org.lwjgl.opengl.GL20._
-import org.lwjgl.system.MemoryStack
+import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
 
 class UITextRenderer(
@@ -85,6 +85,15 @@ class UITextRenderer(
     })
     checkError()
 
+    drawCalls = Map(
+      "" -> DrawCallInfo(
+        MemoryUtil.memAllocInt(elementBufferSize),
+        MemoryUtil.memAllocFloat(vertexBufferSize),
+        0,
+        () => {}
+      )
+    )
+
     fontTexture = Some(new FontTexture("/fonts/Consolas.ttf", 16))
     fontTexture.foreach(_.init)
 
@@ -120,9 +129,13 @@ class UITextRenderer(
     for {
       (c, index) <- text.zipWithIndex
       glyph <- fontTexture.flatMap(_.glyphs.get(c))
+      drawCall <- drawCalls.get("")
     } {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
+
       if (vertexBuffer.remaining < (VERTEX_PER_CHAR * FLOAT_PER_VERTEX) || elBuffer.remaining < EL_PER_CHAR) {
-        flushVertexData()
+        flushVertexData("")
       }
 
       vertexBuffer.put(x + (TEXT_SIZE * index)).put(y)
@@ -138,18 +151,18 @@ class UITextRenderer(
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.y)
 
-      val currentVertIndex = numObjectsThisDraw / EL_PER_CHAR * VERTEX_PER_CHAR
+      val currentVertIndex = drawCall.numObjectsThisDraw / EL_PER_CHAR * VERTEX_PER_CHAR
       elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
       elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
 
-      numObjectsThisDraw += EL_PER_CHAR
+      drawCall.numObjectsThisDraw += EL_PER_CHAR
     }
   }
 
-  override def flushVertexData(): Unit = {
+  override def flushVertexData(key: String): Unit = {
     fontTexture.flatMap(_.textureHandle).foreach(th => {
       glBindTexture(GL_TEXTURE_2D, th)
-      super.flushVertexData()
+      super.flushVertexData(key)
     })
   }
 

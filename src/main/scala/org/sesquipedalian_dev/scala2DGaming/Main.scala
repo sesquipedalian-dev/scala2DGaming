@@ -60,9 +60,9 @@ object Main {
     // make renderables - order matters for initialization
     val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
     renderer.init()
+    new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
     val uiRenderer = new UITextRenderer(UI_WIDTH, UI_HEIGHT)
     uiRenderer.init()
-    new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
     new TimeOfDay()

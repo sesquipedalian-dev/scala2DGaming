@@ -18,12 +18,13 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, UITextRenderer}
+import org.sesquipedalian_dev.scala2DGaming.graphics._
 
 // track fps
 class FPSCounter()
 extends HasGameUpdate
 with HasUiRendering
+with HasUiSpriteRendering
 {
   // only update FPS every second
   final val UPDATE_TIMER_MAX = 1d
@@ -42,5 +43,9 @@ with HasUiRendering
 
   def render(uiRenderer: UITextRenderer): Unit = {
     uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED)
+  }
+
+  def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
+    uiSpritesRenderer.drawTextBacking(0, 0, 9)
   }
 }

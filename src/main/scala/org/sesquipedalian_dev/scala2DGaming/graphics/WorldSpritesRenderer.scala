@@ -79,6 +79,23 @@ class WorldSpritesRenderer(
       })
     })
 
+    // set the texture image uniform
+    val alphaUniform = programHandle.map(glGetUniformLocation(_, "forceAlpha"))
+    cleanly(MemoryStack.stackPush())(stack => {
+      alphaUniform.foreach(uniform => {
+        glUniform1f(uniform, 1f)
+      })
+    })
+
+    drawCalls = Map(
+      "" -> DrawCallInfo(
+        MemoryUtil.memAllocInt(elementBufferSize),
+        MemoryUtil.memAllocFloat(vertexBufferSize),
+        0,
+        () => {}
+      )
+    )
+
     val testTextureNames = List("/textures/testTex.bmp", "/textures/testTex2.bmp", "/textures/terraPortrait.bmp")
     textureArray = Some(new TextureArray(textureSize))
     testTextureNames.foreach(fn => textureArray.foreach(_.addTextureResource(fn)))
@@ -124,49 +141,57 @@ class WorldSpritesRenderer(
     super.render()
   }
 
-  override def flushVertexData(): Unit = {
+  override def flushVertexData(key: String = ""): Unit = {
     textureArray.flatMap(_.textureHandle).foreach(th => {
       glBindTexture(GL_TEXTURE_2D_ARRAY, th)
-      super.flushVertexData()
+      super.flushVertexData(key)
     })
   }
 
   def drawAGuyWorld(x: Float, y: Float, texIndex: Int): Unit = {
-    if(vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
-      flushVertexData()
-    }
+    drawCalls.get("").foreach(drawCall => {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
+      if(vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
+        flushVertexData()
+      }
 
-    vertexBuffer.put(x * textureSize).put(y * textureSize)
-      .put(0f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put((x + 1) * textureSize).put(y * textureSize)
-      .put(1f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put((x + 1) * textureSize).put((y + 1) * textureSize)
-      .put(1f).put(0f).put(texIndex.toFloat)
-    vertexBuffer.put(x * textureSize).put((y + 1) * textureSize)
-      .put(0f).put(0f).put(texIndex.toFloat)
+      vertexBuffer.put(x * textureSize).put(y * textureSize)
+        .put(0f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put((x + 1) * textureSize).put(y * textureSize)
+        .put(1f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put((x + 1) * textureSize).put((y + 1) * textureSize)
+        .put(1f).put(0f).put(texIndex.toFloat)
+      vertexBuffer.put(x * textureSize).put((y + 1) * textureSize)
+        .put(0f).put(0f).put(texIndex.toFloat)
 
-    val currentVertIndex = numObjectsThisDraw / 6 * VERTICES_PER_THING
-    elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
-    elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
+      val currentVertIndex = drawCall.numObjectsThisDraw / 6 * VERTICES_PER_THING
+      elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
+      elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
 
-    numObjectsThisDraw += 6
+      drawCall.numObjectsThisDraw += 6
+    })
   }
 
   def drawAGuy(x: Float, y: Float, texIndex: Int): Unit = {
-    if(vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
-      flushVertexData()
-    }
+    drawCalls.get("").foreach(drawCall => {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
+      if(vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
+        flushVertexData()
+      }
 
-    vertexBuffer.put(0f + x).put(0f + y).put(0f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put(textureSize + x).put(0f + y).put(1f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put(textureSize + x).put(textureSize + y).put(1f).put(0f).put(texIndex.toFloat)
-    vertexBuffer.put(0f + x).put(textureSize + y).put(0f).put(0f).put(texIndex.toFloat)
+      vertexBuffer.put(0f + x).put(0f + y).put(0f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put(textureSize + x).put(0f + y).put(1f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put(textureSize + x).put(textureSize + y).put(1f).put(0f).put(texIndex.toFloat)
+      vertexBuffer.put(0f + x).put(textureSize + y).put(0f).put(0f).put(texIndex.toFloat)
 
-    val currentVertIndex = numObjectsThisDraw / 6 * VERTICES_PER_THING
-    elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
-    elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
+      val currentVertIndex = drawCall.numObjectsThisDraw / 6 * VERTICES_PER_THING
+      elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
+      elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
 
-    numObjectsThisDraw += 6
+      drawCall.numObjectsThisDraw += 6
+    })
   }
 
   override def cleanup(): Unit = {
@@ -181,13 +206,6 @@ class WorldSpritesRenderer(
 
 object WorldSpritesRenderer {
   var singleton: Option[WorldSpritesRenderer] = None
-
-  def draw(func: (FloatBuffer, IntBuffer) => Unit): Unit = {
-    singleton.foreach(wsr => {
-      func(wsr.vertexBuffer, wsr.elBuffer)
-      wsr.numObjectsThisDraw += 6
-    })
-  }
 
   def drawAGuyWorld(x: Float, y: Float, texIndex: Int): Unit = singleton.foreach(_.drawAGuyWorld(x, y, texIndex))
   def drawAGuy(x: Float, y: Float, texIndex: Int): Unit = singleton.foreach(_.drawAGuy(x, y, texIndex))

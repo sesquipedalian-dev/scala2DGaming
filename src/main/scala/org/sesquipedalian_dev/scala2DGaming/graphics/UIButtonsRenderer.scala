@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.{FloatBuffer, IntBuffer}
+import java.nio.{ByteBuffer, FloatBuffer, IntBuffer}
 
 import org.joml.Matrix4f
 import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
@@ -79,6 +79,31 @@ class UIButtonsRenderer(
       })
     })
 
+    def setForceAlpha(targetAlpha: Float): Unit = {
+      // set the texture image uniform
+      val alphaUniform = programHandle.map(glGetUniformLocation(_, "forceAlpha"))
+      cleanly(MemoryStack.stackPush())(stack => {
+        alphaUniform.foreach(uniform => {
+          glUniform1f(uniform, targetAlpha)
+        })
+      })
+    }
+
+    drawCalls = Map(
+      "" -> DrawCallInfo(
+        MemoryUtil.memAllocInt(elementBufferSize),
+        MemoryUtil.memAllocFloat(vertexBufferSize),
+        0,
+        () => setForceAlpha(1f)
+      ),
+      "TextBacking" -> DrawCallInfo(
+        MemoryUtil.memAllocInt(elementBufferSize),
+        MemoryUtil.memAllocFloat(vertexBufferSize),
+        0,
+        () => setForceAlpha(.5f)
+      )
+    )
+
     val testTextureNames = List()
     textureArray = Some(new TextureArray(textureSize))
     testTextureNames.foreach(fn => textureArray.foreach(_.addTextureResource(fn)))
@@ -124,32 +149,37 @@ class UIButtonsRenderer(
     super.render()
   }
 
-  override def flushVertexData(): Unit = {
+  override def flushVertexData(key: String): Unit = {
     textureArray.flatMap(_.textureHandle).foreach(th => {
       glBindTexture(GL_TEXTURE_2D_ARRAY, th)
-      super.flushVertexData()
+      super.flushVertexData(key)
     })
   }
 
   def drawAButton(x: Float, y: Float, texIndex: Int): Unit = {
-    if(vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
-      flushVertexData()
-    }
+    drawCalls.get("").foreach(drawCall => {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
 
-    vertexBuffer.put(x).put(y)
-      .put(0f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put(x + textureSize).put(y)
-      .put(1f).put(1f).put(texIndex.toFloat)
-    vertexBuffer.put(x + textureSize).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
-      .put(1f).put(0f).put(texIndex.toFloat)
-    vertexBuffer.put(x).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
-      .put(0f).put(0f).put(texIndex.toFloat)
+      if (vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
+        flushVertexData("")
+      }
 
-    val currentVertIndex = numObjectsThisDraw / 6 * VERTICES_PER_THING
-    elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
-    elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
+      vertexBuffer.put(x).put(y)
+        .put(0f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put(x + textureSize).put(y)
+        .put(1f).put(1f).put(texIndex.toFloat)
+      vertexBuffer.put(x + textureSize).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
+        .put(1f).put(0f).put(texIndex.toFloat)
+      vertexBuffer.put(x).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
+        .put(0f).put(0f).put(texIndex.toFloat)
 
-    numObjectsThisDraw += 6
+      val currentVertIndex = drawCall.numObjectsThisDraw / 6 * VERTICES_PER_THING
+      elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
+      elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
+
+      drawCall.numObjectsThisDraw += 6
+    })
   }
 
   override def cleanup(): Unit = {
@@ -159,18 +189,71 @@ class UIButtonsRenderer(
     camera.foreach(_.cleanup)
   }
 
+  val textBackingTexture = "/textures/black6464.bmp"
+  var textureIndex: Option[Int] = None
+  def drawTextBacking(x: Float, y: Float, numChars: Int): Unit = {
+    if(textureIndex.isEmpty) {
+      textureArray.foreach(ta => {
+        val currentLoc = ta.textureFiles.indexOf(textBackingTexture)
+        if(currentLoc == -1) {
+          textureIndex = ta.addTextureResource(textBackingTexture)
+        } else {
+          textureIndex = Some(currentLoc)
+        }
+      })
+    }
+    textureIndex.foreach(texIndex => UIButtonsRenderer.draw("TextBacking", (drawCall) => {
+      val vertexBuffer = drawCall.vertexBuffer
+      val elBuffer = drawCall.elBuffer
+
+      if (vertexBuffer.remaining < (4 * 5) || elBuffer.remaining < (2 * 3)) {
+        true
+      } else {
+
+        val xTextSize = UITextRenderer.singleton.map(_.TEXT_SIZE).getOrElse(0)
+        val yTextSize = UITextRenderer.singleton.map(tr => {
+          tr.TEXT_SIZE.toFloat /// tr.camera.flatMap(_.aspectRatio).getOrElse(1f)
+        }).getOrElse(0f)
+
+        vertexBuffer.put(x).put(y)
+          .put(0f).put(1f).put(texIndex.toFloat)
+        vertexBuffer.put(x + (numChars * xTextSize)).put(y)
+          .put(1f).put(1f).put(texIndex.toFloat)
+        vertexBuffer.put(x + (numChars * xTextSize)).put(y + yTextSize)
+          .put(1f).put(0f).put(texIndex.toFloat)
+        vertexBuffer.put(x).put(y + yTextSize)
+          .put(0f).put(0f).put(texIndex.toFloat)
+
+        val currentVertIndex = drawCall.numObjectsThisDraw / 6 * 4
+        elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)
+        elBuffer.put(currentVertIndex + 2).put(currentVertIndex + 3).put(currentVertIndex)
+
+        drawCall.numObjectsThisDraw += 6
+
+        false
+      }
+    }))
+  }
+
+
+
   UIButtonsRenderer.singleton = Some(this)
+
+
 }
 
 object UIButtonsRenderer {
   var singleton: Option[UIButtonsRenderer] = None
 
-  def draw(func: (FloatBuffer, IntBuffer) => Unit): Unit = {
-    singleton.foreach(wsr => {
-      func(wsr.vertexBuffer, wsr.elBuffer)
-      wsr.numObjectsThisDraw += 6
+  // func returns true if it should be retried after flushing the buffer
+  def draw(drawCallKey: String, drawFunc: (DrawCallInfo) => Boolean): Unit = {
+    singleton.foreach(instance => {
+      instance.drawCalls.get(drawCallKey).foreach(drawCall => {
+        val retry = drawFunc(drawCall)
+        if (retry) {
+          instance.flushVertexData(drawCallKey)
+        }
+      })
     })
   }
-
-  def drawAGuyWorld(x: Float, y: Float, texIndex: Int): Unit = singleton.foreach(_.drawAButton(x, y, texIndex))
 }
