@@ -235,11 +235,7 @@ class UIButtonsRenderer(
     }))
   }
 
-
-
   UIButtonsRenderer.singleton = Some(this)
-
-
 }
 
 object UIButtonsRenderer {

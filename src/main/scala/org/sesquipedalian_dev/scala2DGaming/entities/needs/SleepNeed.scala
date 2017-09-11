@@ -32,5 +32,13 @@ case class SleepNeed(target: GoodGuy) extends Need(target) {
       100.toFloat / 16 / 60 / 60 // being awake for 16 hours fully exacerbates this need
     }
     adjustByRate(deltaTimeSeconds, tickRate)
+
+    // VV we tried an experiment with the need going up exponentially, but I think the effectiveness decreasing exponentially
+    // makes more sense 
+//    if(target.equipmentImUsing.exists(p => false /* TODO define beds */)) {
+//      exponentialAdjustByMax(deltaTimeSeconds, 8 * 60 * 60, direction = -1)
+//    } else {
+//      exponentialAdjustByMax(deltaTimeSeconds, 16 * 60 * 60)
+//    }
   }
 }

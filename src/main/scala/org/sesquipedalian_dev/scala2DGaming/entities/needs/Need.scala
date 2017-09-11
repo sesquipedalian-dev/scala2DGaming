@@ -27,10 +27,23 @@ import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
 //
 abstract class Need(target: GoodGuy) extends HasGameUpdate {
   def name: String
-  var degree: Double = 0
+  var degree: Double = 1
   def update(deltaTimeSeconds: Double): Unit
   def adjustByRate(deltaTimeSeconds: Double, rate: Double): Unit = {
     degree = Math.max(0, Math.min(100, degree + (deltaTimeSeconds * rate)))
+  }
+  // so actually, I think the need should go up linearly, but the effectiveness should be the exponential scale
+  // then again, the restorative function would also go exponentially in the other direction, we assume.  Hm, let's ponder it.
+  def exponentialAdjustByMax(deltaTimeSeconds: Double, maxTime: Double, direction: Int = 0): Unit = {
+    val exponent = Math.pow(100, 1 / maxTime)
+    val timeSoFar = if(degree == 0) { 0 } else { Math.log(degree) / Math.log(exponent) }
+//    println(s"Need exponential adjust $deltaTimeSeconds $maxTime $exponent $timeSoFar $degree")
+    degree = if(direction >= 0) {
+      Math.min(100, Math.pow(exponent, timeSoFar + deltaTimeSeconds))
+    } else {
+      Math.max(0, 100 - Math.pow(exponent, timeSoFar + deltaTimeSeconds))
+    }
+//    println(s"Need exponent adjust 2 $degree")
   }
 }
 

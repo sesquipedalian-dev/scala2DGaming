@@ -47,8 +47,11 @@ class GoodGuy(
   }
 
   def needEffectiveness: Double = {
+    val needsGraphBase = Math.pow(100, 1.toFloat / 100)
     if(needs.nonEmpty) {
-      needs.map(need => 100 - need.degree).sum / needs.size / 100
+      val result = needs.map(need => Math.max(0, 100 - Math.pow(needsGraphBase, need.degree))).sum / needs.size / 100
+      println(s"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result")
+      result
     } else {
       1f
     }

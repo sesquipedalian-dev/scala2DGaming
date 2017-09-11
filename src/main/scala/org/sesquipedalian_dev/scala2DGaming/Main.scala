@@ -74,7 +74,7 @@ object Main {
     val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
 
-    new BadGuySpawner(Location(0, 26), 2.5f)
+    new BadGuySpawner(Location(0, 26), 5f)
 
     // test guns
 //    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat, Math.PI.toFloat * 2, 4))

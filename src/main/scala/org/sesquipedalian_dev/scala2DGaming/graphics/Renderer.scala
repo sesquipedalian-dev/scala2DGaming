@@ -128,6 +128,10 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
     vbo.foreach(glDeleteBuffers)
     ebo.foreach(glDeleteBuffers)
     programHandle.foreach(glDeleteProgram)
+    drawCalls.foreach(drawCall => {
+      MemoryUtil.memFree(drawCall._2.vertexBuffer)
+      MemoryUtil.memFree(drawCall._2.elBuffer)
+    })
   }
 
   def flushVertexData(key: String): Unit = {
