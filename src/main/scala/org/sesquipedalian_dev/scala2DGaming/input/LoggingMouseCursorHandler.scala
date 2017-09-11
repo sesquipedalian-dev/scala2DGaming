@@ -14,16 +14,17 @@
   * limitations under the License.
   */
 package org.sesquipedalian_dev.scala2DGaming.input
-
 import org.lwjgl.glfw.GLFW._
 
-class CloseHandler() extends KeyInputHandler {
-  override def handleInput(windowHandle: Long, key: Int): Boolean = {
-    if(key == GLFW_KEY_ESCAPE) {
-      glfwSetWindowShouldClose(windowHandle, true)
-      true
-    } else {
-      false
-    }
+class LoggingMouseCursorHandler extends MouseInputHandler {
+  override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = { /* true if consumed */
+    super.handleMove(windowHandle, xPos, yPos, lbState, rbState)
+//    println(s"got mouse cursor event $xPos $yPos $lbState $rbState")
+    false
+  }
+
+  override def handleAction(windowHandle: Long, button: Int, action: Int) = {
+//    println(s"got mouse action $button $action $currentX $currentY")
+    false
   }
 }

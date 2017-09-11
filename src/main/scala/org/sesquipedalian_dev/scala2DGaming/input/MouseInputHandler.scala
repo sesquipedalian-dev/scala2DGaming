@@ -15,15 +15,21 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.input
 
-import org.lwjgl.glfw.GLFW._
+import scala.collection.mutable.ListBuffer
 
-class CloseHandler() extends KeyInputHandler {
-  override def handleInput(windowHandle: Long, key: Int): Boolean = {
-    if(key == GLFW_KEY_ESCAPE) {
-      glfwSetWindowShouldClose(windowHandle, true)
-      true
-    } else {
-      false
-    }
+
+trait MouseInputHandler {
+  var currentX: Float = 0
+  var currentY: Float = 0
+  def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = {
+    currentX = xPos.toFloat
+    currentY = yPos.toFloat
+    false
   }
+  def handleAction(windowHandle: Long, button: Int, action: Int): Boolean
+  MouseInputHandler.all += this
+}
+
+object MouseInputHandler {
+  val all: ListBuffer[MouseInputHandler] = ListBuffer()
 }

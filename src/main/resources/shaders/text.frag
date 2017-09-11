@@ -15,6 +15,7 @@ void main() {
     } else {
         alpha = .5; // allow text to partially obscure stuff behind it - it will contrast better
     }
+//    float alpha = textureColor.r;
     fragColor = vec4(
         outTextColor.r * textureColor.r,
         outTextColor.g * textureColor.r,

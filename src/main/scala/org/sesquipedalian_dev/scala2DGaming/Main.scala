@@ -19,7 +19,7 @@ import java.util.Date
 
 import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
-import org.sesquipedalian_dev.scala2DGaming.input.CloseHandler
+import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
 
 import scala.util.Random
@@ -54,7 +54,8 @@ object Main {
     window.init()
 
     // make input handlers
-    window.glfwWindow.foreach(w => new CloseHandler(w))
+    new CloseHandler()
+    new LoggingMouseCursorHandler()
 
     // make renderables - order matters for initialization
     val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)

@@ -17,12 +17,12 @@ package org.sesquipedalian_dev.scala2DGaming.input
 
 import scala.collection.mutable.ListBuffer
 
-trait InputHandler {
-  def handleInput(key: Int /* GLFW keys */): Boolean /* true if consumed */
+trait KeyInputHandler {
+  def handleInput(windowHandle: Long, key: Int /* GLFW keys */): Boolean /* true if consumed */
 
-  InputHandler.all += this
+  KeyInputHandler.all += this
 }
 
-object InputHandler {
-  val all: ListBuffer[InputHandler] = ListBuffer()
+object KeyInputHandler {
+  val all: ListBuffer[KeyInputHandler] = ListBuffer()
 }

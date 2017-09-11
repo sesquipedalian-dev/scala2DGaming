@@ -22,7 +22,7 @@ import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
 import org.lwjgl.opengl.GL20.{glGetUniformLocation, glUniformMatrix4fv}
 import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
+import org.sesquipedalian_dev.scala2DGaming.input.KeyInputHandler
 import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 import org.lwjgl.glfw.GLFW._
 import org.lwjgl.opengl.GL11.glViewport
@@ -37,7 +37,7 @@ class UICamera(
 //     UI camera doesn't allow zoom or translate
   }
 
-  override def handleInput(key: Int): Boolean = {
+  override def handleInput(windowHandle: Long, key: Int): Boolean = {
 //     UI camera doesn't allow zoom or translate
     false
   }
@@ -90,7 +90,7 @@ class Camera2D(
   worldHeight: Int,
   worldCameraScale: Int
 ) extends Renderable
-  with InputHandler
+  with KeyInputHandler
   with ThrowsExceptionOnGLError
 {
   final val MAX_ZOOM: Float = 1f
@@ -154,7 +154,7 @@ class Camera2D(
   override def render(): Unit = {
   }
 
-  override def handleInput(key: Int): Boolean = {
+  override def handleInput(windowHandle: Long, key: Int): Boolean = {
     var xTranslateDir = 0f
     var yTranslateDir = 0f
     var newZoom = (cur: Float) => cur

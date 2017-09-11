@@ -16,16 +16,18 @@
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import org.lwjgl.glfw.GLFW._
-import org.lwjgl.glfw.{GLFWErrorCallback, GLFWKeyCallback}
+import org.lwjgl.glfw.{GLFWCursorPosCallback, GLFWErrorCallback, GLFWKeyCallback, GLFWMouseButtonCallback}
 import org.lwjgl.opengl.GL
 import org.lwjgl.system.MemoryUtil
 import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
-import org.sesquipedalian_dev.scala2DGaming.input.InputHandler
+import org.sesquipedalian_dev.scala2DGaming.input.{KeyInputHandler, MouseInputHandler}
 
 // wrap GLFW window creation
 class GLFWWindow(width: Int, height: Int, name: String) {
   var glfwWindow: Option[Long] = None
   var keyCallback: Option[GLFWKeyCallback] = None
+  var mouseCursorCallback: Option[GLFWCursorPosCallback] = None
+  var mouseActionCallback: Option[GLFWMouseButtonCallback] = None
   var errorCallback: Option[GLFWErrorCallback] = None
 
   def init(): Unit = {
@@ -61,14 +63,36 @@ class GLFWWindow(width: Int, height: Int, name: String) {
     keyCallback = Some(new GLFWKeyCallback() {
       override def invoke(window: Long, key: Int, scancode: Int, action: Int, mods: Int): Unit = {
         if(action == GLFW_RELEASE) { // on key release, check handlers until we find one that consumes it
-          InputHandler.all.foldLeft(false)({
-            case (false, handler) => handler.handleInput(key)
+          KeyInputHandler.all.foldLeft(false)({
+            case (false, handler) => handler.handleInput(window, key)
             case (true, _) => true
           })
         }
       }
     })
     keyCallback.foreach(kc => glfwSetKeyCallback(window, kc))
+
+    mouseCursorCallback = Some(new GLFWCursorPosCallback() {
+      override def invoke(window: Long, xpos: Double, ypos: Double) = {
+        val lbState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_LEFT)
+        val rbState = glfwGetMouseButton(window, GLFW_MOUSE_BUTTON_RIGHT)
+        MouseInputHandler.all.foldLeft(false)({
+          case (false, handler) => handler.handleMove(window, xpos, ypos, lbState, rbState)
+          case (true, _) => true
+        })
+      }
+    })
+    mouseCursorCallback.foreach(mc => glfwSetCursorPosCallback(window, mc))
+
+    mouseActionCallback = Some(new GLFWMouseButtonCallback {
+      override def invoke(window: Long, button: Int, action: Int, mods: Int) = {
+        MouseInputHandler.all.foldLeft(false)({
+          case (false, handler) => handler.handleAction(window, button, action)
+          case (true, _) => true
+        })
+      }
+    })
+    mouseActionCallback.foreach(ma => glfwSetMouseButtonCallback(window, ma))
 
     // bind openGL to the window we made
     glfwMakeContextCurrent(window)
@@ -106,6 +130,8 @@ class GLFWWindow(width: Int, height: Int, name: String) {
   def cleanup(): Unit = {
     glfwWindow.foreach(glfwDestroyWindow)
     keyCallback.foreach(_.free())
+    mouseCursorCallback.foreach(_.free())
+    mouseActionCallback.foreach(_.free())
 
     glfwTerminate()
     errorCallback.foreach(_.free())

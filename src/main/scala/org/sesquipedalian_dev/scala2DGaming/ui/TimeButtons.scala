@@ -15,25 +15,68 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.ui
 
+import org.lwjgl.glfw.GLFW._
+import org.sesquipedalian_dev.scala2DGaming.{Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
-import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleUiSpriteRendering, UIButtonsRenderer}
+import org.sesquipedalian_dev.scala2DGaming.input.MouseInputHandler
 
-class PauseButton extends HasSingleUiSpriteRendering {
+trait UIButtonMouseListener extends MouseInputHandler {
+  def textureFile: String
+  def location: Location
+  def handleAction(windowHandle: Long, button: Int, action: Int): Boolean = {
+    if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT) {
+      val screenLeft = location.x * Main.SCREEN_WIDTH / Main.UI_WIDTH
+      val screenRight = screenLeft + UIButtonsRenderer.singleton.map(_.textureSize).getOrElse(0).toFloat / Main.UI_WIDTH * Main.SCREEN_WIDTH
+      val aspectRatio = Main.SCREEN_WIDTH.toFloat / Main.SCREEN_HEIGHT
+      val aspectRatioUiHeight = Main.UI_HEIGHT / aspectRatio
+      val screenTop = location.y * Main.SCREEN_HEIGHT / aspectRatioUiHeight
+      val screenBottom = screenTop + UIButtonsRenderer.singleton.map(_.textureSize).getOrElse(0).toFloat / aspectRatio / aspectRatioUiHeight * Main.SCREEN_HEIGHT
+
+//      println(s"checking click in button bounds $location $currentX / $currentY $screenLeft $screenRight $screenTop $screenBottom")
+      if(
+        (screenLeft <= currentX) &&
+        (currentX <= screenRight) &&
+        (screenTop <= currentY) &&
+        (currentY <= screenBottom)
+      ) {
+        buttonClicked
+        true
+      } else {
+        false
+      }
+    } else {
+      false
+    }
+  }
+
+  val timeToSet: Double
+  def buttonClicked(): Unit = {
+//    println(s"button clicked $textureFile")
+    TimeOfDay.instance.foreach(_.speed = timeToSet)
+  }
+}
+
+class PauseButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/pause.bmp"
   override def location = Location(2200, 30)
+  val timeToSet: Double = TimeOfDay.PAUSE
 }
 
-class SlowButton extends HasSingleUiSpriteRendering {
+class SlowButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/slow.bmp"
   override def location = Location(2270, 30)
+  val timeToSet: Double = TimeOfDay.SLOW
 }
 
-class MediumButton extends HasSingleUiSpriteRendering {
+class MediumButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/medium.bmp"
   override def location = Location(2340, 30)
+  val timeToSet: Double = TimeOfDay.MEDIUM
 }
 
-class FastButton extends HasSingleUiSpriteRendering {
+class FastButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/fast.bmp"
   override def location = Location(2410, 30)
+  val timeToSet: Double = TimeOfDay.FAST
 }
