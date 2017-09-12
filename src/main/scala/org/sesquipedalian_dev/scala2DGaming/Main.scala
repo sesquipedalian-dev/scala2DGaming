@@ -58,12 +58,10 @@ object Main {
     new LoggingMouseCursorHandler()
 
     // make renderables - order matters for initialization
-    val renderer = new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT)
-    renderer.init()
-    new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
+//    new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT).init()
+//    new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
     new RangeOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE).init()
-    val uiRenderer = new UITextRenderer(UI_WIDTH, UI_HEIGHT)
-    uiRenderer.init()
+//    new UITextRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
     new TimeOfDay()

@@ -18,18 +18,18 @@ void main() {
 
     vec4 centerPoint = gl_in[0].gl_Position;
 
-//    gl_Position = projection * (centerPoint + vec4(-geoLength[0], 0.0, 0.0, 0.0));
+    gl_Position = projection * (centerPoint + vec4(-geoLength[0], 0.0, 0.0, 0.0));
+    EmitVertex();
+
+    gl_Position = projection * (centerPoint + vec4(geoLength[0], 0.0, 0.0, 0.0));
+    EmitVertex();
+    EndPrimitive();
+//
+//    gl_Position = vec4(-.5, 0, 0, 1);
 //    EmitVertex();
 //
-//    gl_Position = projection * (centerPoint + vec4(geoLength[0], 0.0, 0.0, 0.0));
+//    gl_Position = vec4(.5, 0, 0, 1);
 //    EmitVertex();
+//
 //    EndPrimitive();
-
-    gl_Position = vec4(-.5, 0, 0, 1);
-    EmitVertex();
-
-    gl_Position = vec4(.5, 0, 0, 1);
-    EmitVertex();
-
-    EndPrimitive();
 }

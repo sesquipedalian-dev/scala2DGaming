@@ -75,7 +75,7 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
     programHandle.foreach(glUseProgram)
     camera.foreach(_.updateScreenSize("projection"))
 
-    draw(5, 25, new Color(255, 255, 255, 122), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
+    draw(5, 25, new Color(255, 0, 0, 122), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
 
     super.render()
   }
@@ -126,7 +126,7 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
       vertexBuffer.put(x * textureSize).put(y * textureSize)
         .put(color.getRed.toFloat / 0xFF).put(color.getGreen.toFloat / 0xFF)
         .put(color.getBlue.toFloat / 0xFF).put(color.getAlpha.toFloat / 0xFF)
-        .put(minAngleRadians).put(maxAngleRadians).put(range)
+        .put(minAngleRadians).put(maxAngleRadians).put(range * textureSize)
 
       drawCall.numObjectsThisDraw += 1
     })
