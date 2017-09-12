@@ -53,31 +53,10 @@ class UIButtonsRenderer(
 
     // tell shader program where to bind the shader attributes to the buffer data we're going to pass in
     val stride = 5 * java.lang.Float.BYTES
-    val posAttrib = programHandle.map(glGetAttribLocation(_, "position"))
-    posAttrib.foreach(pos => {
-      glEnableVertexAttribArray(pos)
-      glVertexAttribPointer(pos, 2, GL_FLOAT, false, stride, 0)
-    })
-
-    val texAttrib = programHandle.map(glGetAttribLocation(_, "texCoord"))
-    texAttrib.foreach(tex => {
-      glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 2, GL_FLOAT, false, stride, 2 * java.lang.Float.BYTES)
-    })
-
-    val texIAttrib = programHandle.map(glGetAttribLocation(_, "texIndex"))
-    texIAttrib.foreach(tex => {
-      glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 1, GL_FLOAT, false, stride, 4 * java.lang.Float.BYTES)
-    })
-
-    // set the texture image uniform
-    val texIUniform = programHandle.map(glGetUniformLocation(_, "texImage"))
-    cleanly(MemoryStack.stackPush())(stack => {
-      texIUniform.foreach(uniform => {
-        glUniform1i(uniform, 0)
-      })
-    })
+    setUpVertexArrayAttrib("position", GL_FLOAT, 2, stride, 0)
+    setUpVertexArrayAttrib("texCoord", GL_FLOAT, 2, stride, 2 * java.lang.Float.BYTES)
+    setUpVertexArrayAttrib("texIndex", GL_FLOAT, 2, stride, 4 * java.lang.Float.BYTES)
+    setUpShaderUniform("texImage", 0)
 
     def setForceAlpha(targetAlpha: Float): Unit = {
       // set the texture image uniform

@@ -21,6 +21,7 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.opengl.GL30.{GL_TEXTURE_2D_ARRAY, glBindVertexArray, glDeleteVertexArrays, glGenVertexArrays}
+import org.lwjgl.opengl.GL32._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
 
@@ -36,6 +37,7 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
   def elementBufferSize: Int
   def vertexShaderRscName: String
   def fragmentShaderRscName: String
+  def geometryShaderRscName: Option[String] = None
 
   // give easy way to reference the draw call info - text index
   var drawCalls: Map[String, DrawCallInfo] = Map()
@@ -85,6 +87,16 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
     glShaderSource(fragmentShaderHandle, fragmentShaderSource)
     glCompileShader(fragmentShaderHandle)
 
+    val geoShaderHandle = geometryShaderRscName.map(geoRsc => {
+      val handle: Int = glCreateShader(GL_GEOMETRY_SHADER)
+      val source = io.Source.fromInputStream(
+        getClass.getResourceAsStream(geoRsc)
+      ).mkString
+      glShaderSource(handle, source)
+      glCompileShader(handle)
+      handle
+    })
+
     // check compile status of the shaders
     cleanly(MemoryStack.stackPush())(stack => {
       val vertexCompiled: IntBuffer = stack.mallocInt(1)
@@ -93,8 +105,16 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
       val fragmentCompiled: IntBuffer = stack.mallocInt(1)
       glGetShaderiv(fragmentShaderHandle, GL_COMPILE_STATUS, fragmentCompiled)
 
-      if((vertexCompiled.get(0) <= 0) || (fragmentCompiled.get(0) <= 0)) {
-        println(s"error compiling shaders! ${glGetShaderInfoLog(vertexShaderHandle)} ${glGetShaderInfoLog(fragmentShaderHandle)}")
+      val geometryCompiled = geoShaderHandle.map(handle => {
+        val compiled = stack.mallocInt(1)
+        glGetShaderiv(handle, GL_COMPILE_STATUS, compiled)
+        compiled.get(0)
+      })
+
+      if((vertexCompiled.get(0) <= 0) || (fragmentCompiled.get(0) <= 0) || geometryCompiled.exists(_ <= 0)) {
+        println(s"error compiling shaders! ${glGetShaderInfoLog(vertexShaderHandle)} " +
+          s"${glGetShaderInfoLog(fragmentShaderHandle)}" +
+          s"${geoShaderHandle.map(glGetShaderInfoLog)}")
       }
     })
 
@@ -102,20 +122,67 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
     programHandle = Some(glCreateProgram())
     programHandle.foreach(glAttachShader(_, vertexShaderHandle))
     programHandle.foreach(glAttachShader(_, fragmentShaderHandle))
+    (programHandle zip geoShaderHandle).foreach(p => glAttachShader(p._1, p._2))
 
     // link the program
     programHandle.foreach(glLinkProgram)
+    checkError()
     cleanly(MemoryStack.stackPush())(stack => {
       val linkStatus: IntBuffer = stack.mallocInt(1)
       programHandle.foreach(glGetProgramiv(_, GL_LINK_STATUS, linkStatus))
 
       if(linkStatus.get(0) <= 0) {
-        throw new Exception("error linking shader program")
+        println(s"error linking shader program! ${programHandle.map(glGetProgramInfoLog)}")
       }
     })
 
     glDeleteShader(vertexShaderHandle)
+    checkError()
     glDeleteShader(fragmentShaderHandle)
+    checkError()
+    geoShaderHandle.foreach(glDeleteShader)
+    checkError()
+  }
+
+  def setUpVertexArrayAttrib(name: String, glAttribType: Int, size: Int, stride: Int, offset: Int): Unit = {
+    (vao zip programHandle).foreach(p => {
+      val (vaoHandle, prog) = p
+      glUseProgram(prog)
+      checkError()
+      glBindVertexArray(vaoHandle)
+      checkError()
+
+      val attribLoc = glGetAttribLocation(prog, name)
+      if(attribLoc != -1) {
+        checkError()
+        glEnableVertexAttribArray(attribLoc)
+        checkError()
+        glVertexAttribPointer(attribLoc, size, glAttribType, false, stride, offset)
+        checkError()
+      } else {
+        // silent ignore - this attribute wasn't needed
+        println(s"info: shader attribute not used $name")
+      }
+    })
+    checkError()
+  }
+
+  def setUpShaderUniform(name: String, value: Int): Unit = {
+    (vao zip programHandle).foreach(p => {
+      val (vaoHandle, prog) = p
+      val uniformLoc = glGetUniformLocation(prog, name)
+      glUniform1i(uniformLoc, value)
+    })
+    checkError()
+  }
+
+  def setUpShaderUniform(name: String, value: Float): Unit = {
+    (vao zip programHandle).foreach(p => {
+      val (vaoHandle, prog) = p
+      val uniformLoc = glGetUniformLocation(prog, name)
+      glUniform1f(uniformLoc, value)
+    })
+    checkError()
   }
 
   def render(): Unit = {

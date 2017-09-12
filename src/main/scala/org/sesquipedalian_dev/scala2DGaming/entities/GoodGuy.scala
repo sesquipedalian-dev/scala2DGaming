@@ -50,7 +50,7 @@ class GoodGuy(
     val needsGraphBase = Math.pow(100, 1.toFloat / 100)
     if(needs.nonEmpty) {
       val result = needs.map(need => Math.max(0, 100 - Math.pow(needsGraphBase, need.degree))).sum / needs.size / 100
-      println(s"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result")
+//      println(s"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result")
       result
     } else {
       1f

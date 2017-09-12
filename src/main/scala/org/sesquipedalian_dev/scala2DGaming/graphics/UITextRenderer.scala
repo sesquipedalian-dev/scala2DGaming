@@ -55,35 +55,10 @@ class UITextRenderer(
 
     // tell shader program where to bind the shader attributes to the buffer data we're going to pass in
     val stride = 7 * java.lang.Float.BYTES
-    val posAttrib = programHandle.map(glGetAttribLocation(_, "position")).filter(_ != -1)
-    posAttrib.foreach(pos => {
-      glEnableVertexAttribArray(pos)
-      glVertexAttribPointer(pos, 2, GL_FLOAT, false, stride, 0)
-    })
-    checkError()
-
-    val texAttrib = programHandle.map(glGetAttribLocation(_, "textColor")).filter(_ != -1)
-    texAttrib.foreach(tex => {
-      glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 3, GL_FLOAT, false, stride, 2 * java.lang.Float.BYTES)
-    })
-    checkError()
-
-    val texIAttrib = programHandle.map(glGetAttribLocation(_, "texCoordinate")).filter(_ != -1)
-    texIAttrib.foreach(tex => {
-      glEnableVertexAttribArray(tex)
-      glVertexAttribPointer(tex, 2, GL_FLOAT, false, stride, 5 * java.lang.Float.BYTES)
-    })
-    checkError()
-
-    // set the texture image uniform
-    val texIUniform = programHandle.map(glGetUniformLocation(_, "texImage")).filter(_ != -1)
-    cleanly(MemoryStack.stackPush())(stack => {
-      texIUniform.foreach(uniform => {
-        glUniform1i(uniform, 0)
-      })
-    })
-    checkError()
+    setUpVertexArrayAttrib("position", GL_FLOAT, 2, stride, 0)
+    setUpVertexArrayAttrib("textColor", GL_FLOAT, 3, stride, 2 * java.lang.Float.BYTES)
+    setUpVertexArrayAttrib("texCoordinate", GL_FLOAT, 2, stride, 5 * java.lang.Float.BYTES)
+    setUpShaderUniform("texImage", 0)
 
     drawCalls = Map(
       "" -> DrawCallInfo(
