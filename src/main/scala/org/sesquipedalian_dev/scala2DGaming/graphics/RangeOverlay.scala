@@ -75,7 +75,9 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
     programHandle.foreach(glUseProgram)
     camera.foreach(_.updateScreenSize("projection"))
 
-    draw(5, 25, new Color(255, 0, 0, 122), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
+    HasRangeOverlayRendering.render(this)
+//    draw(5, 24, new Color(255, 0, 0, (255.toFloat / 4).toInt), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
+//    draw(5, 27, new Color(255, 0, 0, (255.toFloat / 4).toInt), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
 
     super.render()
   }

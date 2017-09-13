@@ -15,8 +15,10 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
+import java.awt.Color
+
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
+import org.sesquipedalian_dev.scala2DGaming.graphics._
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc
@@ -32,6 +34,7 @@ class GunTurret(
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
   with Equipment
+  with HasRangeOverlayRendering
 {
   override val textureFile: String = "/textures/gun.bmp"
 
@@ -75,5 +78,11 @@ class GunTurret(
     } else {
       false
     }
+  }
+
+  final val OVERLAY_COLOR = new Color(255, 0, 0, (255.toFloat / 4).toInt)
+  override def render(renderer: RangeOverlay): Unit = {
+    // TODO only if mozzed?
+    renderer.draw(location.x, location.y, OVERLAY_COLOR, rangeArc.minAngle, rangeArc.maxAngle, rangeArc.range)
   }
 }
