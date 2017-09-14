@@ -18,10 +18,8 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 import java.awt.Color
 
 import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
-import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20._
-import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.cleanly
+import org.lwjgl.system.MemoryUtil
 
 class UITextRenderer(
   val uiWidth: Int,
@@ -38,7 +36,6 @@ class UITextRenderer(
   final val FLOAT_PER_VERTEX = 7
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
-  final val TEXT_SIZE = 32
 
   case class TextInfo(
     name: String,
@@ -47,9 +44,9 @@ class UITextRenderer(
   )
 
   val textSizes: List[TextInfo] = List(
-    TextInfo("SMALL", 8),
-    TextInfo("MEDIUM", 16),
-    TextInfo("LARGE", 32)
+    TextInfo(UITextRenderer.SMALL, 16),
+    TextInfo(UITextRenderer.MEDIUM, 32),
+    TextInfo(UITextRenderer.LARGE, 64)
   )
 
   def MAX_CHARS_PER_DRAW = 1024 / (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
@@ -122,6 +119,13 @@ class UITextRenderer(
         flushVertexData(size)
       }
 
+      val x1 = x + (fontInfo.size * index)
+      val x2 = x + (fontInfo.size * (index + 1))
+      val y1 = y
+      val y2 = y + (fontInfo.size)
+
+//      println(s"Renderin' da text $x1/$x2 $y1 $y2 $size")
+
       vertexBuffer.put(x + (fontInfo.size * index)).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.height)
@@ -157,5 +161,9 @@ class UITextRenderer(
 }
 
 object UITextRenderer {
+  final val LARGE: String = "LARGE"
+  final val MEDIUM: String = "MEDIUM"
+  final val SMALL: String = "SMALL"
+
   var singleton: Option[UITextRenderer] = None
 }
