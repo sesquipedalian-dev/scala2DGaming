@@ -18,6 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 import java.awt.Color
 
 import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
+import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.util.cleanly
@@ -38,13 +39,25 @@ class UITextRenderer(
   final val VERTEX_PER_CHAR = 4
   final val EL_PER_CHAR = 6
   final val TEXT_SIZE = 32
+
+  case class TextInfo(
+    name: String,
+    size: Int,
+    var texture: Option[FontTexture] = None
+  )
+
+  val textSizes: List[TextInfo] = List(
+    TextInfo("SMALL", 8),
+    TextInfo("MEDIUM", 16),
+    TextInfo("LARGE", 32)
+  )
+
   def MAX_CHARS_PER_DRAW = 1024 / (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def vertexBufferSize: Int = MAX_CHARS_PER_DRAW * (VERTEX_PER_CHAR * FLOAT_PER_VERTEX )
   def elementBufferSize: Int = MAX_CHARS_PER_DRAW * EL_PER_CHAR
   def vertexShaderRscName: String = "/shaders/text.vert"
   def fragmentShaderRscName: String = "/shaders/text.frag"
 
-  var fontTexture: Option[FontTexture] = None
   var camera: Option[UICamera] = None
 
   override def init(): Unit = {
@@ -60,17 +73,22 @@ class UITextRenderer(
     setUpVertexArrayAttrib("texCoordinate", GL_FLOAT, 2, stride, 5 * java.lang.Float.BYTES)
     setUpShaderUniform("texImage", 0)
 
-    drawCalls = Map(
-      "" -> DrawCallInfo(
+    drawCalls = textSizes.map(struct => {
+      val font = new FontTexture("/fonts/Consolas.ttf", struct.size)
+      font.init()
+      struct.texture = Some(font)
+
+      struct.name -> DrawCallInfo(
         MemoryUtil.memAllocInt(elementBufferSize),
         MemoryUtil.memAllocFloat(vertexBufferSize),
         0,
-        () => {}
+        () => {
+          font.textureHandle.foreach(th => {
+            glBindTexture(GL_TEXTURE_2D, th)
+          })
+        }
       )
-    )
-
-    fontTexture = Some(new FontTexture("/fonts/Consolas.ttf", 16))
-    fontTexture.foreach(_.init)
+    }).toMap
 
     // create our camera
     camera = Some(new UICamera(uiWidth, _uiHeight, 1))
@@ -86,43 +104,34 @@ class UITextRenderer(
     camera.foreach(_.updateScreenSize(programHandle, "projection"))
 
     HasUiRendering.render(this)
-//    drawTextOnWorld(0, 0, "TL", Color.RED)
-//    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), 0, "TR", Color.PINK)
-//    drawTextOnWorld(UI_WIDTH - (2 * TEXT_SIZE), UI_HEIGHT - TEXT_SIZE, "BR", Color.CYAN)
-//    drawTextOnWorld(0, UI_HEIGHT - TEXT_SIZE, "BL", Color.YELLOW)
-//
-//    drawTextOnWorld(0, 0, "A", Color.RED)
-//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, 0, "B", Color.PINK)
-//    println(s"trying to render C & D $uiHeight $TEXT_SIZE $UI_HEIGHT $aspectRatio")
-//    drawTextOnWorld(UI_WIDTH - TEXT_SIZE, uiHeight - TEXT_SIZE, "C", Color.CYAN)
-//    drawTextOnWorld(0, uiHeight - TEXT_SIZE, "D", Color.YELLOW)
 
     super.render()
   }
 
-  def drawTextOnWorld(x: Float, y: Float, text: String, color: Color): Unit = {
+  def drawTextOnWorld(x: Float, y: Float, text: String, color: Color, size: String): Unit = {
     for {
       (c, index) <- text.zipWithIndex
-      glyph <- fontTexture.flatMap(_.glyphs.get(c))
-      drawCall <- drawCalls.get("")
+      drawCall <- drawCalls.get(size)
+      fontInfo <- textSizes.find(_.name == size)
+      glyph <- fontInfo.texture.flatMap(_.glyphs.get(c))
     } {
       val vertexBuffer = drawCall.vertexBuffer
       val elBuffer = drawCall.elBuffer
 
       if (vertexBuffer.remaining < (VERTEX_PER_CHAR * FLOAT_PER_VERTEX) || elBuffer.remaining < EL_PER_CHAR) {
-        flushVertexData("")
+        flushVertexData(size)
       }
 
-      vertexBuffer.put(x + (TEXT_SIZE * index)).put(y)
+      vertexBuffer.put(x + (fontInfo.size * index)).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.height)
-      vertexBuffer.put(x + (TEXT_SIZE * (index + 1))).put(y)
+      vertexBuffer.put(x + (fontInfo.size * (index + 1))).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.width).put(glyph.height)
-      vertexBuffer.put(x + (TEXT_SIZE * (index + 1))).put(y + TEXT_SIZE)
+      vertexBuffer.put(x + (fontInfo.size * (index + 1))).put(y + fontInfo.size)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.width).put(glyph.y)
-      vertexBuffer.put(x + (TEXT_SIZE * (index))).put(y + TEXT_SIZE)
+      vertexBuffer.put(x + (fontInfo.size * (index))).put(y + fontInfo.size)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)
         .put(glyph.x).put(glyph.y)
 
@@ -135,15 +144,12 @@ class UITextRenderer(
   }
 
   override def flushVertexData(key: String): Unit = {
-    fontTexture.flatMap(_.textureHandle).foreach(th => {
-      glBindTexture(GL_TEXTURE_2D, th)
-      super.flushVertexData(key)
-    })
+    super.flushVertexData(key)
   }
 
   override def cleanup(): Unit = {
     super.cleanup()
-    fontTexture.foreach(_.cleanup)
+    textSizes.foreach(_.texture.foreach(_.cleanup()))
     camera.foreach(_.cleanup)
   }
 

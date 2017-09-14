@@ -170,7 +170,7 @@ class UIButtonsRenderer(
 
   val textBackingTexture = "/textures/black6464.bmp"
   var textureIndex: Option[Int] = None
-  def drawTextBacking(x: Float, y: Float, numChars: Int): Unit = {
+  def drawTextBacking(x: Float, y: Float, numChars: Int, textSize: String): Unit = {
     if(textureIndex.isEmpty) {
       textureArray.foreach(ta => {
         val currentLoc = ta.textureFiles.indexOf(textBackingTexture)
@@ -189,18 +189,17 @@ class UIButtonsRenderer(
         true
       } else {
 
-        val xTextSize = UITextRenderer.singleton.map(_.TEXT_SIZE).getOrElse(0)
-        val yTextSize = UITextRenderer.singleton.map(tr => {
-          tr.TEXT_SIZE.toFloat /// tr.camera.flatMap(_.aspectRatio).getOrElse(1f)
-        }).getOrElse(0f)
+        val xTextSize = UITextRenderer.singleton.flatMap(_.textSizes.find(_.name == textSize).map(_.size)).getOrElse(0).toFloat
+
+//        println(s"drawing text backing $xTextSize $x/${x + (numChars * xTextSize)} $y/${y + xTextSize}")
 
         vertexBuffer.put(x).put(y)
           .put(0f).put(1f).put(texIndex.toFloat)
         vertexBuffer.put(x + (numChars * xTextSize)).put(y)
           .put(1f).put(1f).put(texIndex.toFloat)
-        vertexBuffer.put(x + (numChars * xTextSize)).put(y + yTextSize)
+        vertexBuffer.put(x + (numChars * xTextSize)).put(y + xTextSize)
           .put(1f).put(0f).put(texIndex.toFloat)
-        vertexBuffer.put(x).put(y + yTextSize)
+        vertexBuffer.put(x).put(y + xTextSize)
           .put(0f).put(0f).put(texIndex.toFloat)
 
         val currentVertIndex = drawCall.numObjectsThisDraw / 6 * 4

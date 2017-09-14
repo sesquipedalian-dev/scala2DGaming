@@ -42,10 +42,10 @@ with HasUiSpriteRendering
   }
 
   def render(uiRenderer: UITextRenderer): Unit = {
-    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED)
+    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, "LARGE")
   }
 
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
-    uiSpritesRenderer.drawTextBacking(0, 0, 9)
+    uiSpritesRenderer.drawTextBacking(0, 0, 9, "LARGE")
   }
 }

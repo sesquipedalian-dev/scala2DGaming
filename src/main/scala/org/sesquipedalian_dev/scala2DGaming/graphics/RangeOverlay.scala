@@ -75,7 +75,6 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
   override def cleanup(): Unit = {
     // free all the memory we used
     super.cleanup()
-    camera.foreach(_.cleanup)
   }
 
   // this renderer doesn't use an element array and it renders points

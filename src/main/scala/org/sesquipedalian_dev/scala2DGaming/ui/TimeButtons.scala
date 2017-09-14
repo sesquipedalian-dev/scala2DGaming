@@ -24,6 +24,20 @@ class PauseButton extends HasSingleUiSpriteRendering with UIButtonMouseListener 
   override def textureFile = "/textures/pause.bmp"
   override def location = Location(2200, 30)
   val timeToSet: Double = TimeOfDay.PAUSE
+
+  var previousSpeed: Option[Double] = None
+  override def buttonClicked(): Unit = {
+    previousSpeed match {
+      case Some(prev) => TimeOfDay.instance.foreach(tod => {
+        tod.speed = prev
+        previousSpeed = None
+      })
+      case _ => TimeOfDay.instance.foreach(tod => {
+        previousSpeed = Some(tod.speed)
+        tod.speed = timeToSet
+      })
+    }
+  }
 }
 
 class SlowButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {

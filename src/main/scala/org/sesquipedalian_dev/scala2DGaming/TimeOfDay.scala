@@ -46,12 +46,18 @@ class TimeOfDay()
     val minutes = currentTimeOfDay / 60
     val hours = Math.floor(minutes / 60).toInt
     val minutesInHour = Math.floor(minutes - (hours * 60)).toInt
-    uiRenderer.drawTextOnWorld(uiRenderer.uiWidth - (uiRenderer.TEXT_SIZE * 11), 0, String.format("Time: %02d:%02d", new Integer(hours), new Integer(minutesInHour)), Color.CYAN)
+    uiRenderer.drawTextOnWorld(
+      uiRenderer.uiWidth - (uiRenderer.textSizes.find(_.name == "LARGE").get.size * 11),
+      0,
+      String.format("Time: %02d:%02d", new Integer(hours), new Integer(minutesInHour)),
+      Color.CYAN,
+      "LARGE"
+    )
   }
 
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
     UITextRenderer.singleton.foreach(uiRenderer => {
-      uiSpritesRenderer.drawTextBacking(uiRenderer.uiWidth - (uiRenderer.TEXT_SIZE * 11), 0, 11)
+      uiSpritesRenderer.drawTextBacking(uiRenderer.uiWidth - (uiRenderer.textSizes.find(_.name == "LARGE").get.size * 11), 0, 11, "LARGE")
     })
   }
 }
