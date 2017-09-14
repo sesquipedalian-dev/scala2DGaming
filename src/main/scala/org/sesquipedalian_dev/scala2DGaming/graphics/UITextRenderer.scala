@@ -83,7 +83,7 @@ class UITextRenderer(
 
   override def render(): Unit = {
     programHandle.foreach(glUseProgram)
-    camera.foreach(_.updateScreenSize("projection"))
+    camera.foreach(_.updateScreenSize(programHandle, "projection"))
 
     HasUiRendering.render(this)
 //    drawTextOnWorld(0, 0, "TL", Color.RED)

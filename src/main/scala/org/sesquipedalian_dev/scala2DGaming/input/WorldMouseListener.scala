@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.input
 
-import org.joml.Vector3f
+import org.joml.{Matrix4f, Vector3f}
 import org.lwjgl.glfw.GLFW._
 import org.sesquipedalian_dev.scala2DGaming.{Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
@@ -26,14 +26,20 @@ trait WorldButtonMouseListener extends MouseInputHandler {
   def textureFile: String
   def location: Location
 
+  // TODO hover state needs to be invalidated when camera's projection matrix changes
   var hovered: Boolean = false
   def hoverEnter()
   def hoverLeave()
+  var lastProjectionMatrix: Option[Matrix4f] = None
 
   override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = {
     super.handleMove(windowHandle, xPos, yPos, lbState, rbState)
 
     val lastProjectionMatrix = WorldSpritesRenderer.singleton.flatMap(_.camera).flatMap(_.lastProjectionMatrix)
+    if(this.lastProjectionMatrix != lastProjectionMatrix.map(_._3)) {
+      hovered = false
+    }
+    this.lastProjectionMatrix = lastProjectionMatrix.map(_._3)
 
     lastProjectionMatrix.map(lpm => {
       val (_, _, matrix) = lpm

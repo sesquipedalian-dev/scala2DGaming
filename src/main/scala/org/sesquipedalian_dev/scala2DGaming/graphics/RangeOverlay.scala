@@ -37,8 +37,6 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
   override def fragmentShaderRscName = "/shaders/range.frag"
   override def geometryShaderRscName: Option[String] = Some("/shaders/range_geometry.glsl")
 
-  var camera: Option[Camera2D] = None
-
   override def init(): Unit = {
     super.init()
 
@@ -62,22 +60,14 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
       )
     )
 
-    // create our camera
-    camera = Some(new Camera2D(worldWidth, worldHeight, textureSize))
-    camera.foreach(camera => {
-      camera.register()
-      programHandle.foreach(camera.init)
-    })
     register()
   }
 
   override def render(): Unit = {
     programHandle.foreach(glUseProgram)
-    camera.foreach(_.updateScreenSize("projection"))
+    WorldSpritesRenderer.singleton.flatMap(_.camera).foreach(_.updateScreenSize(programHandle, "projection"))
 
     HasRangeOverlayRendering.render(this)
-//    draw(5, 24, new Color(255, 0, 0, (255.toFloat / 4).toInt), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
-//    draw(5, 27, new Color(255, 0, 0, (255.toFloat / 4).toInt), Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4)
 
     super.render()
   }

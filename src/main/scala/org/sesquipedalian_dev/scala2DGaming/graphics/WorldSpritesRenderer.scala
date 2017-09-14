@@ -85,7 +85,7 @@ class WorldSpritesRenderer(
 
   override def render(): Unit = {
     programHandle.foreach(glUseProgram)
-    camera.foreach(_.updateScreenSize("projection"))
+    camera.foreach(_.updateScreenSize(programHandle, "projection"))
 
     HasWorldSpriteRendering.render(this)
 

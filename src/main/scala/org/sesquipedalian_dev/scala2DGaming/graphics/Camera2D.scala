@@ -43,7 +43,7 @@ class UICamera(
   }
 
   // UI camera doesn't use aspect ratio for scale
-  override def updateScreenSize(projectionUniformName: String): Unit = {
+  override def updateScreenSize(progarmHandle: Option[Int], projectionUniformName: String): Unit = {
     // get screen height / width for ortho projection
     var width: Float = 0f
     var height: Float = 0f
@@ -192,7 +192,7 @@ class Camera2D(
 
   var lastProjectionMatrix: Option[(Float, Float, Matrix4f)] = None
 
-  def updateScreenSize(projectionUniformName: String): Unit = {
+  def updateScreenSize(programHandle: Option[Int], projectionUniformName: String): Unit = {
     // get screen height / width for ortho projection
     var width: Float = 0f
     var height: Float = 0f
