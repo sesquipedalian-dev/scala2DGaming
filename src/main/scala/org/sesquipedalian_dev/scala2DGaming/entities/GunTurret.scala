@@ -19,6 +19,7 @@ import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
+import org.sesquipedalian_dev.scala2DGaming.input.WorldButtonMouseListener
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc
@@ -35,6 +36,7 @@ class GunTurret(
   with HasGameUpdate
   with Equipment
   with HasRangeOverlayRendering
+  with WorldButtonMouseListener
 {
   override val textureFile: String = "/textures/gun.bmp"
 
@@ -82,7 +84,20 @@ class GunTurret(
 
   final val OVERLAY_COLOR = new Color(255, 0, 0, (255.toFloat / 4).toInt)
   override def render(renderer: RangeOverlay): Unit = {
-    // TODO only if mozzed?
-    renderer.draw(location.x, location.y, OVERLAY_COLOR, rangeArc.minAngle, rangeArc.maxAngle, rangeArc.range)
+    if(hovered) {
+      renderer.draw(location.x, location.y, OVERLAY_COLOR, rangeArc.minAngle, rangeArc.maxAngle, rangeArc.range)
+    }
+  }
+
+  override def hoverEnter(): Unit = {
+//    println(s"gun turret $location hoverenter")
+  }
+
+  override def hoverLeave(): Unit = {
+//    println(s"gun turret $location hoverleave")
+  }
+
+  override def clicked(): Unit = {
+//    println(s"gun turret $location click")
   }
 }

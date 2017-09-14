@@ -190,6 +190,8 @@ class Camera2D(
     // Nop
   }
 
+  var lastProjectionMatrix: Option[(Float, Float, Matrix4f)] = None
+
   def updateScreenSize(projectionUniformName: String): Unit = {
     // get screen height / width for ortho projection
     var width: Float = 0f
@@ -203,28 +205,33 @@ class Camera2D(
       height = h.get()
     })
 
-    val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
-    checkError()
-    val projection = new Matrix4f()
-    val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
-    val aspectRatio = width / height
-    val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom * aspectRatio
-//    println(s"updating screen size $aspectRatio $cameraXScale, $cameraYScale")
-    projection.scale(cameraXScale, -cameraYScale, 1f)
-    projection.translate(
-      -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,
-      -worldHeight.toFloat * worldCameraScale / 2 + yTranslate,
-      0f
-    )
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      projection.get(buf)
-      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+    if(!lastProjectionMatrix.exists(d => d._1 == width && d._2 == width)) {
+      val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
       checkError()
-    })
+      val projection = new Matrix4f()
+      val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
+      val aspectRatio = width / height
+      val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom * aspectRatio
+      //    println(s"updating screen size $aspectRatio $cameraXScale, $cameraYScale")
+      projection.scale(cameraXScale, -cameraYScale, 1f)
+      projection.translate(
+        -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,
+        -worldHeight.toFloat * worldCameraScale / 2 + yTranslate,
+        0f
+      )
+      lastProjectionMatrix = Some((width, height, projection))
+      cleanly(MemoryStack.stackPush())(stack => {
+        val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+        projection.get(buf)
+        uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+        checkError()
+      })
 
-    // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
-    // +x = right, +y = down,
-    // and world coords map 1-to-1 to screen coords
+      // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
+      // +x = right, +y = down,
+      // and world coords map 1-to-1 to screen coords
+    } else {
+
+    }
   }
 }
