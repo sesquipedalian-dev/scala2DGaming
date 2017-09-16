@@ -22,7 +22,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.{UIButtonsRenderer, WorldSpritesRenderer}
 
 
-trait WorldButtonMouseListener extends MouseInputHandler {
+trait WorldMouseListener extends MouseInputHandler {
   def textureFile: String
   def location: Location
 
@@ -31,6 +31,29 @@ trait WorldButtonMouseListener extends MouseInputHandler {
   def hoverEnter()
   def hoverLeave()
   var lastProjectionMatrix: Option[Matrix4f] = None
+
+  def toScreen(worldLoc: Location, offset: Location = Location(0, 0)): Option[Location] = {
+    val lastProjectionMatrix = WorldSpritesRenderer.singleton.flatMap(_.camera).flatMap(_.lastProjectionMatrix)
+    if(this.lastProjectionMatrix != lastProjectionMatrix.map(_._3)) {
+      hovered = false
+    }
+    this.lastProjectionMatrix = lastProjectionMatrix.map(_._3)
+
+    lastProjectionMatrix.map(lpm => {
+      val (_, _, matrix) = lpm
+      val screenLoc: Vector3f = new Vector3f()
+      matrix.project(
+        new Vector3f(
+          Math.floor(location.x + offset.x).toFloat * Main.TEXTURE_SIZE,
+          Math.floor(location.y + offset.y).toFloat * Main.TEXTURE_SIZE,
+          0.0f
+        ),
+        Array[Int](-1, -1, 2, 2),
+        screenLoc
+      )
+      Location(screenLoc.x, screenLoc.y)
+    })
+  }
 
   override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = {
     super.handleMove(windowHandle, xPos, yPos, lbState, rbState)
@@ -64,6 +87,11 @@ trait WorldButtonMouseListener extends MouseInputHandler {
         Array[Int](-1, -1, 2, 2),
         bottomRight
       )
+
+      val topLeft2 = toScreen(location)
+      val bottomRight2 = toScreen(location, Location(1, 1))
+//      println(s"new function for points? $topLeft $topLeft2 $bottomRight $bottomRight2")
+
       val screenLeft = topLeft.x
       val screenRight = bottomRight.x
       val screenTop = bottomRight.y // y axis inverted

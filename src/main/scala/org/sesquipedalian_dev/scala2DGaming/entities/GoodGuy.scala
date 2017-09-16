@@ -15,14 +15,22 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
+import java.awt.Color
+
+import org.joml.Vector3f
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
-import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.graphics._
+import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
 
 class GoodGuy(
+  name: String,
   var location: Location
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
+  with WorldMouseListener
+  with HasUiRendering
+  with HasUiSpriteRendering
 {
   // TODO make needs init more flexible - some good guys could have traits that adjust how their needs work,
   // or what needs they even have
@@ -54,6 +62,57 @@ class GoodGuy(
       result
     } else {
       1f
+    }
+  }
+
+  override def hoverEnter(): Unit = {}
+  override def hoverLeave(): Unit = {}
+  override def clicked(): Unit = {}
+
+  def toUiLoc(screenLoc: Location): Option[Location] = {
+    val x = (screenLoc.x + 1) * Main.UI_WIDTH / 2
+    val totalY = 1.toFloat / (Main.UI_WIDTH.toFloat / Main.UI_HEIGHT)
+    val y = (-screenLoc.y + 1) / 2 * Math.pow(Main.UI_HEIGHT, 2) / Main.UI_WIDTH
+
+    Some(Location(x, y.toFloat))
+  }
+
+  override def render(uiRenderer: UITextRenderer): Unit = {
+    if(hovered) {
+      val screenLoc = toScreen(location, Location(1, 0))
+      val uiLoc = screenLoc.flatMap(toUiLoc).getOrElse(Location(0, 0))
+
+      uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y, name, Color.ORANGE, UITextRenderer.SMALL)
+      val medYSize = UITextRenderer.sizeToInt(UITextRenderer.MEDIUM)
+      val smallYSize = UITextRenderer.sizeToInt(UITextRenderer.SMALL)
+
+      uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y + smallYSize, "=[Needs]=", Color.WHITE, UITextRenderer.MEDIUM)
+      needs.foreach(need => {
+        val needTexts = (1 to 10).map(i => if(need.degree > i * 10) { "+" } else { " " }).reduce(_ + _) + need.name
+                val color = need.degree match {
+          case x if x > 90 => Color.RED
+          case x if x > 80 => Color.YELLOW
+          case x if x < 20 => Color.GREEN
+          case _ => Color.WHITE
+        }
+        uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y + smallYSize + medYSize, needTexts, color, UITextRenderer.SMALL)
+      })
+    }
+  }
+
+  def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
+    if(hovered) {
+      val screenLoc = toScreen(location, Location(1, 0))
+      val uiLoc = screenLoc.flatMap(toUiLoc).getOrElse(Location(0, 0))
+      val medYSize = UITextRenderer.sizeToInt(UITextRenderer.MEDIUM)
+      val smallYSize = UITextRenderer.sizeToInt(UITextRenderer.SMALL)
+
+      uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y, name.size, UITextRenderer.SMALL)
+      uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize, 9, UITextRenderer.MEDIUM)
+      needs.foreach(need => {
+        val needTexts = (0 to 10).map(i => if(need.degree > i * 10) { "+" } else { " " }).reduce(_ + _) + need.name
+        uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize + medYSize, needTexts.size, UITextRenderer.SMALL)
+      })
     }
   }
 }

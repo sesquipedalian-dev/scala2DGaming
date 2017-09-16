@@ -119,10 +119,10 @@ class UITextRenderer(
         flushVertexData(size)
       }
 
-      val x1 = x + (fontInfo.size * index)
-      val x2 = x + (fontInfo.size * (index + 1))
-      val y1 = y
-      val y2 = y + (fontInfo.size)
+//      val x1 = x + (fontInfo.size * index)
+//      val x2 = x + (fontInfo.size * (index + 1))
+//      val y1 = y
+//      val y2 = y + (fontInfo.size)
 
 //      println(s"Renderin' da text $x1/$x2 $y1 $y2 $size")
 
@@ -166,4 +166,8 @@ object UITextRenderer {
   final val SMALL: String = "SMALL"
 
   var singleton: Option[UITextRenderer] = None
+
+  def sizeToInt(size: String): Int = {
+    UITextRenderer.singleton.flatMap(_.textSizes.find(ti => ti.name == size)).map(_.size).getOrElse(16)
+  }
 }

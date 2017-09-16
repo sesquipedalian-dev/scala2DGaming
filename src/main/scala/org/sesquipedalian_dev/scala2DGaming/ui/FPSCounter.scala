@@ -43,13 +43,13 @@ with HasUiSpriteRendering
 
   def render(uiRenderer: UITextRenderer): Unit = {
 //    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, UITextRenderer.LARGE)
-//    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, UITextRenderer.MEDIUM)
-    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, UITextRenderer.SMALL)
+    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, UITextRenderer.MEDIUM)
+//    uiRenderer.drawTextOnWorld(0, 0, String.format("FPS: %02.1f", new java.lang.Double(currentFps)), Color.RED, UITextRenderer.SMALL)
   }
 
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
 //    uiSpritesRenderer.drawTextBacking(0, 0, 9, UITextRenderer.LARGE)
-//    uiSpritesRenderer.drawTextBacking(0, 0, 9, UITextRenderer.MEDIUM)
-    uiSpritesRenderer.drawTextBacking(0, 0, 9, UITextRenderer.SMALL)
+    uiSpritesRenderer.drawTextBacking(0, 0, 9, UITextRenderer.MEDIUM)
+//    uiSpritesRenderer.drawTextBacking(0, 0, 9, UITextRenderer.SMALL)
   }
 }

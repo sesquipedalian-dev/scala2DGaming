@@ -19,7 +19,7 @@ import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
-import org.sesquipedalian_dev.scala2DGaming.input.WorldButtonMouseListener
+import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc
@@ -36,7 +36,7 @@ class GunTurret(
   with HasGameUpdate
   with Equipment
   with HasRangeOverlayRendering
-  with WorldButtonMouseListener
+  with WorldMouseListener
 {
   override val textureFile: String = "/textures/gun.bmp"
 

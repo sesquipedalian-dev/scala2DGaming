@@ -57,31 +57,37 @@ class UICamera(
     })
     aspectRatio = Some(width / height)
 
-    val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
-    checkError()
-
-    val viewWidth: Float = worldWidth
-    val viewHeight: Float = worldWidth / aspectRatio.get
-    val projection = new Matrix4f()
-
-    projection.ortho2D(-viewWidth / 2, viewWidth / 2, viewHeight / 2, -viewHeight / 2)
-
-    val view = new Matrix4f
-    view.translate(-viewWidth / 2, -viewHeight / 2, 0)
-    view.scale(1f, aspectRatio.get, 1f)
-
-    projection.mul(view)
-
-    cleanly(MemoryStack.stackPush())(stack => {
-      val buf: FloatBuffer = stack.mallocFloat(4 * 4)
-      projection.get(buf)
-      uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+    if(!lastProjectionMatrix.exists(t => t._1 == width && t._2 == height)) {
+      val uniProjection = programHandle.map(glGetUniformLocation(_, projectionUniformName))
       checkError()
-    })
 
-    // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
-    // +x = right, +y = down,
-    // and world coords map 1-to-1 to screen coords
+      val viewWidth: Float = worldWidth
+      val viewHeight: Float = worldWidth / aspectRatio.get
+      val projection = new Matrix4f()
+
+      projection.ortho2D(-viewWidth / 2, viewWidth / 2, viewHeight / 2, -viewHeight / 2)
+
+      val view = new Matrix4f
+      view.translate(-viewWidth / 2, -viewHeight / 2, 0)
+      view.scale(1f, aspectRatio.get, 1f)
+
+      projection.mul(view)
+
+      lastProjectionMatrix = Some((width, height, projection))
+
+      cleanly(MemoryStack.stackPush())(stack => {
+        val buf: FloatBuffer = stack.mallocFloat(4 * 4)
+        projection.get(buf)
+        uniProjection.foreach(glUniformMatrix4fv(_, false, buf))
+        checkError()
+      })
+
+      // after all the ortho tweaks, we've got a 2d coordinate system where 0,0 is top left of the screen,
+      // +x = right, +y = down,
+      // and world coords map 1-to-1 to screen coords
+    } else {
+
+    }
   }
 }
 
