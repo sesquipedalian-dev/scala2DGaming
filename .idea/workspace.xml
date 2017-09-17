@@ -15,10 +15,22 @@
   </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
+      <file leaf-file-name="GroupsUi.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/GroupsUi.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="329">
+              <caret line="94" column="40" lean-forward="true" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
+              <folding>
+                <element signature="e#672#721#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
       <file leaf-file-name="GoodGuy.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuy.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1360">
+            <state relative-caret-position="248">
               <caret line="100" column="3" lean-forward="false" selection-start-line="100" selection-start-column="3" selection-end-line="100" selection-end-column="3" />
               <folding>
                 <element signature="e#678#699#0" expanded="true" />
@@ -27,105 +39,85 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Math.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Math.java">
+      <file leaf-file-name="Border.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/layout/Border.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17">
-              <caret line="642" column="25" lean-forward="false" selection-start-line="642" selection-start-column="25" selection-end-line="642" selection-end-column="25" />
+            <state relative-caret-position="220">
+              <caret line="88" column="19" lean-forward="false" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Main.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
+      <file leaf-file-name="TransferMode.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/input/TransferMode.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="585">
-              <caret line="91" column="40" lean-forward="false" selection-start-line="91" selection-start-column="40" selection-end-line="91" selection-end-column="40" />
-              <folding>
-                <element signature="e#669#690#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Thread.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/lang/Thread.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="17204">
-              <caret line="1075" column="73" lean-forward="false" selection-start-line="1075" selection-start-column="73" selection-end-line="1075" selection-end-column="73" />
+            <state relative-caret-position="265">
+              <caret line="56" column="39" lean-forward="false" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GroupsUi.scala" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/GroupsUi.scala">
+      <file leaf-file-name="Node.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/Node.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="221">
-              <caret line="35" column="46" lean-forward="true" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
+            <state relative-caret-position="570">
+              <caret line="1237" column="22" lean-forward="false" selection-start-line="1237" selection-start-column="22" selection-end-line="1237" selection-end-column="22" />
               <folding>
-                <element signature="e#672#709#0" expanded="true" />
+                <element signature="e#52391#52392#0" expanded="true" />
+                <element signature="e#52435#52436#0" expanded="true" />
               </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Scene.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/Scene.java">
+      <file leaf-file-name="Image.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/image/Image.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="310">
-              <caret line="221" column="11" lean-forward="false" selection-start-line="221" selection-start-column="11" selection-end-line="221" selection-end-column="11" />
+            <state relative-caret-position="-322">
+              <caret line="618" column="16" lean-forward="false" selection-start-line="618" selection-start-column="4" selection-end-line="618" selection-end-column="16" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="groups.fxml" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/groups.fxml">
+      <file leaf-file-name="ImageView.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/image/ImageView.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
-              <folding>
-                <marker date="1505656747094" expanded="true" signature="886:899" ph="..." />
-              </folding>
-            </state>
-          </provider>
-          <provider editor-type-id="JavaFX-Scene-Builder">
-            <state />
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Camera2D.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Camera2D.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1088">
-              <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
-              <folding>
-                <element signature="e#678#718#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Application.java" pinned="false" current-in-tab="false">
-        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/application/Application.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="3179">
-              <caret line="222" column="39" lean-forward="false" selection-start-line="222" selection-start-column="23" selection-end-line="222" selection-end-column="39" />
+            <state relative-caret-position="119">
+              <caret line="145" column="11" lean-forward="false" selection-start-line="145" selection-start-column="11" selection-end-line="145" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="UITextRenderer.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/UITextRenderer.scala">
+      <file leaf-file-name="Control.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/control/Control.java">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="1479">
-              <caret line="105" column="3" lean-forward="false" selection-start-line="105" selection-start-column="3" selection-end-line="105" selection-end-column="3" />
-              <folding>
-                <element signature="e#678#699#0" expanded="true" />
-              </folding>
+            <state relative-caret-position="425">
+              <caret line="81" column="22" lean-forward="false" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TitledPane.java" pinned="false" current-in-tab="false">
+        <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/control/TitledPane.java">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="220">
+              <caret line="88" column="11" lean-forward="false" selection-start-line="88" selection-start-column="11" selection-end-line="88" selection-end-column="11" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="GoodGuyGroups.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuyGroups.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="272">
+              <caret line="45" column="28" lean-forward="true" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -142,8 +134,6 @@
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>numObjectsThisDraw</find>
-      <find>flushVertex</find>
       <find>forceAlpha</find>
       <find>TextBacking</find>
       <find>need effec</find>
@@ -172,6 +162,8 @@
       <find>launch</find>
       <find>launch()</find>
       <find>launch(String...</find>
+      <find>public Image</find>
+      <find>public Border</find>
     </findStrings>
     <replaceStrings>
       <replace>worldCameraScale</replace>
@@ -188,7 +180,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/resources/shaders/textureArray.vert" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasGameUpdate.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasUiRendering.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala" />
@@ -233,18 +224,19 @@
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/FPSCounter.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/input/WorldMouseListener.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Camera2D.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuy.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/groups.fxml" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/JavaFXUiMain.scala" />
         <option value="$PROJECT_DIR$/src/main/resources/fxml/groups.fxml" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuy.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuyGroups.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/GroupsUi.scala" />
       </list>
     </option>
   </component>
   <component name="ProjectFrameBounds">
-    <option name="x" value="934" />
-    <option name="y" value="152" />
+    <option name="x" value="1007" />
+    <option name="y" value="111" />
     <option name="width" value="1563" />
     <option name="height" value="1092" />
   </component>
@@ -329,16 +321,6 @@
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="scala" type="462c0819:PsiDirectoryNode" />
               <item name="scala2DGaming" type="462c0819:PsiDirectoryNode" />
-              <item name="entities" type="462c0819:PsiDirectoryNode" />
-              <item name="needs" type="462c0819:PsiDirectoryNode" />
-            </path>
-            <path>
-              <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
-              <item name="trunk" type="462c0819:PsiDirectoryNode" />
-              <item name="src" type="462c0819:PsiDirectoryNode" />
-              <item name="main" type="462c0819:PsiDirectoryNode" />
-              <item name="scala" type="462c0819:PsiDirectoryNode" />
-              <item name="scala2DGaming" type="462c0819:PsiDirectoryNode" />
               <item name="graphics" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
@@ -382,6 +364,7 @@
     <property name="project.structure.side.proportion" value="0.2" />
     <property name="last_opened_file_path" value="$PROJECT_DIR$/../../jukebox.git/trunk" />
     <property name="settings.editor.selected.configurable" value="preferences.keymap" />
+    <property name="SearchEverywhereHistoryKey" value="&#9;FILE&#9;jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/layout/Pane.java" />
   </component>
   <component name="RecentsManager">
     <key name="MoveClassesOrPackagesDialog.RECENTS_KEY">
@@ -653,7 +636,7 @@
     <option name="remove_strategy" value="false" />
   </component>
   <component name="ToolWindowManager">
-    <frame x="934" y="152" width="1563" height="1092" extended-state="0" />
+    <frame x="1007" y="111" width="1563" height="1092" extended-state="0" />
     <editor active="true" />
     <layout>
       <window_info id="TODO" active="false" anchor="bottom" auto_hide="false" internal_type="DOCKED" type="DOCKED" visible="false" show_stripe_button="true" weight="0.33" sideWeight="0.5" order="6" side_tool="false" content_ui="tabs" />
@@ -695,114 +678,24 @@
           <properties />
           <option name="timeStamp" value="19" />
         </line-breakpoint>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuyGroups.scala</url>
+          <line>44</line>
+          <properties />
+          <option name="timeStamp" value="41" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" type="scala-line">
+          <url>file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuyGroups.scala</url>
+          <line>46</line>
+          <properties />
+          <option name="timeStamp" value="42" />
+        </line-breakpoint>
       </breakpoints>
-      <option name="time" value="40" />
+      <option name="time" value="43" />
     </breakpoint-manager>
-    <watches-manager>
-      <configuration name="Application">
-        <watch expression="vertexBuffer.remaining()" language="Scala" />
-        <watch expression="elBuffer.remaining()" language="Scala" />
-        <watch expression="UIButtonsRenderer.singleton" language="Scala" />
-      </configuration>
-    </watches-manager>
+    <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/GLFWWindow.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="177">
-          <caret line="73" column="0" lean-forward="true" selection-start-line="73" selection-start-column="0" selection-end-line="73" selection-end-column="0" />
-          <folding>
-            <element signature="e#678#706#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/text.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/lwjgl_minimal_opengles_3.1.2/lwjgl-sources.jar!/org/lwjgl/system/MemoryUtil.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="191" column="30" lean-forward="false" selection-start-line="191" selection-start-column="30" selection-end-line="191" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="36" column="33" lean-forward="false" selection-start-line="36" selection-start-column="33" selection-end-line="36" selection-end-column="33" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/BadGuySpawner.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="23" column="19" lean-forward="false" selection-start-line="23" selection-start-column="6" selection-end-line="23" selection-end-column="19" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/Need.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="30" column="44" lean-forward="true" selection-start-line="30" selection-start-column="44" selection-end-line="30" selection-end-column="44" />
-          <folding>
-            <element signature="e#684#754#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/SleepNeed.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="374">
-          <caret line="36" column="24" lean-forward="false" selection-start-line="36" selection-start-column="24" selection-end-line="36" selection-end-column="24" />
-          <folding>
-            <element signature="e#684#737#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/textureArray.frag">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="25" lean-forward="true" selection-start-line="7" selection-start-column="25" selection-end-line="7" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/textureArray.vert">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="12" column="25" lean-forward="false" selection-start-line="12" selection-start-column="25" selection-end-line="12" selection-end-column="25" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/lwjgl_minimal_opengles_3.1.2/lwjgl-opengl-sources.jar!/org/lwjgl/opengl/GL20.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="310">
-          <caret line="1905" column="23" lean-forward="false" selection-start-line="1905" selection-start-column="23" selection-end-line="1905" selection-end-column="23" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/lwjgl_minimal_opengles_3.1.2/lwjgl-opengl-sources.jar!/org/lwjgl/opengl/GL11.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="220">
-          <caret line="1849" column="30" lean-forward="false" selection-start-line="1849" selection-start-column="30" selection-end-line="1849" selection-end-column="30" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Renderable.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="333">
-          <caret line="38" column="16" lean-forward="true" selection-start-line="38" selection-start-column="16" selection-end-line="38" selection-end-column="16" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/util/TryWithResource.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="289">
@@ -1019,7 +912,7 @@
         <state relative-caret-position="1683">
           <caret line="121" column="4" lean-forward="false" selection-start-line="121" selection-start-column="4" selection-end-line="121" selection-end-column="4" />
           <folding>
-            <element signature="e#678#730#0" expanded="true" />
+            <element signature="e#678#730#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1029,7 +922,7 @@
         <state relative-caret-position="1054">
           <caret line="83" column="10" lean-forward="false" selection-start-line="83" selection-start-column="10" selection-end-line="83" selection-end-column="10" />
           <folding>
-            <element signature="e#678#699#0" expanded="true" />
+            <element signature="e#678#699#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1039,8 +932,8 @@
         <state relative-caret-position="1309">
           <caret line="100" column="31" lean-forward="false" selection-start-line="100" selection-start-column="31" selection-end-line="100" selection-end-column="31" />
           <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#678#730#0" expanded="true" />
+            <element signature="n#!!doc" expanded="false" />
+            <element signature="e#678#730#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1050,7 +943,7 @@
         <state relative-caret-position="1088">
           <caret line="88" column="0" lean-forward="false" selection-start-line="88" selection-start-column="0" selection-end-line="88" selection-end-column="0" />
           <folding>
-            <element signature="e#678#718#0" expanded="true" />
+            <element signature="e#678#718#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1060,17 +953,7 @@
         <state relative-caret-position="1479">
           <caret line="105" column="3" lean-forward="false" selection-start-line="105" selection-start-column="3" selection-end-line="105" selection-end-column="3" />
           <folding>
-            <element signature="e#678#699#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuy.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="1360">
-          <caret line="100" column="3" lean-forward="false" selection-start-line="100" selection-start-column="3" selection-end-line="100" selection-end-column="3" />
-          <folding>
-            <element signature="e#678#699#0" expanded="true" />
+            <element signature="e#678#699#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1099,16 +982,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="585">
-          <caret line="91" column="40" lean-forward="false" selection-start-line="91" selection-start-column="40" selection-end-line="91" selection-end-column="40" />
-          <folding>
-            <element signature="e#669#690#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/Scene.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="310">
@@ -1119,10 +992,10 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/groups.fxml">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="0" lean-forward="true" selection-start-line="6" selection-start-column="0" selection-end-line="6" selection-end-column="0" />
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding>
-            <marker date="1505656747094" expanded="true" signature="886:899" ph="..." />
+            <marker date="1505660225007" expanded="true" signature="994:1007" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1130,12 +1003,137 @@
         <state />
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="299">
+          <caret line="90" column="60" lean-forward="false" selection-start-line="90" selection-start-column="60" selection-end-line="90" selection-end-column="60" />
+          <folding>
+            <element signature="e#669#690#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/text/Font.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-1820">
+          <caret line="57" column="19" lean-forward="false" selection-start-line="57" selection-start-column="19" selection-end-line="57" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/text/Text.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="367" column="22" lean-forward="false" selection-start-line="367" selection-start-column="22" selection-end-line="367" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/control/ScrollPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="206" column="22" lean-forward="false" selection-start-line="206" selection-start-column="22" selection-end-line="206" selection-end-column="22" />
+          <folding>
+            <element signature="e#6939#6940#0" expanded="false" />
+            <element signature="e#7000#7001#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/layout/Pane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="452">
+          <caret line="140" column="42" lean-forward="false" selection-start-line="140" selection-start-column="42" selection-end-line="140" selection-end-column="42" />
+          <folding>
+            <element signature="e#4298#4299#0" expanded="false" />
+            <element signature="e#4340#4341#0" expanded="false" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/control/TitledPane.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="88" column="11" lean-forward="false" selection-start-line="88" selection-start-column="11" selection-end-line="88" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/image/ImageView.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="145" column="11" lean-forward="false" selection-start-line="145" selection-start-column="11" selection-end-line="145" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/image/Image.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="-322">
+          <caret line="618" column="16" lean-forward="false" selection-start-line="618" selection-start-column="4" selection-end-line="618" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/input/TransferMode.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="265">
+          <caret line="56" column="39" lean-forward="false" selection-start-line="56" selection-start-column="39" selection-end-line="56" selection-end-column="39" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/layout/Border.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="220">
+          <caret line="88" column="19" lean-forward="false" selection-start-line="88" selection-start-column="19" selection-end-line="88" selection-end-column="19" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/Node.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="570">
+          <caret line="1237" column="22" lean-forward="false" selection-start-line="1237" selection-start-column="22" selection-end-line="1237" selection-end-column="22" />
+          <folding>
+            <element signature="e#52391#52392#0" expanded="true" />
+            <element signature="e#52435#52436#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuy.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="248">
+          <caret line="100" column="3" lean-forward="false" selection-start-line="100" selection-start-column="3" selection-end-line="100" selection-end-column="3" />
+          <folding>
+            <element signature="e#678#699#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/javafx-src.zip!/javafx/scene/control/Control.java">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="425">
+          <caret line="81" column="22" lean-forward="false" selection-start-line="81" selection-start-column="22" selection-end-line="81" selection-end-column="22" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/GoodGuyGroups.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="272">
+          <caret line="45" column="28" lean-forward="true" selection-start-line="45" selection-start-column="28" selection-end-line="45" selection-end-column="28" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/GroupsUi.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="35" column="46" lean-forward="true" selection-start-line="35" selection-start-column="46" selection-end-line="35" selection-end-column="46" />
+        <state relative-caret-position="329">
+          <caret line="94" column="40" lean-forward="true" selection-start-line="94" selection-start-column="40" selection-end-line="94" selection-end-column="40" />
           <folding>
-            <element signature="e#672#709#0" expanded="true" />
+            <element signature="e#672#721#0" expanded="true" />
           </folding>
         </state>
       </provider>

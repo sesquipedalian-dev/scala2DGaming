@@ -87,6 +87,9 @@ object Main {
     val gunner2 = new GoodGuy("Jefferson", Location(6, 27))
     gunner2.use(gun2)
 
+    val groups = new GoodGuyGroups()
+    groups.groups = Map("Group 1" -> List(gunner1, gunner2))
+
     // fork off JavaFX UI thread
     val javaFxApp = new GroupsUi
     val uiThread = new Thread(javaFxApp)

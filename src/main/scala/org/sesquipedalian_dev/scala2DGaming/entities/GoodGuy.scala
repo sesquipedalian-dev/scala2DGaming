@@ -24,7 +24,7 @@ import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
 
 class GoodGuy(
-  name: String,
+  val name: String,
   var location: Location
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
@@ -114,5 +114,9 @@ class GoodGuy(
         uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize + medYSize, needTexts.size, UITextRenderer.SMALL)
       })
     }
+  }
+
+  override def toString: String = {
+    s"GoodGuy($name)"
   }
 }
