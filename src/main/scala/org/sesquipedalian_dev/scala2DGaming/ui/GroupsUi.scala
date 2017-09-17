@@ -24,10 +24,13 @@ import javafx.scene.input.{ClipboardContent, DragEvent, MouseEvent, TransferMode
 import javafx.scene.layout.{AnchorPane, Border, FlowPane}
 import javafx.scene.paint.Color
 import javafx.scene.text.{Font, Text}
-import javafx.stage.Stage
+import javafx.stage.{Stage, WindowEvent}
 
-import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
-import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuyGroups
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.entities.{GoodGuyGroups, Location}
+import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
+import org.sesquipedalian_dev.scala2DGaming.ui.GroupsUi.singleton
 
 import collection.JavaConverters._
 
@@ -43,7 +46,7 @@ class GroupsUiController extends HasGameUpdate {
   var scrollPane: ScrollPane = null
 
   def onAddGroup(e: ActionEvent): Unit = {
-    println(s"GroupsUiController add button clicked $e")
+//    println(s"GroupsUiController add button clicked $e")
     GoodGuyGroups.add(groupInput.getText)
   }
 
@@ -59,7 +62,7 @@ class GroupsUiController extends HasGameUpdate {
   def redraw(): Unit = {
     Platform.runLater(new Runnable() {
       def run() {
-        println(s"updating groups UI $cachedGroups")
+//        println(s"updating groups UI $cachedGroups")
 
         // clear the current content of the group UI
         val contentPane = scrollPane.getContent.asInstanceOf[FlowPane]
@@ -79,7 +82,8 @@ class GroupsUiController extends HasGameUpdate {
             guyPane.setPrefWidth(50)
             guyPane.setOnDragDetected(new EventHandler[MouseEvent] {
               override def handle(event: MouseEvent) = {
-                println(s"on drag start $n")
+//                println(s"on drag start $n")
+
                 // create the 'dragboard' - analogous to clipbaord I guess
                 val db = guyPane.startDragAndDrop(TransferMode.LINK)
 
@@ -161,29 +165,71 @@ class GroupsUiController extends HasGameUpdate {
   }
 }
 
-class GroupsUi extends Application with Runnable {
+class GroupsUi extends Runnable {
   val WINDOW_WIDTH = 400
   val WINDOW_HEIGHT = 400
-  var primaryStage: Option[Stage] = None
 
-  override def start(primaryStage: Stage): Unit = {
+  override def run(): Unit = {
+
     val fxmlFile = getClass.getResource("/fxml/groups.fxml")
     val loader = new javafx.fxml.FXMLLoader()
     val root: javafx.scene.Parent = loader.load(fxmlFile.openStream())
     val theScene = new javafx.scene.Scene(root, WINDOW_WIDTH, WINDOW_HEIGHT)
 
-    this.primaryStage = Some(primaryStage)
-    primaryStage.setTitle("Groups:")
+    val theStage = new Stage()
+    GroupsUi.primaryStage = Some(theStage)
+    theStage.setTitle("Groups:")
 
-    primaryStage.setScene(theScene)
-    primaryStage.show()
-  }
+    // also intercept alt-f4 and 'x' button on app
+    theStage.setOnCloseRequest(new EventHandler[WindowEvent]() {
+      override def handle(event: WindowEvent): Unit = {
+        GroupsUi.close()
+        event.consume()
+      }
+    })
 
-  override def run() = {
-    Application.launch()
-  }
-
-  def requestStop() = {
-    primaryStage.foreach(_.close())
+    theStage.setScene(theScene)
+    theStage.show()
   }
 }
+
+object GroupsUi {
+  var primaryStage: Option[Stage] = None
+  var singleton: Option[GroupsUi] = None
+  def start(): Unit = {
+    if(singleton.isEmpty) {
+      // fork off JavaFX UI thread
+      val groupsUi = new GroupsUi
+      Platform.runLater(groupsUi)
+      singleton = Some(groupsUi)
+    }
+  }
+
+  def close(): Unit = {
+    if(singleton.nonEmpty) {
+      primaryStage.foreach(ps => Platform.runLater(new Runnable {
+        override def run() = ps.close()
+      }))
+
+      singleton = None
+      primaryStage = None
+    }
+  }
+}
+
+class ToggleGroupsUiButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
+  override def textureFile = "/textures/groups.bmp"
+  override def location = Location(2200, 80)
+  val timeToSet: Double = TimeOfDay.PAUSE
+
+  var previousSpeed: Option[Double] = None
+  override def buttonClicked(): Unit = {
+    GroupsUi.singleton match {
+      case Some(s) => GroupsUi.close()
+      case _ => GroupsUi.start()
+    }
+  }
+}
+
+
+

@@ -91,9 +91,8 @@ object Main {
     groups.groups = Map("Group 1" -> List(gunner1, gunner2))
 
     // fork off JavaFX UI thread
-    val javaFxApp = new GroupsUi
-    val uiThread = new Thread(javaFxApp)
-    uiThread.start()
+    JavaFXManager.myInit()
+    new ToggleGroupsUiButton()
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)
@@ -101,7 +100,8 @@ object Main {
     // clean up
     window.cleanup()
     Renderable.cleanup()
-    javaFxApp.requestStop()
+//    GroupsUi.close()
+    JavaFXManager.myCleanup()
   }
 }
 
