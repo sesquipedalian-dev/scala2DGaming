@@ -87,12 +87,18 @@ object Main {
     val gunner2 = new GoodGuy("Jefferson", Location(6, 27))
     gunner2.use(gun2)
 
+    // fork off JavaFX UI thread
+    val javaFxApp = new GroupsUi
+    val uiThread = new Thread(javaFxApp)
+    uiThread.start()
+
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)
 
     // clean up
     window.cleanup()
     Renderable.cleanup()
+    javaFxApp.requestStop()
   }
 }
 
