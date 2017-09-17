@@ -42,8 +42,26 @@ class GoodGuy(
   override def textureFile: String = "/textures/MilitaryMan.bmp"
 
   override def update(deltaTimeSeconds: Double): Unit = {
+    // determine anything to do based on activity
+    GoodGuyGroups.groupForGuy(this).foreach(group => {
+      val activity = group.schedule.get()
+//      println(s"Good guy deciding based on activity? $name $activity")
+      activity match {
+        case Activities.GUARD if equipmentImUsing.nonEmpty => // we found some equipment, keep it up
+        case Activities.GUARD => {
 
+        }
+        case Activities.SLEEP if equipmentImUsing.exists(_ => false /* TODO set up bed equipment */) => // if we usin' a bed keep it up
+        case Activities.SLEEP if equipmentImUsing.nonEmpty => { // put down the equipment
+          equipmentImUsing.foreach(drop)
+        }
+        case Activities.SLEEP => {
+          // we not usin' a bed, move on towards one
+        }
+      }
+    })
   }
+
 
   def use(equipment: Equipment): Unit = {
     // unman whatever we were already manning
@@ -52,6 +70,12 @@ class GoodGuy(
     // man the new thing
     equipment.user = Some(this)
     equipmentImUsing = Some(equipment)
+  }
+
+  def drop(equipment: Equipment): Unit = {
+    // unman whatever we were already manning
+    equipmentImUsing.foreach(e => e.user = None)
+    equipmentImUsing = None
   }
 
   def needEffectiveness: Double = {

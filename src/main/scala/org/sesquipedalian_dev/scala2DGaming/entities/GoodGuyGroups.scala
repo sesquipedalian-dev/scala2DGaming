@@ -20,40 +20,50 @@ import javax.naming.Name
 // manage the group deployments of the good guys
 // groups share a schedule of activities
 class GoodGuyGroups {
-  var groups: Map[String, List[GoodGuy]] = Map()
+  var groups: Map[String, GoodGuyGroup] = Map()
   GoodGuyGroups.singleton = Some(this)
+}
+
+case class GoodGuyGroup(
+  name: String,
+  var guys: List[GoodGuy] = Nil
+) {
+  val schedule: Schedule = new Schedule()
 }
 
 object GoodGuyGroups {
   var singleton: Option[GoodGuyGroups] = None
 
-  def groups: Map[String, List[GoodGuy]] = singleton.map(_.groups).getOrElse(Map())
-  def groupForGuy(guy: GoodGuy): Option[String] = groups.find(p => p._2.contains(guy)).map(_._1)
+  def groups: Map[String, GoodGuyGroup] = singleton.map(_.groups).getOrElse(Map())
+  def groupForGuy(guy: GoodGuy): Option[GoodGuyGroup] = groups.find(p => p._2.guys.contains(guy)).map(_._2)
   def add(newGroup: String) = singleton.foreach(s => {
     if(!s.groups.contains(newGroup)) { // don't allow to add key that's already there
-      s.groups = s.groups + (newGroup -> Nil)
+      s.groups = s.groups + (newGroup -> new GoodGuyGroup(newGroup))
     }
   })
   def tryRemove(removeGroup: String) = singleton.foreach(s => {
-    val size = s.groups.getOrElse(removeGroup, Nil)
-    if(size.isEmpty) {
-      s.groups = s.groups - removeGroup
-    }
+    val group = s.groups.get(removeGroup)
+//    println(s"tryRemove entry $removeGroup $groups $group")
+    group.foreach(g => {
+      if(g.guys.isEmpty) {
+        s.groups -= removeGroup
+      }
+    })
   })
 
   def moveToGroup(guyName: String, group: String) = {
 //    println(s"moveToGroup entry $guyName, $group, ${singleton.map(_.groups)}")
     singleton.foreach(s => {
-      val oldGuy = s.groups.toList.flatMap(g => g._2.map(p => g._1 -> p)).find(g => g._2.name == guyName)
+      val oldGuy = s.groups.toList.flatMap(g => g._2.guys.map(p => g._1 -> p)).find(g => g._2.name == guyName)
 //      println(s"moveToGroup old guy!? $oldGuy")
       oldGuy.foreach {
-        case (foundGroup, foundName) if foundGroup != group /* don't allow add and drop from same group */ => {
-          s.groups = s.groups.map({
-            case (gName, people) if gName == foundGroup => {
-              gName -> people.filterNot(_ == foundName)
+        case (foundGroup, foundGuy) if foundGroup != group /* don't allow add and drop from same group */ => {
+          s.groups.foreach({
+            case (gName, groupObj) if gName == foundGroup => {
+              groupObj.guys = groupObj.guys.filterNot(_ == foundGuy)
             }
-            case (gName, people) if gName == group => {
-              gName -> (people :+ foundName)
+            case (gName, groupObj) if gName == group => {
+              groupObj.guys = groupObj.guys :+ foundGuy
             }
             case x => x
           })

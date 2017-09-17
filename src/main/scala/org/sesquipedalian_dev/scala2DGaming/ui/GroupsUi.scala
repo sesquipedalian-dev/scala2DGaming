@@ -27,7 +27,7 @@ import javafx.scene.text.{Font, Text}
 import javafx.stage.{Stage, WindowEvent}
 
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
-import org.sesquipedalian_dev.scala2DGaming.entities.{GoodGuyGroups, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{GoodGuyGroup, GoodGuyGroups, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.ui.GroupsUi.singleton
@@ -52,7 +52,7 @@ class GroupsUiController extends HasGameUpdate {
 
   override def update(deltaTimeSeconds: Double): Unit = {
 //    println(s"GroupsUiController update has scrollPane? $scrollPane")
-    val newGroups = GoodGuyGroups.groups.map(p => (p._1 -> p._2.map(_.name)))
+    val newGroups = GoodGuyGroups.groups.map(p => (p._1 -> p._2.guys.map(_.name)))
     if(newGroups != cachedGroups) {
       cachedGroups = newGroups
       redraw()
