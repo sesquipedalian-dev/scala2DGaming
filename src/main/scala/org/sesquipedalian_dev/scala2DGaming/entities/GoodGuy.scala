@@ -18,7 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 import java.awt.Color
 
 import org.joml.Vector3f
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
@@ -31,7 +31,10 @@ class GoodGuy(
   with WorldMouseListener
   with HasUiRendering
   with HasUiSpriteRendering
+  with HasMovingToward
 {
+  override val speed = 1.0f / TimeOfDay.SLOW.toFloat
+
   // TODO make needs init more flexible - some good guys could have traits that adjust how their needs work,
   // or what needs they even have
   var needs: List[Need] = List(
@@ -42,6 +45,8 @@ class GoodGuy(
   override def textureFile: String = "/textures/MilitaryMan.bmp"
 
   override def update(deltaTimeSeconds: Double): Unit = {
+    direction = None
+
     // determine anything to do based on activity
     GoodGuyGroups.groupForGuy(this).foreach(group => {
       val activity = group.schedule.get()
@@ -49,7 +54,23 @@ class GoodGuy(
       activity match {
         case Activities.GUARD if equipmentImUsing.nonEmpty => // we found some equipment, keep it up
         case Activities.GUARD => {
+          val turretsByRange = HasWorldSpriteRendering.all.collect({case gun: GunTurret => {
+            gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
+          }}).sortBy(_._2)
 
+          if(turretsByRange.nonEmpty) {
+            val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange)
+            if(turretCloseEnoughToUse.nonEmpty) {
+              use(turretCloseEnoughToUse.get._1)
+            } else {
+              val targetTurret = turretsByRange.head._1.location
+              val targetDir = Location(targetTurret.x - location.x, targetTurret.y - location.y)
+              val angle = Math.atan2(targetDir.y, targetDir.x)
+              val normalX = Math.cos(angle).toFloat
+              val normalY = Math.sin(angle).toFloat
+              direction = Some(Location(normalX, normalY))
+            }
+          }
         }
         case Activities.SLEEP if equipmentImUsing.exists(_ => false /* TODO set up bed equipment */) => // if we usin' a bed keep it up
         case Activities.SLEEP if equipmentImUsing.nonEmpty => { // put down the equipment
@@ -60,10 +81,14 @@ class GoodGuy(
         }
       }
     })
+
+//    println(s"Good Guy preupdate")
+    super.update(deltaTimeSeconds)
   }
 
-
   def use(equipment: Equipment): Unit = {
+    println(s"$name using equipment $equipment")
+
     // unman whatever we were already manning
     equipmentImUsing.foreach(e => e.user = None)
 
@@ -73,6 +98,8 @@ class GoodGuy(
   }
 
   def drop(equipment: Equipment): Unit = {
+    println(s"$name dropping equipment $equipment")
+
     // unman whatever we were already manning
     equipmentImUsing.foreach(e => e.user = None)
     equipmentImUsing = None
@@ -143,4 +170,6 @@ class GoodGuy(
   override def toString: String = {
     s"GoodGuy($name)"
   }
+
+
 }

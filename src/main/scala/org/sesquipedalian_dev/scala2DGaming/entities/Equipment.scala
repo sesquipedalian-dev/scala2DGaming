@@ -17,4 +17,11 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 
 trait Equipment {
   var user: Option[GoodGuy] = None
+  def location: Location
+  def name: String
+  def useRange: Float
+
+  override def toString: String = {
+    s"$name at $location"
+  }
 }

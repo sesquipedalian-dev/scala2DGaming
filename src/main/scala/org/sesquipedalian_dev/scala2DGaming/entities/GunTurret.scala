@@ -38,6 +38,8 @@ class GunTurret(
   with HasRangeOverlayRendering
   with WorldMouseListener
 {
+  val name: String = "GunTurret"
+  val useRange: Float = 1
   override val textureFile: String = "/textures/gun.bmp"
 
   var shotTimer = secondsPerShot * TimeOfDay.SLOW
