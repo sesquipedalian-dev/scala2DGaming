@@ -120,7 +120,7 @@ trait HasMovingToward extends HasGameUpdate {
     }}).sortBy(_._2)
 
     if(turretsByRange.nonEmpty) {
-      val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange)
+      val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange && p._1.user.isEmpty)
       if(turretCloseEnoughToUse.nonEmpty) {
         use(turretCloseEnoughToUse.get._1)
       } else {

@@ -50,9 +50,5 @@ trait UIButtonMouseListener extends MouseInputHandler {
     }
   }
 
-  val timeToSet: Double
-  def buttonClicked(): Unit = {
-    //    println(s"button clicked $textureFile")
-    TimeOfDay.instance.foreach(_.speed = timeToSet)
-  }
+  def buttonClicked(): Unit
 }

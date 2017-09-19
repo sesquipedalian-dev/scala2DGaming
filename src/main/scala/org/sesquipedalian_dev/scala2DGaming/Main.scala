@@ -69,14 +69,15 @@ object Main {
     new SlowButton()
     new MediumButton()
     new FastButton()
+    new BuyGoodGuyButton()
 
     val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
     world.initTestData()
 
     new BadGuySpawner(Location(0, 26), 5f)
 
-    new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
-    new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
+    new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
+    new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
 
     val gunner1 = new GoodGuy("Washington", Location(15, 24))
     val gunner2 = new GoodGuy("Jefferson", Location(15, 27))
@@ -87,6 +88,8 @@ object Main {
 
     new Bed(Location(40, 24))
     new Bed(Location(40, 27))
+
+    new Commander(100)
 
     // fork off JavaFX UI thread
     JavaFXManager.myInit()
