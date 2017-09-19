@@ -16,7 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.needs
 
 import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
-import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
+import org.sesquipedalian_dev.scala2DGaming.entities.{Bed, GoodGuy}
 
 // soldiers need sleep
 // target should be 8hr sleep / 24 hr period for max effectiveness -
@@ -26,19 +26,11 @@ import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
 case class SleepNeed(target: GoodGuy) extends Need(target) {
   override val name: String = "Sleep"
   override def update(deltaTimeSeconds: Double): Unit = {
-    val tickRate: Float = if(target.equipmentImUsing.exists(p => false /* TODO define beds */)) {
-      100.toFloat / 8 / 60 / 60  // sleeping for 8 hours fully sets you up
+    val tickRate: Float = if(target.equipmentImUsing.collect{case x: Bed => x} nonEmpty) {
+      -100.toFloat / 7 / 60 / 60  // sleeping for 8 hours fully sets you up, but give 'em a few minutes to get to the beds
     } else {
       100.toFloat / 16 / 60 / 60 // being awake for 16 hours fully exacerbates this need
     }
     adjustByRate(deltaTimeSeconds, tickRate)
-
-    // VV we tried an experiment with the need going up exponentially, but I think the effectiveness decreasing exponentially
-    // makes more sense 
-//    if(target.equipmentImUsing.exists(p => false /* TODO define beds */)) {
-//      exponentialAdjustByMax(deltaTimeSeconds, 8 * 60 * 60, direction = -1)
-//    } else {
-//      exponentialAdjustByMax(deltaTimeSeconds, 16 * 60 * 60)
-//    }
   }
 }

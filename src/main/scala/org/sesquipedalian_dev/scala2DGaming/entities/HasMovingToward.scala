@@ -15,6 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
+import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
 
 trait HasMovingToward extends HasGameUpdate {
@@ -111,5 +112,25 @@ trait HasMovingToward extends HasGameUpdate {
         )
       }
     })
+  }
+
+  def moveTowardsEquipment[A <: Equipment](use: (A) => Unit)(implicit mf: Manifest[A]): Unit = {
+    val turretsByRange = HasWorldSpriteRendering.all.collect({case gun: A => {
+      gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
+    }}).sortBy(_._2)
+
+    if(turretsByRange.nonEmpty) {
+      val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange)
+      if(turretCloseEnoughToUse.nonEmpty) {
+        use(turretCloseEnoughToUse.get._1)
+      } else {
+        val targetTurret = turretsByRange.head._1.location
+        val targetDir = Location(targetTurret.x - location.x, targetTurret.y - location.y)
+        val angle = Math.atan2(targetDir.y, targetDir.x)
+        val normalX = Math.cos(angle).toFloat
+        val normalY = Math.sin(angle).toFloat
+        direction = Some(Location(normalX, normalY))
+      }
+    }
   }
 }

@@ -75,21 +75,18 @@ object Main {
 
     new BadGuySpawner(Location(0, 26), 5f)
 
-    // test guns
-//    new GunTurret(Location(5, 24), 1, 10, RangeArc(Math.PI.toFloat, Math.PI.toFloat * 2, 4))
-//    new GunTurret(Location(5, 27), 1, 10, RangeArc(0, Math.PI.toFloat, 4))
-
-    val gun1 = new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
-    val gun2 = new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
+    new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
+    new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 4))
 
     val gunner1 = new GoodGuy("Washington", Location(15, 24))
-//    gunner1.use(gun1)
     val gunner2 = new GoodGuy("Jefferson", Location(15, 27))
-//    gunner2.use(gun2)
 
     val groups = new GoodGuyGroups()
     val group1 = new GoodGuyGroup("Group 1", List(gunner1, gunner2))
     groups.groups = Map(group1.name -> group1)
+
+    new Bed(Location(40, 24))
+    new Bed(Location(40, 27))
 
     // fork off JavaFX UI thread
     JavaFXManager.myInit()

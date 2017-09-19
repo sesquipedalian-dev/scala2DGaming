@@ -52,33 +52,18 @@ class GoodGuy(
       val activity = group.schedule.get()
 //      println(s"Good guy deciding based on activity? $name $activity")
       activity match {
-        case Activities.GUARD if equipmentImUsing.nonEmpty => // we found some equipment, keep it up
-        case Activities.GUARD => {
-          val turretsByRange = HasWorldSpriteRendering.all.collect({case gun: GunTurret => {
-            gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
-          }}).sortBy(_._2)
-
-          if(turretsByRange.nonEmpty) {
-            val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange)
-            if(turretCloseEnoughToUse.nonEmpty) {
-              use(turretCloseEnoughToUse.get._1)
-            } else {
-              val targetTurret = turretsByRange.head._1.location
-              val targetDir = Location(targetTurret.x - location.x, targetTurret.y - location.y)
-              val angle = Math.atan2(targetDir.y, targetDir.x)
-              val normalX = Math.cos(angle).toFloat
-              val normalY = Math.sin(angle).toFloat
-              direction = Some(Location(normalX, normalY))
-            }
-          }
-        }
-        case Activities.SLEEP if equipmentImUsing.exists(_ => false /* TODO set up bed equipment */) => // if we usin' a bed keep it up
-        case Activities.SLEEP if equipmentImUsing.nonEmpty => { // put down the equipment
-          equipmentImUsing.foreach(drop)
-        }
-        case Activities.SLEEP => {
-          // we not usin' a bed, move on towards one
-        }
+        // we found some equipment, keep it up
+        case Activities.GUARD if equipmentImUsing.collect({case x: GunTurret => x}).nonEmpty =>
+        // if guarding and on wrong equipment, drop it
+        case Activities.GUARD if equipmentImUsing.nonEmpty => equipmentImUsing.foreach(drop)
+        // not using a gun, move towards one
+        case Activities.GUARD => moveTowardsEquipment[GunTurret](use)
+        // if we usin' a bed keep it up
+        case Activities.SLEEP if equipmentImUsing.collect({case x: Bed => x}).nonEmpty =>
+        // put down the equipment
+        case Activities.SLEEP if equipmentImUsing.nonEmpty => equipmentImUsing.foreach(drop)
+        // we not usin' a bed, move on towards one
+        case Activities.SLEEP => moveTowardsEquipment[Bed](use)
       }
     })
 
