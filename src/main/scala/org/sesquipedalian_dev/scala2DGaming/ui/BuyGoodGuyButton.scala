@@ -21,12 +21,14 @@ import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 
 class BuyGoodGuyButton
   extends HasUiSpriteRendering
   with UIButtonMouseListener
   with HasUiRendering
+  with Logging
 {
   var textureIndex: Option[Int] = None
   var goldCost: Int = 50
@@ -34,7 +36,7 @@ class BuyGoodGuyButton
   override def location = Location(0, (Math.pow(Main.UI_HEIGHT, 2) / Main.UI_WIDTH - UITextRenderer.sizeToInt(UITextRenderer.MEDIUM) * 3).toFloat)
 
   override def buttonClicked(): Unit = {
-    println(s"Buy Good Guy button clicked")
+    trace"Buy Good Guy button clicked $textureIndex"
   }
 
   override def render(uiRenderer: UITextRenderer): Unit = {

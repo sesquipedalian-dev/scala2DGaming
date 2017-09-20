@@ -15,26 +15,23 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.ui
 
-import javafx.application.{Application, Platform}
+import javafx.application.Platform
 import javafx.event.{ActionEvent, EventHandler}
 import javafx.fxml.FXML
 import javafx.scene.control.{Button, ScrollPane, TextField, TitledPane}
 import javafx.scene.image.{Image, ImageView}
 import javafx.scene.input.{ClipboardContent, DragEvent, MouseEvent, TransferMode}
-import javafx.scene.layout.{AnchorPane, Border, FlowPane}
-import javafx.scene.paint.Color
-import javafx.scene.text.{Font, Text}
+import javafx.scene.layout.FlowPane
+import javafx.scene.text.Text
 import javafx.stage.{Stage, WindowEvent}
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
-import org.sesquipedalian_dev.scala2DGaming.entities.{GoodGuyGroup, GoodGuyGroups, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{GoodGuyGroups, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
-import org.sesquipedalian_dev.scala2DGaming.ui.GroupsUi.singleton
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
-import collection.JavaConverters._
-
-class GroupsUiController extends HasGameUpdate {
+class GroupsUiController extends HasGameUpdate with Logging {
   var texture: Option[Image] = Some(new Image("/textures/MilitaryMan.bmp", 40.0, 40.0, false, true))
 
   var cachedGroups: Map[String, List[String]] = Map()
@@ -46,12 +43,12 @@ class GroupsUiController extends HasGameUpdate {
   var scrollPane: ScrollPane = null
 
   def onAddGroup(e: ActionEvent): Unit = {
-//    println(s"GroupsUiController add button clicked $e")
+    trace"GroupsUiController add button clicked $e"
     GoodGuyGroups.add(groupInput.getText)
   }
 
   override def update(deltaTimeSeconds: Double): Unit = {
-//    println(s"GroupsUiController update has scrollPane? $scrollPane")
+    trace"GroupsUiController update has scrollPane? $scrollPane"
     val newGroups = GoodGuyGroups.groups.map(p => (p._1 -> p._2.guys.map(_.name)))
     if(newGroups != cachedGroups) {
       cachedGroups = newGroups
@@ -62,7 +59,7 @@ class GroupsUiController extends HasGameUpdate {
   def redraw(): Unit = {
     Platform.runLater(new Runnable() {
       def run() {
-//        println(s"updating groups UI $cachedGroups")
+        trace"updating groups UI $cachedGroups"
 
         // clear the current content of the group UI
         val contentPane = scrollPane.getContent.asInstanceOf[FlowPane]
@@ -82,7 +79,7 @@ class GroupsUiController extends HasGameUpdate {
             guyPane.setPrefWidth(50)
             guyPane.setOnDragDetected(new EventHandler[MouseEvent] {
               override def handle(event: MouseEvent) = {
-//                println(s"on drag start $n")
+                trace"on drag start $n"
 
                 // create the 'dragboard' - analogous to clipbaord I guess
                 val db = guyPane.startDragAndDrop(TransferMode.LINK)
@@ -119,7 +116,7 @@ class GroupsUiController extends HasGameUpdate {
           // allow group pane to receive drag events
           groupPane.setOnDragOver(new EventHandler[DragEvent] {
             override def handle(event: DragEvent) = {
-//              println(s"drag over $groupName")
+              trace"drag over $groupName"
               if(event.getDragboard.hasString) {
                 event.acceptTransferModes(TransferMode.LINK)
               }
@@ -131,7 +128,7 @@ class GroupsUiController extends HasGameUpdate {
           // provide some interactivity help for drag
           groupPane.setOnDragEntered(new EventHandler[DragEvent] {
             override def handle(event: DragEvent) = {
-//              println(s"drag enter $groupName")
+              trace"drag enter $groupName"
               if(event.getDragboard.hasString) {
                 groupPane.setOpacity(.5)
               }
@@ -139,7 +136,7 @@ class GroupsUiController extends HasGameUpdate {
           })
           groupPane.setOnDragExited(new EventHandler[DragEvent] {
             override def handle(event: DragEvent) = {
-//              println(s"drag leave $groupName")
+              trace"drag leave $groupName"
               if(event.getDragboard.hasString) {
                 groupPane.setOpacity(1.0)
               }
@@ -149,12 +146,12 @@ class GroupsUiController extends HasGameUpdate {
           groupPane.setOnDragDropped(new EventHandler[DragEvent] {
             override def handle(event: DragEvent) = {
               val dragboard = event.getDragboard
-//              println(s"drag handle entry $groupName")
+              trace"drag handle entry $groupName"
               if(dragboard.hasString) {
                 val targetName = dragboard.getString
                 GoodGuyGroups.moveToGroup(targetName, groupName)
               }
-//              println(s"drag handle exit $groupName")
+              trace"drag handle exit $groupName"
             }
           })
 

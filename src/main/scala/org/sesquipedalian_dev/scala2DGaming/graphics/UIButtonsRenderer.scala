@@ -15,22 +15,18 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.{ByteBuffer, FloatBuffer, IntBuffer}
-
-import org.joml.Matrix4f
-import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
 import org.lwjgl.opengl.GL11._
-import org.lwjgl.opengl.GL15._
-import org.lwjgl.opengl.GL20.{glGetAttribLocation, glGetUniformLocation, glUniformMatrix4fv, _}
-import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
+import org.lwjgl.opengl.GL20.{glGetUniformLocation, _}
+import org.lwjgl.opengl.GL30._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 class UIButtonsRenderer(
   worldWidth: Int,
   worldHeight: Int
 ) extends Renderer
   with ThrowsExceptionOnGLError
+  with Logging
 {
   val textureSize: Int = 64
   final val VERTICES_PER_THING = 4
@@ -191,7 +187,7 @@ class UIButtonsRenderer(
 
         val xTextSize = UITextRenderer.singleton.flatMap(_.textSizes.find(_.name == textSize).map(_.size)).getOrElse(0).toFloat
 
-//        println(s"drawing text backing $xTextSize $x/${x + (numChars * xTextSize)} $y/${y + xTextSize}")
+        trace"drawing text backing $xTextSize $x/${x + (numChars * xTextSize)} $y/${y + xTextSize}"
 
         vertexBuffer.put(x).put(y)
           .put(0f).put(1f).put(texIndex.toFloat)

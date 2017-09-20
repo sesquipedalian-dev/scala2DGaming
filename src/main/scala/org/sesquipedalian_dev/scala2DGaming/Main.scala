@@ -21,10 +21,11 @@ import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 import scala.util.Random
 
-object Main {
+object Main extends Logging {
   final val UI_WIDTH = 2560
   final val UI_HEIGHT = 1440
 
@@ -44,7 +45,7 @@ object Main {
   var random: Option[Random] = None
 
   def main(args: Array[String]): Unit = {
-    println("Hello World")
+    info"Main Program Start"
 
     // TODO allow us to initialize random with a specific seed (for replay)
     val seed: Long = new Date().getTime
@@ -101,8 +102,9 @@ object Main {
     // clean up
     window.cleanup()
     Renderable.cleanup()
-//    GroupsUi.close()
     JavaFXManager.myCleanup()
+
+    info"Main Program End"
   }
 }
 

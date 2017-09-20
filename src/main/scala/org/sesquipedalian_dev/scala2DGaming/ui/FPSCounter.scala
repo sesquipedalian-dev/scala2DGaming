@@ -17,8 +17,8 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 
 import java.awt.Color
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 // track fps
 class FPSCounter()

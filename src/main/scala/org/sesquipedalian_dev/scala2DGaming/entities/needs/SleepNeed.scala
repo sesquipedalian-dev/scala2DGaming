@@ -15,7 +15,6 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.needs
 
-import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.entities.{Bed, GoodGuy}
 
 // soldiers need sleep

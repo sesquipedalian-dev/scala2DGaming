@@ -15,16 +15,11 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.{FloatBuffer, IntBuffer}
-
-import org.joml.Matrix4f
-import org.lwjgl.glfw.GLFW.{glfwGetCurrentContext, glfwGetFramebufferSize}
 import org.lwjgl.opengl.GL11._
-import org.lwjgl.opengl.GL15._
-import org.lwjgl.opengl.GL20.{glGetAttribLocation, glGetUniformLocation, glUniformMatrix4fv, _}
-import org.lwjgl.opengl.GL30.{glDeleteVertexArrays, _}
-import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
+import org.lwjgl.opengl.GL20._
+import org.lwjgl.opengl.GL30._
+import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.scala2DGaming.util.ThrowsExceptionOnGLError
 
 class WorldSpritesRenderer(
   textureSize: Int,

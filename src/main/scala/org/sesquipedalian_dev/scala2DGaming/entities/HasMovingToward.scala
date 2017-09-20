@@ -16,9 +16,10 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
 
-trait HasMovingToward extends HasGameUpdate {
+trait HasMovingToward extends HasGameUpdate with Logging {
   def name: String
   val speed: Float // units / sec
   var location: Location
@@ -27,7 +28,7 @@ trait HasMovingToward extends HasGameUpdate {
   def worldSize: Location = Location(Main.WORLD_WIDTH, Main.WORLD_HEIGHT)
 
   def update(deltaTimeSeconds: Double): Unit = {
-//    println(s"HasMovingToward update entry $deltaTimeSeconds $direction")
+    trace"HasMovingToward update entry $deltaTimeSeconds $direction"
     direction.foreach(targetDirection => {
       val deltaX = (targetDirection.x * speed * deltaTimeSeconds.toFloat)
       val deltaY = (targetDirection.y * speed * deltaTimeSeconds.toFloat)
@@ -54,11 +55,11 @@ trait HasMovingToward extends HasGameUpdate {
       // if not, we have to move around an obstacle
       val traversable = WorldMap.instance.flatMap(world => {
         val tile = world.worldLocations.get(oneTileInDirection)
-        //        println(s"tile is traversable $tile")
+        trace"tile is traversable $tile"
         tile.map(_.traversable)
       }).getOrElse(false)
 
-//      println(s"moving a guy! $name $location $oneTileInDirection $traversable")
+      trace"moving a guy! $name $location $oneTileInDirection $traversable"
 
       if(!traversable) {
         // ok, we can't go that way - move the closest direction to where we were trying to go that is traversable
@@ -89,13 +90,13 @@ trait HasMovingToward extends HasGameUpdate {
             (d, traversable)
           })
           .filter(p => {
-            //            println(s"valid alternate direction? $p")
+            trace"valid alternate direction? $p"
             p._2
           }) // only pick a direction that is traversable
           .sortBy(p => {
           val angle = Math.atan2(p._1.y, p._1.x)
           val angleDiff = Math.abs(p._1.x - targetDirection.x) + Math.abs(p._1.y - targetDirection.y)
-          //            println(s"sorting alternate direction $p by $angleDiff")
+          trace"sorting alternate direction $p by $angleDiff"
           angleDiff
         }) // pick the direction that is closest to where we were already trying to go
           .head
@@ -103,7 +104,7 @@ trait HasMovingToward extends HasGameUpdate {
         // go new direction instead
         val newX = location.x + (d.x * speed * deltaTimeSeconds)
         val newY = location.y + (d.y * speed * deltaTimeSeconds)
-        //        println(s"going diff direction: $d $speed $deltaTimeSeconds $location $newX $newY")
+        trace"going diff direction: $d $speed $deltaTimeSeconds $location $newX $newY"
         location = Location(Math.max(0, Math.min(worldSize.x - 1, newX)).toFloat, Math.max(0, Math.min(worldSize.y - 1, newY)).toFloat)
       } else {
         location = Location(

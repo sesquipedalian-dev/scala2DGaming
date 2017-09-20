@@ -17,20 +17,13 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import java.awt.Font.TRUETYPE_FONT
 import java.awt.geom.AffineTransform
-import java.awt.{Font, FontMetrics, Graphics2D, RenderingHints}
 import java.awt.image.{AffineTransformOp, BufferedImage}
-import javax.swing.text.StyledEditorKit.BoldAction
+import java.awt.{Font, FontMetrics, RenderingHints}
 
-import org.lwjgl.system.MemoryUtil
 import org.lwjgl.opengl.GL11._
-import org.lwjgl.opengl.GL12._
 import org.lwjgl.opengl.GL30._
-import org.lwjgl.opengl.GL42._
-import org.lwjgl.stb.STBImage._
-import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
-
-import scala.util.{Failure, Success}
+import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError}
 
 // struct for storing info about the location of a given character on the texture atlas
 case class Glyph(
@@ -45,6 +38,7 @@ class FontTexture(
   resourceFontFile: String, // resource file path to locate the ttf
   point: Int = 1   // font size
 ) extends ThrowsExceptionOnGLError
+  with Logging
 {
   var glyphs = Map[Char, Glyph]()
 
@@ -94,7 +88,7 @@ class FontTexture(
         (currentXIndex + cWidth).toFloat / totalWidth,
         (cHeight).toFloat / totalHeight
       )
-//      println(s"creating glyph $char $newGlyph")
+      trace"creating glyph $char $newGlyph"
 
       g2.drawImage(charImage, currentXIndex, 0, null)
       glyphs += (char -> newGlyph)
@@ -107,7 +101,6 @@ class FontTexture(
     transform.translate(0, -totalHeight)
     val operation = new AffineTransformOp(transform, AffineTransformOp.TYPE_NEAREST_NEIGHBOR)
     val flippedTextureAtlas = operation.filter(textureAtlas, null)
-//    val flippedTextureAtlas = textureAtlas
 
     // put pixels into a byte buffer to send to the GPU
     val pixelBuffer = MemoryUtil.memAlloc(totalHeight * totalWidth)
@@ -116,7 +109,7 @@ class FontTexture(
       x <- 0 until totalWidth
     } {
       val pixel = flippedTextureAtlas.getRGB(x, y)
-//      println(String.format("loading font texture - RGB! %d/%d = %x %d", new Integer(x), new Integer(y), new Integer(pixel), new Integer(pixel)))
+      logging.trace(String.format("loading font texture - RGB! %d/%d = %x %d", new Integer(x), new Integer(y), new Integer(pixel), new Integer(pixel)))
       pixelBuffer.put(((pixel >> 24) & 0xFF).toByte) // we only really need alpha so we can pick custom text colors
     }
     pixelBuffer.flip()
@@ -128,7 +121,7 @@ class FontTexture(
     textureHandle.foreach(glBindTexture(GL_TEXTURE_2D, _))
     checkError()
 
-//    println(s"font thing ${pixelBuffer.remaining()}")
+    trace"font thing ${pixelBuffer.remaining()}"
 
     // load up the texture data
     glTexImage2D(GL_TEXTURE_2D, 0,

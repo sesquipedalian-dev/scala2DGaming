@@ -17,12 +17,13 @@ package org.sesquipedalian_dev.scala2DGaming.input
 
 import org.joml.{Matrix4f, Vector3f}
 import org.lwjgl.glfw.GLFW._
-import org.sesquipedalian_dev.scala2DGaming.{Main, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
-import org.sesquipedalian_dev.scala2DGaming.graphics.{UIButtonsRenderer, WorldSpritesRenderer}
+import org.sesquipedalian_dev.scala2DGaming.graphics.WorldSpritesRenderer
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 
-trait WorldMouseListener extends MouseInputHandler {
+trait WorldMouseListener extends MouseInputHandler with Logging {
   def textureFile: String
   def location: Location
 
@@ -90,7 +91,7 @@ trait WorldMouseListener extends MouseInputHandler {
 
       val topLeft2 = toScreen(location)
       val bottomRight2 = toScreen(location, Location(1, 1))
-//      println(s"new function for points? $topLeft $topLeft2 $bottomRight $bottomRight2")
+      trace"new function for points? $topLeft $topLeft2 $bottomRight $bottomRight2"
 
       val screenLeft = topLeft.x
       val screenRight = bottomRight.x
@@ -100,7 +101,7 @@ trait WorldMouseListener extends MouseInputHandler {
       val mouseProjectedX = (currentX / Main.SCREEN_WIDTH * 2) - 1
       val mouseProjectedY = -((currentY / Main.SCREEN_HEIGHT * 2) - 1)
 
-//      println(s"mouse check for game obj $location $screenLeft $screenRight $screenTop $screenBottom $mouseProjectedX $mouseProjectedY")
+      trace"mouse check for game obj $location $screenLeft $screenRight $screenTop $screenBottom $mouseProjectedX $mouseProjectedY"
 
       val in = (screenLeft <= mouseProjectedX) &&
         (mouseProjectedX <= screenRight) &&

@@ -18,14 +18,11 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 import java.nio.{FloatBuffer, IntBuffer}
 
 import org.joml.Matrix4f
-import org.lwjgl.glfw.GLFW.glfwSetWindowShouldClose
+import org.lwjgl.glfw.GLFW._
 import org.lwjgl.opengl.GL20.{glGetUniformLocation, glUniformMatrix4fv}
 import org.lwjgl.system.MemoryStack
-import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.input.KeyInputHandler
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
-import org.lwjgl.glfw.GLFW._
-import org.lwjgl.opengl.GL11.glViewport
+import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 class UICamera(
   worldWidth: Int,
@@ -98,6 +95,7 @@ class Camera2D(
 ) extends Renderable
   with KeyInputHandler
   with ThrowsExceptionOnGLError
+  with Logging
 {
   final val MAX_ZOOM: Float = 1f
   final val CAMERA_TRANSLATE_SPEED: Float = worldCameraScale
@@ -143,8 +141,8 @@ class Camera2D(
     val minY = (numScreensY - 1) * oneScreenY / 2 / aspectRatio
     val maxY = (numScreensY - 1) * oneScreenY / -2 / aspectRatio
 
-//    println(s"SetCamera: zoom=$zoom, min/max X: $minX/$maxX currentX=$xTranslate desiredX=$requestedXTranslate")
-//    println(s"SetCamera: zoom=$zoom, min/max Y: $minY/$maxY currentY=$yTranslate desiredY=$requestedYTranslate oneScreen=$oneScreenY numScreens=$numScreensY")
+    trace"SetCamera: zoom=$zoom, min/max X: $minX/$maxX currentX=$xTranslate desiredX=$requestedXTranslate"
+    trace"SetCamera: zoom=$zoom, min/max Y: $minY/$maxY currentY=$yTranslate desiredY=$requestedYTranslate oneScreen=$oneScreenY numScreens=$numScreensY"
 
     xTranslate = math.min(minX, math.max(maxX, requestedXTranslate))
     yTranslate = math.min(minY, math.max(maxY, requestedYTranslate))
@@ -218,7 +216,7 @@ class Camera2D(
       val cameraXScale = 2f / worldWidth.toFloat / worldCameraScale / zoom
       val aspectRatio = width / height
       val cameraYScale = 2f / worldHeight.toFloat / worldCameraScale / zoom * aspectRatio
-      //    println(s"updating screen size $aspectRatio $cameraXScale, $cameraYScale")
+      trace"updating screen size $aspectRatio $cameraXScale, $cameraYScale"
       projection.scale(cameraXScale, -cameraYScale, 1f)
       projection.translate(
         -worldWidth.toFloat * worldCameraScale / 2 + xTranslate,

@@ -17,9 +17,10 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 
 import java.awt.Color
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc
@@ -37,6 +38,7 @@ class GunTurret(
   with Equipment
   with HasRangeOverlayRendering
   with WorldMouseListener
+  with Logging
 {
   val name: String = "GunTurret"
   val useRange: Float = 1
@@ -92,14 +94,14 @@ class GunTurret(
   }
 
   override def hoverEnter(): Unit = {
-//    println(s"gun turret $location hoverenter")
+    trace"gun turret $location hoverenter"
   }
 
   override def hoverLeave(): Unit = {
-//    println(s"gun turret $location hoverleave")
+    trace"gun turret $location hoverleave"
   }
 
   override def clicked(): Unit = {
-//    println(s"gun turret $location click")
+    trace"gun turret $location click"
   }
 }

@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL30._
 import org.lwjgl.opengl.GL42._
 import org.lwjgl.stb.STBImage._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 import scala.util.{Failure, Success}
 
@@ -34,7 +34,9 @@ import scala.util.{Failure, Success}
 class TextureArray(
   textureSize: Int, // height & width of textures in this array - should be power of 2
   initialCapacity: Int = 1000
-) extends ThrowsExceptionOnGLError {
+) extends ThrowsExceptionOnGLError
+  with Logging
+{
   // we're going to assume one texture unit for now, and it has an array in it
   var textureHandle: Option[Int] = None
 
@@ -96,7 +98,7 @@ class TextureArray(
       })
       val result = texLoadResult match {
         case Success(_) => textureFiles :+= resourceName; Some(index)
-        case Failure(e) => println("problemas loading texture"); e.printStackTrace(); None
+        case Failure(e) => warn"problemas loading texture"; e.printStackTrace(); None
       }
 
       glBindTexture(GL_TEXTURE_2D_ARRAY, 0)

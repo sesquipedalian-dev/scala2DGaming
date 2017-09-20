@@ -15,10 +15,8 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
-
-import scala.util.Random
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 
 // thing to make bad guys on some timer
 class BadGuySpawner(

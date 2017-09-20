@@ -25,5 +25,20 @@
         <jarDirectory url="file://$MODULE_DIR$/../../programming_libs/lwjgl_minimal_opengles_3.1.2" recursive="false" type="SOURCES" />
       </library>
     </orderEntry>
+    <orderEntry type="module-library">
+      <library>
+        <CLASSES>
+          <root url="jar://$MODULE_DIR$/../../programming_libs/logback-classic-1.2.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../programming_libs/logback-core-1.2.3.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../programming_libs/slf4j-api-1.7.25.jar!/" />
+        </CLASSES>
+        <JAVADOC />
+        <SOURCES>
+          <root url="jar://$MODULE_DIR$/../../programming_libs/logback-classic-1.2.3-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../programming_libs/logback-core-1.2.3-sources.jar!/" />
+          <root url="jar://$MODULE_DIR$/../../programming_libs/slf4j-api-1.7.25-sources.jar!/" />
+        </SOURCES>
+      </library>
+    </orderEntry>
   </component>
 </module>

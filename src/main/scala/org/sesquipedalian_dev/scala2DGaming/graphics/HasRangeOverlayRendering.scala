@@ -15,8 +15,6 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import org.sesquipedalian_dev.scala2DGaming.entities.Location
-
 trait HasRangeOverlayRendering {
   HasRangeOverlayRendering.all :+= this
   def render(renderer: RangeOverlay): Unit

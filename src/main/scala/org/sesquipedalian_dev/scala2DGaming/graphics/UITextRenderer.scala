@@ -20,16 +20,19 @@ import java.awt.Color
 import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 class UITextRenderer(
   val uiWidth: Int,
   _uiHeight: Int
-) extends Renderer {
+) extends Renderer
+  with Logging
+{
   var aspectRatio: Option[Float] = None
   def uiHeight: Float = {
     camera.flatMap(_.aspectRatio).map(f => {
       val result: Float = _uiHeight.toFloat / f
-      println(s"uiHeight calc $uiHeight $f = $result")
+      trace"uiHeight calc $uiHeight $f = $result"
       result
     }).getOrElse(_uiHeight)
   }
@@ -118,13 +121,6 @@ class UITextRenderer(
       if (vertexBuffer.remaining < (VERTEX_PER_CHAR * FLOAT_PER_VERTEX) || elBuffer.remaining < EL_PER_CHAR) {
         flushVertexData(size)
       }
-
-//      val x1 = x + (fontInfo.size * index)
-//      val x2 = x + (fontInfo.size * (index + 1))
-//      val y1 = y
-//      val y2 = y + (fontInfo.size)
-
-//      println(s"Renderin' da text $x1/$x2 $y1 $y2 $size")
 
       vertexBuffer.put(x + (fontInfo.size * index)).put(y)
         .put(color.getRed).put(color.getGreen).put(color.getBlue)

@@ -16,12 +16,13 @@
 package org.sesquipedalian_dev.scala2DGaming.input
 
 import org.lwjgl.glfw.GLFW._
+import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.UIButtonsRenderer
-import org.sesquipedalian_dev.scala2DGaming.{Main, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 
-trait UIButtonMouseListener extends MouseInputHandler {
+trait UIButtonMouseListener extends MouseInputHandler with Logging {
   def textureFile: String
   def location: Location
   def handleAction(windowHandle: Long, button: Int, action: Int): Boolean = {
@@ -33,7 +34,7 @@ trait UIButtonMouseListener extends MouseInputHandler {
       val screenTop = location.y * Main.SCREEN_HEIGHT / aspectRatioUiHeight
       val screenBottom = screenTop + UIButtonsRenderer.singleton.map(_.textureSize).getOrElse(0).toFloat / aspectRatio / aspectRatioUiHeight * Main.SCREEN_HEIGHT
 
-      //      println(s"checking click in button bounds $location $currentX / $currentY $screenLeft $screenRight $screenTop $screenBottom")
+      trace"checking click in button bounds $location $currentX / $currentY $screenLeft $screenRight $screenTop $screenBottom"
       if(
         (screenLeft <= currentX) &&
           (currentX <= screenRight) &&

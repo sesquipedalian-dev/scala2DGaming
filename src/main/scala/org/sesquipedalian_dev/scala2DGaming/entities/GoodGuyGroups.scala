@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import javax.naming.Name
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 // manage the group deployments of the good guys
 // groups share a schedule of activities
@@ -31,7 +31,7 @@ case class GoodGuyGroup(
   val schedule: Schedule = new Schedule()
 }
 
-object GoodGuyGroups {
+object GoodGuyGroups extends Logging {
   var singleton: Option[GoodGuyGroups] = None
 
   def groups: Map[String, GoodGuyGroup] = singleton.map(_.groups).getOrElse(Map())
@@ -43,7 +43,7 @@ object GoodGuyGroups {
   })
   def tryRemove(removeGroup: String) = singleton.foreach(s => {
     val group = s.groups.get(removeGroup)
-//    println(s"tryRemove entry $removeGroup $groups $group")
+    trace"tryRemove entry $removeGroup $groups $group"
     group.foreach(g => {
       if(g.guys.isEmpty) {
         s.groups -= removeGroup
@@ -52,10 +52,10 @@ object GoodGuyGroups {
   })
 
   def moveToGroup(guyName: String, group: String) = {
-//    println(s"moveToGroup entry $guyName, $group, ${singleton.map(_.groups)}")
+    trace"moveToGroup entry $guyName, $group, ${singleton.map(_.groups)}"
     singleton.foreach(s => {
       val oldGuy = s.groups.toList.flatMap(g => g._2.guys.map(p => g._1 -> p)).find(g => g._2.name == guyName)
-//      println(s"moveToGroup old guy!? $oldGuy")
+      trace"moveToGroup old guy!? $oldGuy"
       oldGuy.foreach {
         case (foundGroup, foundGuy) if foundGroup != group /* don't allow add and drop from same group */ => {
           s.groups.foreach({

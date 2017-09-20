@@ -17,11 +17,11 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 
 import java.awt.Color
 
-import org.joml.Vector3f
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 
 class GoodGuy(
   val name: String,
@@ -32,6 +32,7 @@ class GoodGuy(
   with HasUiRendering
   with HasUiSpriteRendering
   with HasMovingToward
+  with Logging
 {
   override val speed = 1.0f / TimeOfDay.SLOW.toFloat
 
@@ -50,7 +51,7 @@ class GoodGuy(
     // determine anything to do based on activity
     GoodGuyGroups.groupForGuy(this).foreach(group => {
       val activity = group.schedule.get()
-//      println(s"Good guy deciding based on activity? $name $activity")
+      trace"Good guy deciding based on activity? $name $activity"
       activity match {
         // we found some equipment, keep it up
         case Activities.GUARD if equipmentImUsing.collect({case x: GunTurret => x}).nonEmpty =>
@@ -67,12 +68,12 @@ class GoodGuy(
       }
     })
 
-//    println(s"Good Guy preupdate")
+    trace"Good Guy preupdate"
     super.update(deltaTimeSeconds)
   }
 
   def use(equipment: Equipment): Unit = {
-    println(s"$name using equipment $equipment")
+    info"$name using equipment $equipment"
 
     // unman whatever we were already manning
     equipmentImUsing.foreach(e => e.user = None)
@@ -83,7 +84,7 @@ class GoodGuy(
   }
 
   def drop(equipment: Equipment): Unit = {
-    println(s"$name dropping equipment $equipment")
+    info"$name dropping equipment $equipment"
 
     // unman whatever we were already manning
     equipmentImUsing.foreach(e => e.user = None)
@@ -94,7 +95,7 @@ class GoodGuy(
     val needsGraphBase = Math.pow(100, 1.toFloat / 100)
     if(needs.nonEmpty) {
       val result = needs.map(need => Math.max(0, 100 - Math.pow(needsGraphBase, need.degree))).sum / needs.size / 100
-//      println(s"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result")
+      trace"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result"
       result
     } else {
       1f

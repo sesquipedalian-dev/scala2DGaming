@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.util
 
-import org.lwjgl.opengl.GL11.{glGetError, GL_NO_ERROR}
+import org.lwjgl.opengl.GL11.{GL_NO_ERROR, glGetError}
 
 trait ThrowsExceptionOnGLError {
   def checkError(): Unit = {

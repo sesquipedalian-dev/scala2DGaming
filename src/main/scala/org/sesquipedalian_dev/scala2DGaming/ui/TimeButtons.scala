@@ -19,12 +19,13 @@ import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
-trait TimeButton extends UIButtonMouseListener {
+trait TimeButton extends UIButtonMouseListener with Logging {
   val timeToSet: Double
 
   override def buttonClicked(): Unit = {
-    //    println(s"button clicked $textureFile")
+    trace"button clicked $textureFile"
     TimeOfDay.instance.foreach(_.speed = timeToSet)
   }
 }

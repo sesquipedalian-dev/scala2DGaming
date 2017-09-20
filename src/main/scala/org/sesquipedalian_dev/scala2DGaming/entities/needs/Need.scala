@@ -15,8 +15,9 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.needs
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.HasGameUpdate
 import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 // Needs - soldiers have needs that adjust their effectiveness at manning equipment
 // all needs range in degree from 0 (no problem) to 100 (need to do something about it)
@@ -25,7 +26,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy
 // - simple ticking one direction or another over time
 // - ticking based on equipment being used
 //
-abstract class Need(target: GoodGuy) extends HasGameUpdate {
+abstract class Need(target: GoodGuy) extends HasGameUpdate with Logging {
   def name: String
   var degree: Double = 1
   def update(deltaTimeSeconds: Double): Unit
@@ -37,13 +38,13 @@ abstract class Need(target: GoodGuy) extends HasGameUpdate {
   def exponentialAdjustByMax(deltaTimeSeconds: Double, maxTime: Double, direction: Int = 0): Unit = {
     val exponent = Math.pow(100, 1 / maxTime)
     val timeSoFar = if(degree == 0) { 0 } else { Math.log(degree) / Math.log(exponent) }
-//    println(s"Need exponential adjust $deltaTimeSeconds $maxTime $exponent $timeSoFar $degree")
+    trace"Need exponential adjust $deltaTimeSeconds $maxTime $exponent $timeSoFar $degree"
     degree = if(direction >= 0) {
       Math.min(100, Math.pow(exponent, timeSoFar + deltaTimeSeconds))
     } else {
       Math.max(0, 100 - Math.pow(exponent, timeSoFar + deltaTimeSeconds))
     }
-//    println(s"Need exponent adjust 2 $degree")
+    trace"Need exponent adjust 2 $degree"
   }
 }
 

@@ -18,11 +18,10 @@ package org.sesquipedalian_dev.scala2DGaming.graphics
 import java.awt.Color
 
 import org.lwjgl.opengl.GL11._
-import org.lwjgl.opengl.GL15.{GL_ARRAY_BUFFER, GL_ELEMENT_ARRAY_BUFFER, glBindBuffer, glBufferSubData}
+import org.lwjgl.opengl.GL15.{GL_ARRAY_BUFFER, glBindBuffer, glBufferSubData}
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.opengl.GL30.glBindVertexArray
-import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.cleanly
+import org.lwjgl.system.MemoryUtil
 
 /*
   Rendering layer for drawing overlays in world texture space.  E.g. this can be used

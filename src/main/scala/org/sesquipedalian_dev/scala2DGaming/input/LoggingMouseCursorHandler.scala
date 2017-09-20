@@ -14,17 +14,17 @@
   * limitations under the License.
   */
 package org.sesquipedalian_dev.scala2DGaming.input
-import org.lwjgl.glfw.GLFW._
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
-class LoggingMouseCursorHandler extends MouseInputHandler {
+class LoggingMouseCursorHandler extends MouseInputHandler with Logging {
   override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = { /* true if consumed */
     super.handleMove(windowHandle, xPos, yPos, lbState, rbState)
-//    println(s"got mouse cursor event $xPos $yPos $lbState $rbState")
+    trace"got mouse cursor event $xPos $yPos $lbState $rbState"
     false
   }
 
   override def handleAction(windowHandle: Long, button: Int, action: Int) = {
-//    println(s"got mouse action $button $action $currentX $currentY")
+    trace"got mouse action $button $action $currentX $currentY"
     false
   }
 }

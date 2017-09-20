@@ -18,7 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.util
 import scala.util.{Failure, Success, Try}
 
 // source: https://www.phdata.io/try-with-resources-in-scala/
-object TryWithResource {
+object TryWithResource extends Logging {
   def apply[A, B](resource: => A)(cleanup: A => Unit)(doWork: A => B): Try[B] = {
     var r: Option[A] = None
     try {
@@ -31,7 +31,7 @@ object TryWithResource {
       try {
         r.foreach(cleanup)
       } catch {
-        case e: Exception => println(e) // should be logged
+        case e: Exception => error"${e.getMessage} $e ${e.getStackTrace}"
       }
     }
   }

@@ -15,15 +15,15 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import java.nio.{ByteBuffer, FloatBuffer, IntBuffer}
+import java.nio.{FloatBuffer, IntBuffer}
 
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL15._
 import org.lwjgl.opengl.GL20._
-import org.lwjgl.opengl.GL30.{GL_TEXTURE_2D_ARRAY, glBindVertexArray, glDeleteVertexArrays, glGenVertexArrays}
+import org.lwjgl.opengl.GL30.{glBindVertexArray, glDeleteVertexArrays, glGenVertexArrays}
 import org.lwjgl.opengl.GL32._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 case class DrawCallInfo(
   elBuffer: IntBuffer,
@@ -32,7 +32,7 @@ case class DrawCallInfo(
   callback: () => Unit // perform any necessary setup
 )
 
-trait Renderer extends Renderable with ThrowsExceptionOnGLError {
+trait Renderer extends Renderable with ThrowsExceptionOnGLError with Logging {
   def vertexBufferSize: Int
   def elementBufferSize: Int
   def vertexShaderRscName: String
@@ -112,9 +112,10 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
       })
 
       if((vertexCompiled.get(0) <= 0) || (fragmentCompiled.get(0) <= 0) || geometryCompiled.exists(_ <= 0)) {
-        println(s"error compiling shaders! ${glGetShaderInfoLog(vertexShaderHandle)} " +
-          s"${glGetShaderInfoLog(fragmentShaderHandle)}" +
-          s"${geoShaderHandle.map(glGetShaderInfoLog)}")
+        error"""error compiling shaders! ${glGetShaderInfoLog(vertexShaderHandle)}
+          ${glGetShaderInfoLog(fragmentShaderHandle)}
+          ${geoShaderHandle.map(glGetShaderInfoLog)}
+          """
       }
     })
 
@@ -132,7 +133,7 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
       programHandle.foreach(glGetProgramiv(_, GL_LINK_STATUS, linkStatus))
 
       if(linkStatus.get(0) <= 0) {
-        println(s"error linking shader program! ${programHandle.map(glGetProgramInfoLog)}")
+        error"error linking shader program! ${programHandle.map(glGetProgramInfoLog)}"
       }
     })
 
@@ -161,7 +162,7 @@ trait Renderer extends Renderable with ThrowsExceptionOnGLError {
         checkError()
       } else {
         // silent ignore - this attribute wasn't needed
-        println(s"info: shader attribute not used $name")
+        info"shader attribute not used $name"
       }
     })
     checkError()

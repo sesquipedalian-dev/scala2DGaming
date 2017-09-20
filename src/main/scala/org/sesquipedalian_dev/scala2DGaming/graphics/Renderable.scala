@@ -15,8 +15,10 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
-import scala.collection.mutable.ListBuffer
 import org.lwjgl.opengl.GL11._
+import org.sesquipedalian_dev.scala2DGaming.util.Logging
+
+import scala.collection.mutable.ListBuffer
 
 trait Renderable {
   def render(): Unit
@@ -27,7 +29,7 @@ trait Renderable {
   }
 }
 
-object Renderable {
+object Renderable extends Logging {
   val all: ListBuffer[Renderable] = ListBuffer()
   def render(): Unit = {
     // clear the screen for the new render
@@ -35,7 +37,7 @@ object Renderable {
     glClearColor(0f, 0f, 0f, 1f) // black background
 
     all.foreach(r => {
-//      println(s"rendering: $r")
+      trace"rendering: $r"
       r.render()
       checkError(r, 2)
     })
@@ -45,7 +47,7 @@ object Renderable {
   def checkError(self: Renderable, step: Int): Unit = {
     val glErrorEnum = glGetError()
     if(glErrorEnum != GL_NO_ERROR) {
-      println(s"renderer got error $self $glErrorEnum $step")
+      error"renderer got error $self $glErrorEnum $step"
     }
   }
 }

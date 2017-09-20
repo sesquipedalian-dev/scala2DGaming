@@ -15,8 +15,8 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
+import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 class BadGuy(
   var location: Location,
