@@ -34,6 +34,11 @@ case class GoodGuyGroup(
 object GoodGuyGroups extends Logging {
   var singleton: Option[GoodGuyGroups] = None
 
+  def addNewGuy(newGuy: GoodGuy): Unit = singleton.foreach(s => {
+    val initialGroup = s.groups.head._2
+    initialGroup.guys = initialGroup.guys :+ newGuy
+  })
+
   def groups: Map[String, GoodGuyGroup] = singleton.map(_.groups).getOrElse(Map())
   def groupForGuy(guy: GoodGuy): Option[GoodGuyGroup] = groups.find(p => p._2.guys.contains(guy)).map(_._2)
   def add(newGroup: String) = singleton.foreach(s => {

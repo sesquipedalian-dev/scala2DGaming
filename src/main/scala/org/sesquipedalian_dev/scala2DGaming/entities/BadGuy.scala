@@ -33,22 +33,35 @@ class BadGuy(
   final val speed: Float = 1f / TimeOfDay.SLOW.toFloat // blocks / sec
 
   override def update(deltaTimeSeconds: Double): Unit = {
+    // check for killed
     if(health <= 0) {
-      // killed!
-      HasGameUpdate.unregister(this)
-      HasWorldSpriteRendering.unregister(this)
+      despawn(Some(1))
+    }
 
-      // any other projectiles that may have been chasing us can go away
-      HasGameUpdate.all.foreach({
-        case x: Projectile if x.target == this => {
-          HasGameUpdate.unregister(x)
-          HasWorldSpriteRendering.unregister(x)
-        }
-        case _ =>
-      })
+    // if bad guys get all the way to the right, despawn 'em and lose money
+    if(location.x >= 49) {
+      despawn(Some(-5))
     }
 
     super.update(deltaTimeSeconds)
+  }
+
+  def despawn(bounty: Option[Int]): Unit = {
+    // unregister us
+    HasGameUpdate.unregister(this)
+    HasWorldSpriteRendering.unregister(this)
+
+    // bounty per kill
+    bounty.foreach(b => Commander.changeMoney(b))
+
+    // any other projectiles that may have been chasing us can go away
+    HasGameUpdate.all.foreach({
+      case x: Projectile if x.target == this => {
+        HasGameUpdate.unregister(x)
+        HasWorldSpriteRendering.unregister(x)
+      }
+      case _ =>
+    })
   }
 
   override def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {

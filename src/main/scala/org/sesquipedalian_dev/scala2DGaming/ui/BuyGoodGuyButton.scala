@@ -18,7 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.entities.{Commander, GoodGuy, GoodGuyGroups, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
@@ -30,6 +30,17 @@ class BuyGoodGuyButton
   with HasUiRendering
   with Logging
 {
+  final val GoodGuyNames = List(
+    "Washington", "Adams", "Jefferson", "Madison", "Monroe", "Quincy", "Jackson", "VanBuren",
+    "Harrison", "Tyler", "Polk", "Taylor", "Fillmore", "Pierce", "Buchanan", "Lincoln",
+    "Johnson", "Grant", "Hayes", "Garfield", "Arthur", "Cleveland", "Harrison",
+    "McKinley", "Roosevelt", "Taft", "Wilson", "Harding", "Coolidge", "Hoover",
+    "Truman", "Eisenhower", "Kennedy", "Johnson", "Nixon", "Ford", "Carter", "Regan",
+    "Bush", "Clinton", "Obama", "Trump"
+  )
+
+  final val GuySpawnLocation = Location(25, 0)
+
   var textureIndex: Option[Int] = None
   var goldCost: Int = 50
   override def textureFile = "/textures/buy_guy.bmp"
@@ -37,6 +48,29 @@ class BuyGoodGuyButton
 
   override def buttonClicked(): Unit = {
     trace"Buy Good Guy button clicked $textureIndex"
+
+    if(goldCost < Commander.gmus) {
+      info"Buying a new guy $goldCost ${Commander.gmus}"
+
+      // pick out name for new dude
+      val selectedName = Main.random.flatMap(r => {
+        r.shuffle(GoodGuyNames diff HasWorldSpriteRendering.all.collect({ case x: GoodGuy => x.name })).headOption
+      }).getOrElse(GoodGuyNames.head)
+
+      // make new dude
+      val newGuy = new GoodGuy(selectedName, GuySpawnLocation.copy())
+
+      // put the guy into the 'first' group?
+      GoodGuyGroups.addNewGuy(newGuy)
+
+      // charge the player for the cost of getting the guy
+      Commander.changeMoney(-goldCost)
+
+      // bump the cost of buying new guys
+      goldCost *= 2
+    } else {
+      trace"attempt to buy a guy with too little money $goldCost ${Commander.gmus}"
+    }
   }
 
   override def render(uiRenderer: UITextRenderer): Unit = {

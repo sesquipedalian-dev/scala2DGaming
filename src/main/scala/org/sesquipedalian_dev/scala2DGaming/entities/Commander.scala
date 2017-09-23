@@ -43,4 +43,9 @@ class Commander(
 
 object Commander {
   var singleton: Option[Commander] = None
+
+  // amt can be + or -
+  def changeMoney(amt: Int): Unit = singleton.foreach(s => s.gmus = s.gmus + amt)
+
+  def gmus: Int = singleton.map(_.gmus).getOrElse(0)
 }
