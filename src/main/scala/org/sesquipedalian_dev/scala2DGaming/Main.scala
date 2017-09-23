@@ -21,6 +21,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
+import org.sesquipedalian_dev.scala2DGaming.ui.javafx.{JavaFXManager, ToggleGroupsUiButton, ToggleScheduleUiButton}
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
 
 import scala.util.Random
@@ -95,6 +96,7 @@ object Main extends Logging {
     // fork off JavaFX UI thread
     JavaFXManager.myInit()
     new ToggleGroupsUiButton()
+    new ToggleScheduleUiButton()
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

@@ -55,4 +55,11 @@ object Activities {
     SLEEP,
     GUARD
   )
+
+  // get 'color string
+  def apply(activityName: String): String = activityName match {
+    case SLEEP => "darkgoldenrod"
+    case GUARD => "red"
+    case _ => "grey"
+  }
 }

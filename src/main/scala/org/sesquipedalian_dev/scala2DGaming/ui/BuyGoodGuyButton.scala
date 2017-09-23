@@ -33,9 +33,9 @@ class BuyGoodGuyButton
   final val GoodGuyNames = List(
     "Washington", "Adams", "Jefferson", "Madison", "Monroe", "Quincy", "Jackson", "VanBuren",
     "Harrison", "Tyler", "Polk", "Taylor", "Fillmore", "Pierce", "Buchanan", "Lincoln",
-    "Johnson", "Grant", "Hayes", "Garfield", "Arthur", "Cleveland", "Harrison",
+    "Johnson", "Grant", "Hayes", "Garfield", "Arthur", "Cleveland",
     "McKinley", "Roosevelt", "Taft", "Wilson", "Harding", "Coolidge", "Hoover",
-    "Truman", "Eisenhower", "Kennedy", "Johnson", "Nixon", "Ford", "Carter", "Regan",
+    "Truman", "Eisenhower", "Kennedy", "Nixon", "Ford", "Carter", "Regan",
     "Bush", "Clinton", "Obama", "Trump"
   )
 
