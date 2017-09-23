@@ -22,7 +22,7 @@ class Bed(
 ) extends HasSingleWorldSpriteRendering
   with Equipment
 {
-  override val textureFile: String = "/textures/bed.bmp"
+  override val textureFile: String = "/textures/entities/bed.bmp"
   override val name: String = "Bed"
   override val useRange: Float = 0.5f
 }

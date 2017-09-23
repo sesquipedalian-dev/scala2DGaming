@@ -54,13 +54,13 @@ class WorldMap(worldSize: Location) extends HasWorldSpriteRendering {
 
   def initTestData(): Unit = {
     val texFiles: List[String] = List(
-      "/textures/concrete_wall.bmp",  // 0
-      "/textures/Fence.bmp",          // 1
-      "/textures/grass.bmp",          // 2
-      "/textures/gun.bmp",            // 3
-      "/textures/sand.bmp",           // 4
-      "/textures/wood_floor.bmp",     // 5
-      "/textures/world_border.bmp"    // 6
+      "/textures/world/concrete_wall.bmp",  // 0
+      "/textures/world/Fence.bmp",          // 1
+      "/textures/world/grass.bmp",          // 2
+      "/textures/entities/gun.bmp",            // 3
+      "/textures/world/sand.bmp",           // 4
+      "/textures/world/wood_floor.bmp",     // 5
+      "/textures/world/world_border.bmp" // 6
     )
 
     val locationToTexIndex = List(

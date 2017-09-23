@@ -43,7 +43,7 @@ class BuyGoodGuyButton
 
   var textureIndex: Option[Int] = None
   var goldCost: Int = 50
-  override def textureFile = "/textures/buy_guy.bmp"
+  override def textureFile = "/textures/ui/buttons/buy_guy.bmp"
   override def location = Location(0, (Math.pow(Main.UI_HEIGHT, 2) / Main.UI_WIDTH - UITextRenderer.sizeToInt(UITextRenderer.MEDIUM) * 3).toFloat)
 
   override def buttonClicked(): Unit = {

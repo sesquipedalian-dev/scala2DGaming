@@ -42,7 +42,7 @@ class GunTurret(
 {
   val name: String = "GunTurret"
   val useRange: Float = 1
-  override val textureFile: String = "/textures/gun.bmp"
+  override val textureFile: String = "/textures/entities/gun.bmp"
 
   var shotTimer = secondsPerShot * TimeOfDay.SLOW
 

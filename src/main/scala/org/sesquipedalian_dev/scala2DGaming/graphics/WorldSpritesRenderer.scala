@@ -65,7 +65,7 @@ class WorldSpritesRenderer(
       )
     )
 
-    val testTextureNames = List("/textures/testTex.bmp", "/textures/testTex2.bmp", "/textures/terraPortrait.bmp")
+    val testTextureNames = List("/textures/world/testTex.bmp", "/textures/world/testTex2.bmp", "/textures/world/terraPortrait.bmp")
     textureArray = Some(new TextureArray(textureSize))
     testTextureNames.foreach(fn => textureArray.foreach(_.addTextureResource(fn)))
 

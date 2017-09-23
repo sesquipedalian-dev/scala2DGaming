@@ -31,7 +31,7 @@ trait TimeButton extends UIButtonMouseListener with Logging {
 }
 
 class PauseButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
-  override def textureFile = "/textures/pause.bmp"
+  override def textureFile = "/textures/ui/buttons/pause.bmp"
   override def location = Location(2200, 30)
   val timeToSet: Double = TimeOfDay.PAUSE
 
@@ -51,19 +51,19 @@ class PauseButton extends HasSingleUiSpriteRendering with UIButtonMouseListener 
 }
 
 class SlowButton extends HasSingleUiSpriteRendering with UIButtonMouseListener with TimeButton {
-  override def textureFile = "/textures/slow.bmp"
+  override def textureFile = "/textures/ui/buttons/slow.bmp"
   override def location = Location(2270, 30)
   val timeToSet: Double = TimeOfDay.SLOW
 }
 
 class MediumButton extends HasSingleUiSpriteRendering with UIButtonMouseListener with TimeButton {
-  override def textureFile = "/textures/medium.bmp"
+  override def textureFile = "/textures/ui/buttons/medium.bmp"
   override def location = Location(2340, 30)
   val timeToSet: Double = TimeOfDay.MEDIUM
 }
 
 class FastButton extends HasSingleUiSpriteRendering with UIButtonMouseListener with TimeButton {
-  override def textureFile = "/textures/fast.bmp"
+  override def textureFile = "/textures/ui/buttons/fast.bmp"
   override def location = Location(2410, 30)
   val timeToSet: Double = TimeOfDay.FAST
 }

@@ -26,7 +26,7 @@ class Projectile(
 ) extends HasSingleWorldSpriteRendering
   with HasGameUpdate
 {
-  override val textureFile: String = "/textures/bullet.bmp"
+  override val textureFile: String = "/textures/entities/bullet.bmp"
 
   override def update(deltaTimeSeconds: Double): Unit = {
     // move toward the target - homing style lol

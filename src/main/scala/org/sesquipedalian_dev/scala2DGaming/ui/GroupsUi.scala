@@ -32,7 +32,7 @@ import org.sesquipedalian_dev.scala2DGaming.util.Logging
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 class GroupsUiController extends HasGameUpdate with Logging {
-  var texture: Option[Image] = Some(new Image("/textures/MilitaryMan.bmp", 40.0, 40.0, false, true))
+  var texture: Option[Image] = Some(new Image("/textures/entities/MilitaryMan.bmp", 40.0, 40.0, false, true))
 
   var cachedGroups: Map[String, List[String]] = Map()
 
@@ -215,7 +215,7 @@ object GroupsUi {
 }
 
 class ToggleGroupsUiButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
-  override def textureFile = "/textures/groups.bmp"
+  override def textureFile = "/textures/ui/buttons/groups.bmp"
   override def location = Location(2200, 80)
   val timeToSet: Double = TimeOfDay.PAUSE
 

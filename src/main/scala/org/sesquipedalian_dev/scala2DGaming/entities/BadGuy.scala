@@ -29,7 +29,7 @@ class BadGuy(
 {
   val name: String = "BadGuy"
   direction = _direction
-  override val textureFile: String = "/textures/badguy.bmp"
+  override val textureFile: String = "/textures/entities/badguy.bmp"
   final val speed: Float = 1f / TimeOfDay.SLOW.toFloat // blocks / sec
 
   override def update(deltaTimeSeconds: Double): Unit = {

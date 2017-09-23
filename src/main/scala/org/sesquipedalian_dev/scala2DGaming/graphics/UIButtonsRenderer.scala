@@ -164,7 +164,7 @@ class UIButtonsRenderer(
     camera.foreach(_.cleanup)
   }
 
-  val textBackingTexture = "/textures/black6464.bmp"
+  val textBackingTexture = "/textures/ui/black6464.bmp"
   var textureIndex: Option[Int] = None
   def drawTextBacking(x: Float, y: Float, numChars: Int, textSize: String): Unit = {
     if(textureIndex.isEmpty) {

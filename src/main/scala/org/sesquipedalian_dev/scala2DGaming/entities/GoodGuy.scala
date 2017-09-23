@@ -43,7 +43,7 @@ class GoodGuy(
   )
 
   var equipmentImUsing: Option[Equipment] = None
-  override def textureFile: String = "/textures/MilitaryMan.bmp"
+  override def textureFile: String = "/textures/entities/MilitaryMan.bmp"
 
   override def update(deltaTimeSeconds: Double): Unit = {
     direction = None
