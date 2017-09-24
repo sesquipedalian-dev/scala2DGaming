@@ -131,7 +131,7 @@ class UIButtonsRenderer(
     })
   }
 
-  def drawAButton(x: Float, y: Float, texIndex: Int): Unit = {
+  def drawAButton(x: Float, y: Float, texIndex: Int, width: Int = textureSize, height: Int = textureSize): Unit = {
     drawCalls.get("").foreach(drawCall => {
       val vertexBuffer = drawCall.vertexBuffer
       val elBuffer = drawCall.elBuffer
@@ -142,12 +142,19 @@ class UIButtonsRenderer(
 
       vertexBuffer.put(x).put(y)
         .put(0f).put(1f).put(texIndex.toFloat)
-      vertexBuffer.put(x + textureSize).put(y)
+      vertexBuffer.put(x + width).put(y)
         .put(1f).put(1f).put(texIndex.toFloat)
-      vertexBuffer.put(x + textureSize).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
+      vertexBuffer.put(x + width).put(y + (height / camera.flatMap(_.aspectRatio).getOrElse(1f)))
         .put(1f).put(0f).put(texIndex.toFloat)
-      vertexBuffer.put(x).put(y + (textureSize / camera.flatMap(_.aspectRatio).getOrElse(1f)))
+      vertexBuffer.put(x).put(y + (height / camera.flatMap(_.aspectRatio).getOrElse(1f)))
         .put(0f).put(0f).put(texIndex.toFloat)
+
+      trace"""putting vertices:
+             $x, $y, 0, 1
+             ${x + width}, $y, 1, 1
+             ${x + width}, ${y + (height / camera.flatMap(_.aspectRatio).getOrElse(1f))}, 1, 0
+             $x, ${y + (height / camera.flatMap(_.aspectRatio).getOrElse(1f))}, 0, 0
+           """
 
       val currentVertIndex = drawCall.numObjectsThisDraw / 6 * VERTICES_PER_THING
       elBuffer.put(currentVertIndex).put(currentVertIndex + 1).put(currentVertIndex + 2)

@@ -19,6 +19,7 @@ import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, HasUiSpriteRendering, UIButtonsRenderer, UITextRenderer}
+import org.sesquipedalian_dev.scala2DGaming.ui.{Dialog, PauseButton}
 
 // entity to hold global info about the game player
 class Commander(
@@ -45,7 +46,19 @@ object Commander {
   var singleton: Option[Commander] = None
 
   // amt can be + or -
-  def changeMoney(amt: Int): Unit = singleton.foreach(s => s.gmus = s.gmus + amt)
+  def changeMoney(amt: Int): Unit = singleton.foreach(s => {
+    s.gmus = Math.max(0, s.gmus + amt)
+    if(s.gmus <= 0) {
+      Dialog.open("You let too many bad guys through, Fool!  We'll try to salvage this situation with a new commander." +
+        "  Get back down to the Gun Turrets, private!", "/textures/ui/sarge_dialog.bmp"
+      )
+      Dialog.okButton.foreach(_.disabled = true)
+      HasUiSpriteRendering.all.foreach({
+        case x: PauseButton => x.disabled = true
+        case _ =>
+      })
+    }
+  })
 
   def gmus: Int = singleton.map(_.gmus).getOrElse(0)
 }

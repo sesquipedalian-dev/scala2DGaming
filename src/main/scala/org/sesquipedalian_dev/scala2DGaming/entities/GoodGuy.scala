@@ -20,6 +20,7 @@ import java.awt.Color
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
+import org.sesquipedalian_dev.scala2DGaming.ui.Dialog
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 
@@ -91,11 +92,19 @@ class GoodGuy(
     equipmentImUsing = None
   }
 
+  var hasTriggeredNeedTutorial: Boolean = false
   def needEffectiveness: Double = {
     val needsGraphBase = Math.pow(100, 1.toFloat / 100)
     if(needs.nonEmpty) {
       val result = needs.map(need => Math.max(0, 100 - Math.pow(needsGraphBase, need.degree))).sum / needs.size / 100
       trace"need effectiveness: $needsGraphBase, ${needs.map(_.degree)}, $result"
+      if(result <= .5 && !hasTriggeredNeedTutorial) {
+        hasTriggeredNeedTutorial = true
+        Dialog.open("Looks like your Guards are getting tired!  Try recruiting some more guards in the lower left." +
+          "Then, in the upper right open the Group and Schedule UIs with those buttons.  Try to assign some " +
+          "fresh soldiers to guard duty to replace these knuckleheads.", "/textures/ui/sarge_dialog.bmp"
+        )
+      }
       result
     } else {
       1f

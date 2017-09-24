@@ -71,8 +71,8 @@ object TimeOfDay {
   val PAUSE = 0.0
   val SLOW = 60.0    // 1 sec = 1 min real time
   val MEDIUM = 120.0 // 1 sec = 2 min real time
-//  val FAST = 360.0   // 1 sec = 5 min real time
-  val FAST = 3600.0
+  val FAST = 360.0   // 1 sec = 5 min real time
+//  val FAST = 3600.0
 
   var instance: Option[TimeOfDay] = None
   def translateGameTimeToTimeOfDay(deltaTimeSeconds: Double): Double = {

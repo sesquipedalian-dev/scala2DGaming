@@ -47,7 +47,7 @@ class UITextRenderer(
   )
 
   val textSizes: List[TextInfo] = List(
-    TextInfo(UITextRenderer.SMALL, 16),
+    TextInfo(UITextRenderer.SMALL, 20),
     TextInfo(UITextRenderer.MEDIUM, 32),
     TextInfo(UITextRenderer.LARGE, 64)
   )

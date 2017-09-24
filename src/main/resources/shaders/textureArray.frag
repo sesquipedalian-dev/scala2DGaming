@@ -14,4 +14,6 @@ void main() {
     } else {
         fragColor = vec4(textureColor.rgb, textureColor.a * forceAlpha);
     }
+
+//    fragColor = vec4(textureCoord.x, textureCoord.y, 0, 1.0);
 }
