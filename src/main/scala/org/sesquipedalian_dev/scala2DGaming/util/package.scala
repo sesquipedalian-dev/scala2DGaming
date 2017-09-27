@@ -17,10 +17,8 @@ package org.sesquipedalian_dev.scala2DGaming
 
 import scala.util.Try
 
-package object util {
+package object util extends JavaFXExtensions {
   implicit def cleanly[A <% AutoCloseable](rsc: => A)(doWork: (A) => Unit): Try[Unit] = {
     TryWithResource[A, Unit](rsc)(_.close())(doWork)
   }
-
-  import JavaFXExtensions._
 }

@@ -17,7 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.util
 
 import javafx.scene.layout.Region
 
-object JavaFXExtensions {
+class JavaFXExtensions {
   implicit class HasHeightWidthExtension(obj: Region) {
     def forceWidth(width: Double): Unit = {
       obj.setPrefWidth(width)

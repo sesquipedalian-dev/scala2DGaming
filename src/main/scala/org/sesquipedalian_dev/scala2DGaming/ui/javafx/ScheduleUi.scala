@@ -27,7 +27,6 @@ import org.sesquipedalian_dev.scala2DGaming.entities.{Activities, GoodGuyGroups,
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util._
-import org.sesquipedalian_dev.scala2DGaming.util.JavaFXExtensions._
 import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 class ScheduleUiController extends HasGameUpdate with Logging {
