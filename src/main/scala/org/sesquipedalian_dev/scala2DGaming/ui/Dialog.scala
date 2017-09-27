@@ -22,7 +22,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{MouseInputHandler, UIButtonMouseListener}
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util._
 
 class Dialog(text: String, image: String) extends HasUiSpriteRendering with HasUiRendering with Logging {
   var currentDialog: Option[String] = None
@@ -89,7 +89,7 @@ object Dialog {
     if(singleton.isEmpty) {
       singleton = Some(new Dialog(text, image))
       okButton = Some(new OkButton)
-      TimeOfDay.instance.foreach(tod => {
+      TimeOfDay.singleton.foreach(tod => {
         prevSpeed = Some(tod.speed)
         tod.speed = TimeOfDay.PAUSE
       })
@@ -98,20 +98,17 @@ object Dialog {
 
   def close(): Unit = {
     singleton.foreach(s => {
-      HasUiRendering.all = HasUiRendering.all.filterNot(_ == s)
-      HasUiSpriteRendering.all = HasUiSpriteRendering.all.filterNot(_ == s)
+      Registry.unregister(s)
       singleton = None
     })
 
     okButton.foreach(s => {
-      HasUiSpriteRendering.all = HasUiSpriteRendering.all.filterNot(_ == s)
-      val index = MouseInputHandler.all.indexOf(s)
-      MouseInputHandler.all.remove(index)
+      Registry.unregister(s)
       okButton = None
     })
 
     prevSpeed.foreach(speed => {
-      TimeOfDay.instance.foreach(tod => {
+      TimeOfDay.singleton.foreach(tod => {
         prevSpeed = None
         tod.speed = speed
       })

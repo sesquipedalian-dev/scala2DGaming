@@ -15,13 +15,14 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.soldiers
 
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 // manage the group deployments of the good guys
 // groups share a schedule of activities
 class GoodGuyGroups {
   var groups: Map[String, GoodGuyGroup] = Map()
-  GoodGuyGroups.singleton = Some(this)
+  GoodGuyGroups.register(this)
 }
 
 case class GoodGuyGroup(
@@ -31,8 +32,8 @@ case class GoodGuyGroup(
   val schedule: Schedule = new Schedule()
 }
 
-object GoodGuyGroups extends Logging {
-  var singleton: Option[GoodGuyGroups] = None
+object GoodGuyGroups extends Logging with HasRegistrySingleton {
+  override type ThisType = GoodGuyGroups
 
   def addNewGuy(newGuy: GoodGuy): Unit = singleton.foreach(s => {
     val initialGroup = s.groups.head._2

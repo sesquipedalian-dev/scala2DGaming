@@ -18,6 +18,8 @@ package org.sesquipedalian_dev.scala2DGaming.game
 import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, HasUiSpriteRendering, UIButtonsRenderer, UITextRenderer}
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 // map game time to 'day time'
 class TimeOfDay()
@@ -30,8 +32,6 @@ class TimeOfDay()
   def translateGameTimeToTimeOfDay(deltaTimeSeconds: Double): Double = {
     deltaTimeSeconds * speed
   }
-
-  TimeOfDay.instance = Some(this)
 
   var currentTimeOfDay: Float = 9 * 60 * 60 // start at 9 am
   final val SECONDS_IN_DAY = 60 * 60 * 24
@@ -56,7 +56,7 @@ class TimeOfDay()
   }
 
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
-    UITextRenderer.singleton.foreach(uiRenderer => {
+    Registry.singleton[UITextRenderer](UITextRenderer.tag).foreach(uiRenderer => {
       uiSpritesRenderer.drawTextBacking(
         uiRenderer.uiWidth - (uiRenderer.textSizes.find(_.name == UITextRenderer.MEDIUM).get.size * 11),
         0,
@@ -65,17 +65,20 @@ class TimeOfDay()
       )
     })
   }
+
+  TimeOfDay.register(this)
 }
 
-object TimeOfDay {
+object TimeOfDay extends HasRegistrySingleton {
+  override type ThisType = TimeOfDay
+
   val PAUSE = 0.0
   val SLOW = 60.0    // 1 sec = 1 min real time
   val MEDIUM = 120.0 // 1 sec = 2 min real time
   val FAST = 360.0   // 1 sec = 5 min real time
 //  val FAST = 3600.0
 
-  var instance: Option[TimeOfDay] = None
   def translateGameTimeToTimeOfDay(deltaTimeSeconds: Double): Double = {
-    instance.map(_.translateGameTimeToTimeOfDay(deltaTimeSeconds)).getOrElse(deltaTimeSeconds)
+    singleton.map(_.translateGameTimeToTimeOfDay(deltaTimeSeconds)).getOrElse(deltaTimeSeconds)
   }
 }

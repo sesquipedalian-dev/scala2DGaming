@@ -15,17 +15,18 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 trait HasRangeOverlayRendering {
-  HasRangeOverlayRendering.all :+= this
   def render(renderer: RangeOverlay): Unit
+
+  HasRangeOverlayRendering.register(this)
 }
 
-object HasRangeOverlayRendering {
-  var all: List[HasRangeOverlayRendering] = Nil
+object HasRangeOverlayRendering extends HasRegistryCollection {
+  override type ThisType = HasRangeOverlayRendering
+
   def render(renderer: RangeOverlay): Unit = {
     all.foreach(_.render(renderer))
-  }
-  def unregister(x: HasRangeOverlayRendering): Unit = {
-    all = all.filterNot(_ == x)
   }
 }

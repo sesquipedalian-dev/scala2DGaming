@@ -16,21 +16,21 @@
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import org.lwjgl.opengl.GL11._
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
-
-import scala.collection.mutable.ListBuffer
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
 trait Renderable {
   def render(): Unit
   def cleanup(): Unit
 
   def register(): Unit = {
-    Renderable.all += this
+    Renderable.register(this)
   }
 }
 
-object Renderable extends Logging {
-  val all: ListBuffer[Renderable] = ListBuffer()
+object Renderable extends Logging with HasRegistryCollection {
+  override type ThisType = Renderable
+
   def render(): Unit = {
     // clear the screen for the new render
     glClear(GL_COLOR_BUFFER_BIT)

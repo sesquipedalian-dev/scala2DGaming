@@ -20,7 +20,8 @@ import java.awt.Color
 import org.lwjgl.opengl.GL11.{GL_FLOAT, GL_TEXTURE_2D, glBindTexture}
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.system.MemoryUtil
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 class UITextRenderer(
   val uiWidth: Int,
@@ -153,17 +154,16 @@ class UITextRenderer(
     camera.foreach(_.cleanup)
   }
 
-  UITextRenderer.singleton = Some(this)
+  UITextRenderer.register(this)
 }
 
-object UITextRenderer {
+object UITextRenderer extends HasRegistrySingleton {
+  override type ThisType = UITextRenderer
   final val LARGE: String = "LARGE"
   final val MEDIUM: String = "MEDIUM"
   final val SMALL: String = "SMALL"
 
-  var singleton: Option[UITextRenderer] = None
-
   def sizeToInt(size: String): Int = {
-    UITextRenderer.singleton.flatMap(_.textSizes.find(ti => ti.name == size)).map(_.size).getOrElse(16)
+    singleton.flatMap(_.textSizes.find(ti => ti.name == size)).map(_.size).getOrElse(16)
   }
 }

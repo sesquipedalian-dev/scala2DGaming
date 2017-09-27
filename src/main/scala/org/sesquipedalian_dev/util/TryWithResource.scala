@@ -13,15 +13,26 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.util
+package org.sesquipedalian_dev.util
 
-import org.lwjgl.opengl.GL11.{GL_NO_ERROR, glGetError}
+import scala.util.{Failure, Success, Try}
 
-trait ThrowsExceptionOnGLError {
-  def checkError(): Unit = {
-    val glErrorEnum = glGetError()
-    if(glErrorEnum != GL_NO_ERROR) {
-      throw new Exception(s"TestMesh got error $glErrorEnum")
+// source: https://www.phdata.io/try-with-resources-in-scala/
+object TryWithResource extends Logging {
+  def apply[A, B](resource: => A)(cleanup: A => Unit)(doWork: A => B): Try[B] = {
+    var r: Option[A] = None
+    try {
+      r = Some(resource)
+      r.map(rsc => Success(doWork(rsc))).getOrElse(Failure(new Exception("probably making rsc")))
+    } catch {
+      case e: Exception => Failure(e)
+    }
+    finally {
+      try {
+        r.foreach(cleanup)
+      } catch {
+        case e: Exception => error"${e.getMessage} $e ${e.getStackTrace}"
+      }
     }
   }
 }

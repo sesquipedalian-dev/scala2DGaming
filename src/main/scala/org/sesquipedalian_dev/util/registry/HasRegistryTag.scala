@@ -13,16 +13,13 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.input
+package org.sesquipedalian_dev.util.registry
 
-import org.sesquipedalian_dev.util.registry.{HasRegistryCollection, HasRegistrySingleton}
+import org.sesquipedalian_dev.util.Registry
 
-trait KeyInputHandler {
-  def handleInput(windowHandle: Long, key: Int /* GLFW keys */): Boolean /* true if consumed */
+trait HasRegistryTag {
+  def tag: String = getClass.getSimpleName
+  type ThisType <: AnyRef
 
-  KeyInputHandler.register(this)
-}
-
-object KeyInputHandler extends HasRegistryCollection {
-  override type ThisType = KeyInputHandler
+  def register(instance: ThisType) = Registry.register(instance, tag)
 }

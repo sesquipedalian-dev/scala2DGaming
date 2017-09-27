@@ -19,7 +19,8 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL20.{glGetUniformLocation, _}
 import org.lwjgl.opengl.GL30._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 class UIButtonsRenderer(
   worldWidth: Int,
@@ -216,11 +217,11 @@ class UIButtonsRenderer(
     }))
   }
 
-  UIButtonsRenderer.singleton = Some(this)
+  UIButtonsRenderer.register(this)
 }
 
-object UIButtonsRenderer {
-  var singleton: Option[UIButtonsRenderer] = None
+object UIButtonsRenderer extends HasRegistrySingleton {
+  override type ThisType = UIButtonsRenderer
 
   // func returns true if it should be retried after flushing the buffer
   def draw(drawCallKey: String, drawFunc: (DrawCallInfo) => Boolean): Unit = {

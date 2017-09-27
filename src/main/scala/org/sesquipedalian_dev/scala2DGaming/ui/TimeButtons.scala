@@ -19,14 +19,14 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
 
 trait TimeButton extends UIButtonMouseListener with Logging {
   val timeToSet: Double
 
   override def buttonClicked(): Unit = {
     trace"button clicked $textureFile"
-    TimeOfDay.instance.foreach(_.speed = timeToSet)
+    TimeOfDay.singleton.foreach(_.speed = timeToSet)
   }
 }
 
@@ -40,11 +40,11 @@ class PauseButton extends HasSingleUiSpriteRendering with UIButtonMouseListener 
   override def buttonClicked(): Unit = {
     if(!disabled) {
       previousSpeed match {
-        case Some(prev) => TimeOfDay.instance.foreach(tod => {
+        case Some(prev) => TimeOfDay.singleton.foreach(tod => {
           tod.speed = prev
           previousSpeed = None
         })
-        case _ => TimeOfDay.instance.foreach(tod => {
+        case _ => TimeOfDay.singleton.foreach(tod => {
           previousSpeed = Some(tod.speed)
           tod.speed = timeToSet
         })

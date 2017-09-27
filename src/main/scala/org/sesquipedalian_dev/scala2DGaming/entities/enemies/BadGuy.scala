@@ -18,6 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 import org.sesquipedalian_dev.scala2DGaming.entities.{HasMovingToward, Location}
 import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
+import org.sesquipedalian_dev.util._
 
 class BadGuy(
   var location: Location,
@@ -49,17 +50,15 @@ class BadGuy(
 
   def despawn(bounty: Option[Int]): Unit = {
     // unregister us
-    HasGameUpdate.unregister(this)
-    HasWorldSpriteRendering.unregister(this)
+    Registry.unregister(this)
 
     // bounty per kill
     bounty.foreach(b => Commander.changeMoney(b))
 
     // any other projectiles that may have been chasing us can go away
-    HasGameUpdate.all.foreach({
+    Registry.objects[HasGameUpdate](HasGameUpdate.tag).foreach({
       case x: Projectile if x.target == this => {
-        HasGameUpdate.unregister(x)
-        HasWorldSpriteRendering.unregister(x)
+        Registry.unregister(this)
       }
       case _ =>
     })

@@ -19,7 +19,7 @@ import org.lwjgl.glfw.GLFW._
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.UIButtonsRenderer
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
 
 
 trait UIButtonMouseListener extends MouseInputHandler with Logging {

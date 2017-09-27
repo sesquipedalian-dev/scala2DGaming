@@ -116,7 +116,7 @@ class GLFWWindow(width: Int, height: Int, name: String) {
 
       glfwPollEvents() // get input
 
-      (deltaTime zip TimeOfDay.instance).foreach(p => {
+      (deltaTime zip TimeOfDay.singleton).foreach(p => {
         val (dt, tod) = p
         // adjust game speed for time-of-day
         update(dt * tod.speed)

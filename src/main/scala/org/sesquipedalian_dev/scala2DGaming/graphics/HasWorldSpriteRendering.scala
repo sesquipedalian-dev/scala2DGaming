@@ -16,6 +16,8 @@
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
 trait HasSingleWorldSpriteRendering extends HasWorldSpriteRendering {
   var textureIndex: Option[Int] = None
@@ -37,16 +39,15 @@ trait HasSingleWorldSpriteRendering extends HasWorldSpriteRendering {
 }
 
 trait HasWorldSpriteRendering {
-  HasWorldSpriteRendering.all :+= this
   def render(worldSpritesRenderer: WorldSpritesRenderer): Unit
+
+  HasWorldSpriteRendering.register(this)
 }
 
-object HasWorldSpriteRendering {
-  var all: List[HasWorldSpriteRendering] = Nil
+object HasWorldSpriteRendering extends HasRegistryCollection {
+  override type ThisType = HasWorldSpriteRendering
+
   def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {
     all.foreach(_.render(worldSpritesRenderer))
-  }
-  def unregister(x: HasWorldSpriteRendering): Unit = {
-    all = all.filterNot(_ == x)
   }
 }

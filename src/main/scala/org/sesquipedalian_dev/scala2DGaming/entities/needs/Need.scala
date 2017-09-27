@@ -17,7 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities.needs
 
 import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuy
 import org.sesquipedalian_dev.scala2DGaming.game.HasGameUpdate
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
 
 // Needs - soldiers have needs that adjust their effectiveness at manning equipment
 // all needs range in degree from 0 (no problem) to 100 (need to do something about it)

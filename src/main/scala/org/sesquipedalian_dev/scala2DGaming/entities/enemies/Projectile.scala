@@ -15,9 +15,10 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 
+import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
+import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
 
 class Projectile(
   var location: Location,
@@ -46,8 +47,7 @@ class Projectile(
     if((Math.floor(location.x) == Math.floor(target.location.x)) &&
        (Math.floor(location.y) == Math.floor(target.location.y))) {
       target.health -= damage
-      HasWorldSpriteRendering.unregister(this)
-      HasGameUpdate.unregister(this)
+      Registry.unregister(this)
     }
   }
 }

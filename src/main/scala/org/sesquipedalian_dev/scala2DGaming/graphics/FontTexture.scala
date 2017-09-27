@@ -23,7 +23,7 @@ import java.awt.{Font, FontMetrics, RenderingHints}
 import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL30._
 import org.lwjgl.system.MemoryUtil
-import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError}
+import org.sesquipedalian_dev.util.{Logging, ThrowsExceptionOnGLError}
 
 // struct for storing info about the location of a given character on the texture atlas
 case class Glyph(
@@ -140,10 +140,8 @@ class FontTexture(
     // texture parameters
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_LINEAR)
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_LINEAR)
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
-//    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_S, GL_REPEAT)
-    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_WRAP_T, GL_REPEAT)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST)
+    glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST)
     checkError()
 
     // free the CPU memory for the texture

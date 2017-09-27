@@ -40,7 +40,7 @@ class Schedule {
     }
   }
 
-  def get(): Activities.Type = TimeOfDay.instance.map(tod => {
+  def get(): Activities.Type = TimeOfDay.singleton.map(tod => {
     val currentHour = Math.floor(tod.currentTimeOfDay / 60 / 60).toInt
     get(currentHour)
   }).getOrElse(Activities.GUARD)

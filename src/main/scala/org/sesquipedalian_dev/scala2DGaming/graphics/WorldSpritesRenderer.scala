@@ -19,7 +19,8 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.opengl.GL30._
 import org.lwjgl.system.MemoryUtil
-import org.sesquipedalian_dev.scala2DGaming.util.ThrowsExceptionOnGLError
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.{HasRegistryCollection, HasRegistrySingleton}
 
 class WorldSpritesRenderer(
   textureSize: Int,
@@ -84,29 +85,6 @@ class WorldSpritesRenderer(
 
     HasWorldSpriteRendering.render(this)
 
-//    // top left
-//    drawAGuy(0, 0, 0)
-//    // top right
-//    drawAGuy((worldWidth - 1) * textureSize, 0, 1)
-//    // bottom right
-//    drawAGuy((worldWidth - 1) * textureSize, (worldHeight - 1) * textureSize, 0)
-//    // bottom left
-//    drawAGuy(0, (worldHeight - 1) * textureSize, 1)
-//
-//    // do all the terra
-//    for {
-//      _x <- 0 until worldWidth
-//      _y <- 0 until worldHeight
-//      (x, y) <- Some(_x, _y) if !List(
-//        (0, 0),
-//        (0, worldHeight - 1),
-//        (worldWidth - 1, 0),
-//        (worldWidth - 1, worldHeight - 1)
-//      ).contains((x, y))
-//    } {
-//      drawAGuyWorld(x, y, 2)
-//    }
-
     super.render()
   }
 
@@ -170,12 +148,11 @@ class WorldSpritesRenderer(
     camera.foreach(_.cleanup)
   }
 
-  WorldSpritesRenderer.singleton = Some(this)
+  WorldSpritesRenderer.register(this)
 }
 
-object WorldSpritesRenderer {
-  var singleton: Option[WorldSpritesRenderer] = None
-
+object WorldSpritesRenderer extends HasRegistrySingleton {
+  override type ThisType = WorldSpritesRenderer
   def drawAGuyWorld(x: Float, y: Float, texIndex: Int): Unit = singleton.foreach(_.drawAGuyWorld(x, y, texIndex))
   def drawAGuy(x: Float, y: Float, texIndex: Int): Unit = singleton.foreach(_.drawAGuy(x, y, texIndex))
 }

@@ -28,8 +28,8 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuyGroups
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.util.Logging
 
 class GroupsUiController extends HasGameUpdate with Logging {
   var texture: Option[Image] = Some(new Image("/textures/entities/MilitaryMan.bmp", 40.0, 40.0, false, true))

@@ -26,7 +26,7 @@ import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
 import org.sesquipedalian_dev.scala2DGaming.ui.javafx.{JavaFXManager, ToggleGroupsUiButton, ToggleScheduleUiButton}
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
 
 import scala.util.Random
 

@@ -13,12 +13,15 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming
+package org.sesquipedalian_dev.util
 
-import scala.util.Try
+import org.lwjgl.opengl.GL11.{GL_NO_ERROR, glGetError}
 
-package object util extends JavaFXExtensions {
-  implicit def cleanly[A <% AutoCloseable](rsc: => A)(doWork: (A) => Unit): Try[Unit] = {
-    TryWithResource[A, Unit](rsc)(_.close())(doWork)
+trait ThrowsExceptionOnGLError {
+  def checkError(): Unit = {
+    val glErrorEnum = glGetError()
+    if(glErrorEnum != GL_NO_ERROR) {
+      throw new Exception(s"TestMesh got error $glErrorEnum")
+    }
   }
 }

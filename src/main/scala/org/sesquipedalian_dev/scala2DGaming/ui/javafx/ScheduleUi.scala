@@ -27,8 +27,9 @@ import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{Activities, GoodG
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
-import org.sesquipedalian_dev.scala2DGaming.util._
+import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.util.Logging
 
 class ScheduleUiController extends HasGameUpdate with Logging {
   final val unitWidth = 100
@@ -95,7 +96,7 @@ class ScheduleUiController extends HasGameUpdate with Logging {
     """.stripMargin
 
   def scheduleButtonClick(groupName: String, index: Int, currentActivity: String): Unit = {
-    info"schedule update button click $groupName $index $currentActivity $lastClickedActivity"
+    trace"schedule update button click $groupName $index $currentActivity $lastClickedActivity"
     lastClickedActivity.foreach(newActivity => {
       GoodGuyGroups.groups.get(groupName).foreach(ggg => {
         ggg.schedule.activities = (ggg.schedule.activities.take(index) :+ newActivity) ++

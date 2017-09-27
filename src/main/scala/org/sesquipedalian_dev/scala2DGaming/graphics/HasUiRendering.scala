@@ -15,14 +15,17 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
 trait HasUiRendering {
   def render(uiRenderer: UITextRenderer): Unit
-  HasUiRendering.all :+= this
+  HasUiRendering.register(this)
 }
 
-object HasUiRendering {
-  var all: List[HasUiRendering] = Nil
+object HasUiRendering extends HasRegistryCollection {
+  override type ThisType = HasUiRendering
+
   def render(uiRenderer: UITextRenderer): Unit = {
     all.foreach(_.render(uiRenderer))
   }

@@ -22,7 +22,7 @@ import org.lwjgl.glfw.GLFW._
 import org.lwjgl.opengl.GL20.{glGetUniformLocation, glUniformMatrix4fv}
 import org.lwjgl.system.MemoryStack
 import org.sesquipedalian_dev.scala2DGaming.input.KeyInputHandler
-import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 class UICamera(
   worldWidth: Int,

@@ -13,25 +13,10 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.input
+package org.sesquipedalian_dev.util.registry
 
-import scala.collection.mutable.ListBuffer
 import org.sesquipedalian_dev.util._
-import org.sesquipedalian_dev.util.registry.{HasRegistryCollection, HasRegistrySingleton}
 
-trait MouseInputHandler {
-  var currentX: Float = 0
-  var currentY: Float = 0
-  def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = {
-    currentX = xPos.toFloat
-    currentY = yPos.toFloat
-    false
-  }
-  def handleAction(windowHandle: Long, button: Int, action: Int): Boolean
-
-  MouseInputHandler.register(this)
-}
-
-object MouseInputHandler extends HasRegistryCollection {
-  override type ThisType = MouseInputHandler
+trait HasRegistryCollection extends HasRegistryTag {
+  def all: List[ThisType] = Registry.objectsNoMF[ThisType](tag)
 }

@@ -16,6 +16,8 @@
 package org.sesquipedalian_dev.scala2DGaming.graphics
 
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
 trait HasSingleUiSpriteRendering extends HasUiSpriteRendering {
   var textureIndex: Option[Int] = None
@@ -37,16 +39,15 @@ trait HasSingleUiSpriteRendering extends HasUiSpriteRendering {
 }
 
 trait HasUiSpriteRendering {
-  HasUiSpriteRendering.all :+= this
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit
+
+  HasUiSpriteRendering.register(this)
 }
 
-object HasUiSpriteRendering {
-  var all: List[HasUiSpriteRendering] = Nil
+object HasUiSpriteRendering extends HasRegistryCollection {
+  override type ThisType = HasUiSpriteRendering
+
   def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
     all.foreach(_.render(uiSpritesRenderer))
-  }
-  def unregister(x: HasUiSpriteRendering): Unit = {
-    all = all.filterNot(_ == x)
   }
 }

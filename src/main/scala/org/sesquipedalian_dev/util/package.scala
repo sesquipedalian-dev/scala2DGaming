@@ -13,16 +13,16 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.input
+package org.sesquipedalian_dev
 
-import org.sesquipedalian_dev.util.registry.{HasRegistryCollection, HasRegistrySingleton}
+import org.sesquipedalian_dev.util.registry.ObjectRegistry
 
-trait KeyInputHandler {
-  def handleInput(windowHandle: Long, key: Int /* GLFW keys */): Boolean /* true if consumed */
+import scala.util.Try
 
-  KeyInputHandler.register(this)
-}
+package object util extends JavaFXExtensions {
+  implicit def cleanly[A <% AutoCloseable](rsc: => A)(doWork: (A) => Unit): Try[Unit] = {
+    TryWithResource[A, Unit](rsc)(_.close())(doWork)
+  }
 
-object KeyInputHandler extends HasRegistryCollection {
-  override type ThisType = KeyInputHandler
+  val Registry = new ObjectRegistry
 }

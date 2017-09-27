@@ -22,11 +22,12 @@ import org.lwjgl.opengl.GL15.{GL_ARRAY_BUFFER, glBindBuffer, glBufferSubData}
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.opengl.GL30.glBindVertexArray
 import org.lwjgl.system.MemoryUtil
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 /*
   Rendering layer for drawing overlays in world texture space.  E.g. this can be used
   to display the range of a turret.
-
  */
 class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends Renderer {
   final val BYTES_PER_VERTEX = java.lang.Float.BYTES * 9;
@@ -122,9 +123,9 @@ class RangeOverlay(worldWidth: Int, worldHeight: Int, textureSize: Int) extends 
     })
   }
 
-  RangeOverlay.singleton = Some(this)
+  RangeOverlay.register(this)
 }
 
-object RangeOverlay {
-  var singleton: Option[RangeOverlay] = None
+object RangeOverlay extends HasRegistrySingleton {
+  override type ThisType = RangeOverlay
 }

@@ -15,17 +15,20 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.game
 
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistryCollection
+
 trait HasGameUpdate {
   def update(deltaTimeSeconds: Double): Unit
-  HasGameUpdate.all :+= this
+
+  HasGameUpdate.register(this)
 }
 
-object HasGameUpdate {
-  var all: List[HasGameUpdate] = Nil
+object HasGameUpdate extends HasRegistryCollection with Logging {
+  override type ThisType = HasGameUpdate
+
   def update(deltaTimeSeconds: Double): Unit = {
+    trace"starting game update loop $deltaTimeSeconds ${all}"
     all.foreach(_.update(deltaTimeSeconds))
-  }
-  def unregister(x: HasGameUpdate): Unit = {
-    all = all.filterNot(_ == x)
   }
 }

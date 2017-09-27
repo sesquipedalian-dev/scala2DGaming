@@ -16,10 +16,10 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Equipment
 import org.sesquipedalian_dev.scala2DGaming.game.HasGameUpdate
+import org.sesquipedalian_dev.util._
 
 trait HasMovingToward extends HasGameUpdate with Logging {
   def name: String
@@ -55,7 +55,7 @@ trait HasMovingToward extends HasGameUpdate with Logging {
 
       // if we move into a new grid location, check if we can move into that block
       // if not, we have to move around an obstacle
-      val traversable = WorldMap.instance.flatMap(world => {
+      val traversable = WorldMap.singleton.flatMap(world => {
         val tile = world.worldLocations.get(oneTileInDirection)
         trace"tile is traversable $tile"
         tile.map(_.traversable)
@@ -86,7 +86,7 @@ trait HasMovingToward extends HasGameUpdate with Logging {
               Math.floor(location.y).toFloat + d.y
             }
             val oneTileInNewDirection = Location(oneTileNewDX, oneTileNewDY)
-            val traversable = WorldMap.instance.flatMap(world => {
+            val traversable = WorldMap.singleton.flatMap(world => {
               world.worldLocations.get(oneTileInNewDirection).map(_.traversable)
             }).getOrElse(false)
             (d, traversable)
@@ -118,7 +118,7 @@ trait HasMovingToward extends HasGameUpdate with Logging {
   }
 
   def moveTowardsEquipment[A <: Equipment](use: (A) => Unit)(implicit mf: Manifest[A]): Unit = {
-    val turretsByRange = HasWorldSpriteRendering.all.collect({case gun: A => {
+    val turretsByRange = Registry.objects[HasWorldSpriteRendering](HasWorldSpriteRendering.tag).collect({case gun: A => {
       gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
     }}).sortBy(_._2)
 

@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL20._
 import org.lwjgl.opengl.GL30.{glBindVertexArray, glDeleteVertexArrays, glGenVertexArrays}
 import org.lwjgl.opengl.GL32._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 case class DrawCallInfo(
   elBuffer: IntBuffer,

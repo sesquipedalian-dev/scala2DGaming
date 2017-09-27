@@ -20,6 +20,8 @@ import java.awt.Color
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasUiRendering, HasUiSpriteRendering, UIButtonsRenderer, UITextRenderer}
 import org.sesquipedalian_dev.scala2DGaming.ui.{Dialog, PauseButton}
+import org.sesquipedalian_dev.util._
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 // entity to hold global info about the game player
 class Commander(
@@ -27,9 +29,6 @@ class Commander(
 ) extends HasUiSpriteRendering
   with HasUiRendering
 {
-
-  Commander.singleton = Some(this)
-
   override def render(uiSpritesRenderer: UIButtonsRenderer): Unit = {
     val textWidth = String.format("GMUs: %d", new java.lang.Integer(gmus)).size
     val yPos = Math.pow(Main.UI_HEIGHT, 2) / (Main.UI_WIDTH) - UITextRenderer.sizeToInt(UITextRenderer.MEDIUM)
@@ -40,10 +39,12 @@ class Commander(
     val yPos = Math.pow(Main.UI_HEIGHT, 2) / (Main.UI_WIDTH) - UITextRenderer.sizeToInt(UITextRenderer.MEDIUM)
     uiRenderer.drawTextOnWorld(0, yPos.toFloat, String.format("GMUs: %d", new java.lang.Integer(gmus)), Color.YELLOW, UITextRenderer.MEDIUM)
   }
+
+  Commander.register(this)
 }
 
-object Commander {
-  var singleton: Option[Commander] = None
+object Commander extends HasRegistrySingleton {
+  override type ThisType = Commander
 
   // amt can be + or -
   def changeMoney(amt: Int): Unit = singleton.foreach(s => {
@@ -53,7 +54,7 @@ object Commander {
         "  Get back down to the Gun Turrets, private!", "/textures/ui/sarge_dialog.bmp"
       )
       Dialog.okButton.foreach(_.disabled = true)
-      HasUiSpriteRendering.all.foreach({
+      Registry.objects[HasUiSpriteRendering](HasUiSpriteRendering.tag).foreach({
         case x: PauseButton => x.disabled = true
         case _ =>
       })

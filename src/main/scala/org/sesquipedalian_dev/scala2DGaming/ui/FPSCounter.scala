@@ -32,7 +32,7 @@ with HasUiSpriteRendering
 
   var currentFps: Double = 0d
   def update(deltaTimeSeconds: Double): Unit = {
-    TimeOfDay.instance.foreach(tod => {
+    TimeOfDay.singleton.foreach(tod => {
       updateTimer -= (deltaTimeSeconds / tod.speed)
       if(updateTimer <= 0) {
         currentFps = 1 / deltaTimeSeconds * tod.speed

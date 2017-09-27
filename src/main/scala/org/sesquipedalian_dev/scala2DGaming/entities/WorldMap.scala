@@ -16,6 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasWorldSpriteRendering, WorldSpritesRenderer}
+import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
 
 case class Location(
   x: Float,
@@ -130,9 +131,9 @@ class WorldMap(worldSize: Location) extends HasWorldSpriteRendering {
     }).map(p => p.location -> p).toMap
   }
 
-  WorldMap.instance = Some(this)
+  WorldMap.register(this)
 }
 
-object WorldMap {
-  var instance: Option[WorldMap] = None
+object WorldMap extends HasRegistrySingleton {
+  override type ThisType = WorldMap
 }

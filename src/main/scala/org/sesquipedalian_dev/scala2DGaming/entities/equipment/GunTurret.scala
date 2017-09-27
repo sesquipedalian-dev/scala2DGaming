@@ -22,7 +22,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities.enemies.{BadGuy, Projectile
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+import org.sesquipedalian_dev.util.Logging
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc

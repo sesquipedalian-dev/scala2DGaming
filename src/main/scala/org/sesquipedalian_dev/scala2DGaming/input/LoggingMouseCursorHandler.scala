@@ -14,7 +14,8 @@
   * limitations under the License.
   */
 package org.sesquipedalian_dev.scala2DGaming.input
-import org.sesquipedalian_dev.scala2DGaming.util.Logging
+
+import org.sesquipedalian_dev.util.Logging
 
 class LoggingMouseCursorHandler extends MouseInputHandler with Logging {
   override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = { /* true if consumed */

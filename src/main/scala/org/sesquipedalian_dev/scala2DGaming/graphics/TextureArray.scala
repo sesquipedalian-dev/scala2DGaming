@@ -24,7 +24,7 @@ import org.lwjgl.opengl.GL30._
 import org.lwjgl.opengl.GL42._
 import org.lwjgl.stb.STBImage._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
-import org.sesquipedalian_dev.scala2DGaming.util.{Logging, ThrowsExceptionOnGLError, cleanly}
+import org.sesquipedalian_dev.util.{Logging, ThrowsExceptionOnGLError, cleanly}
 
 import scala.util.{Failure, Success}
 
