@@ -19,7 +19,7 @@ import org.lwjgl.glfw.GLFW._
 import org.lwjgl.glfw.{GLFWCursorPosCallback, GLFWErrorCallback, GLFWKeyCallback, GLFWMouseButtonCallback}
 import org.lwjgl.opengl.GL
 import org.lwjgl.system.MemoryUtil
-import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
+import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.input.{KeyInputHandler, MouseInputHandler}
 
 // wrap GLFW window creation

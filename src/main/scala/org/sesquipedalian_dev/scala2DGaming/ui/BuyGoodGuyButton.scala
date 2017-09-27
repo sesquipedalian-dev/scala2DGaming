@@ -18,7 +18,9 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities.{Commander, GoodGuy, GoodGuyGroups, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{GoodGuy, GoodGuyGroups}
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.game.Commander
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util.Logging

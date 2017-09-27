@@ -13,8 +13,9 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
 
 class Bed(

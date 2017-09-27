@@ -13,10 +13,11 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 
+import org.sesquipedalian_dev.scala2DGaming.entities.{HasMovingToward, Location}
+import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 class BadGuy(
   var location: Location,

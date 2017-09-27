@@ -17,7 +17,9 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main}
+import org.sesquipedalian_dev.scala2DGaming.Main
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Equipment
+import org.sesquipedalian_dev.scala2DGaming.game.HasGameUpdate
 
 trait HasMovingToward extends HasGameUpdate with Logging {
   def name: String

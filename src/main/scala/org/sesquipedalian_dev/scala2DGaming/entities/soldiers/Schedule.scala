@@ -13,9 +13,9 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.soldiers
 
-import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
+import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 
 // manage groups' activites -
 // each GoodGuyGroup has a Schedule.  The Schedule says what Activity that unit should be doing

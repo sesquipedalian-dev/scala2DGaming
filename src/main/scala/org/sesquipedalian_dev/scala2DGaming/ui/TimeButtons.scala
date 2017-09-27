@@ -15,8 +15,8 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.ui
 
-import org.sesquipedalian_dev.scala2DGaming.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util.Logging

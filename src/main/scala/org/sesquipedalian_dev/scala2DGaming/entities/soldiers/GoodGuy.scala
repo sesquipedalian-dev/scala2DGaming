@@ -13,16 +13,19 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.soldiers
 
 import java.awt.Color
 
+import org.sesquipedalian_dev.scala2DGaming.Main
+import org.sesquipedalian_dev.scala2DGaming.entities._
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, Equipment, GunTurret}
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
+import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
 import org.sesquipedalian_dev.scala2DGaming.ui.Dialog
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
 
 class GoodGuy(
   val name: String,

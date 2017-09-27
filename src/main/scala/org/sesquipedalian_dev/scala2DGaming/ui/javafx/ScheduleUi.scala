@@ -23,11 +23,12 @@ import javafx.scene.control.{Button, Control}
 import javafx.scene.layout.{AnchorPane, HBox, Region, VBox}
 import javafx.scene.text.{Font, Text}
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{Activities, GoodGuyGroups, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{Activities, GoodGuyGroups}
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleUiSpriteRendering
 import org.sesquipedalian_dev.scala2DGaming.input.UIButtonMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util._
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 
 class ScheduleUiController extends HasGameUpdate with Logging {
   final val unitWidth = 100

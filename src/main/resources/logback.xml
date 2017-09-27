@@ -8,7 +8,7 @@
     </appender>
 
     <!-- specific-class debuging -->
-    <!--<logger name="org.sesquipedalian_dev.scala2DGaming.entities.GoodGuy" level="TRACE" additivity="false">-->
+    <!--<logger name="org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuy" level="TRACE" additivity="false">-->
         <!--<appender-ref ref="STDOUT"/>-->
     <!--</logger>-->
 

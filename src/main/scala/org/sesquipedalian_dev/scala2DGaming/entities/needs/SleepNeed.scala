@@ -15,7 +15,8 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.needs
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{Bed, GoodGuy}
+import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuy
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Bed
 
 // soldiers need sleep
 // target should be 8hr sleep / 24 hr period for max effectiveness -

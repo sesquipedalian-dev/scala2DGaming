@@ -13,15 +13,19 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.game
 
-trait Equipment {
-  var user: Option[GoodGuy] = None
-  def location: Location
-  def name: String
-  def useRange: Float
+trait HasGameUpdate {
+  def update(deltaTimeSeconds: Double): Unit
+  HasGameUpdate.all :+= this
+}
 
-  override def toString: String = {
-    s"$name at $location"
+object HasGameUpdate {
+  var all: List[HasGameUpdate] = Nil
+  def update(deltaTimeSeconds: Double): Unit = {
+    all.foreach(_.update(deltaTimeSeconds))
+  }
+  def unregister(x: HasGameUpdate): Unit = {
+    all = all.filterNot(_ == x)
   }
 }

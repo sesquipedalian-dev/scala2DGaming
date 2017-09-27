@@ -18,6 +18,10 @@ package org.sesquipedalian_dev.scala2DGaming
 import java.util.Date
 
 import org.sesquipedalian_dev.scala2DGaming.entities._
+import org.sesquipedalian_dev.scala2DGaming.entities.enemies.BadGuySpawner
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, GunTurret, RangeArc}
+import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{GoodGuy, GoodGuyGroup, GoodGuyGroups}
+import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._

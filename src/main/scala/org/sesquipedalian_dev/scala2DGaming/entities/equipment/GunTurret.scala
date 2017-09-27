@@ -13,14 +13,16 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 
 import java.awt.Color
 
+import org.sesquipedalian_dev.scala2DGaming.entities._
+import org.sesquipedalian_dev.scala2DGaming.entities.enemies.{BadGuy, Projectile}
+import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, TimeOfDay}
 
 case class RangeArc(
   minAngle: Float, // min anti-clockwise angle that is in our arc

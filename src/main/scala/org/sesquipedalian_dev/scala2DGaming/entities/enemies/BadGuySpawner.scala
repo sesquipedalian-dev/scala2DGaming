@@ -13,10 +13,12 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities
+package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 
+import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
-import org.sesquipedalian_dev.scala2DGaming.{HasGameUpdate, Main, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 
 // thing to make bad guys on some timer
 class BadGuySpawner(

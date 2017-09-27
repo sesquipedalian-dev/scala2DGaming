@@ -17,8 +17,9 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 
 import java.awt.Color
 
-import org.sesquipedalian_dev.scala2DGaming.{Main, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.game.TimeOfDay
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{MouseInputHandler, UIButtonMouseListener}
 import org.sesquipedalian_dev.scala2DGaming.util.Logging
