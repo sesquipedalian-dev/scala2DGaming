@@ -1,7 +1,7 @@
 /**
   * Copyright 2017 sesquipedalian.dev@gmail.com
   *
-  * Licensed under the Apache License, Version 2.0 (the "License");
+  * Licensed under the Apache License, Version 2.0 the "License");
   * you may not use this file except in compliance with the License.
   * You may obtain a copy of the License at
   *
@@ -15,125 +15,89 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.graphics.{HasWorldSpriteRendering, WorldSpritesRenderer}
-import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.GunTurret
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain._
 
 case class Location(
   x: Float,
   y: Float
 )
 
-case class WorldLoc(
-  location: Location,
-  traversable: Boolean,
-  textureFile: String,
-  var textureIndex: Option[Int] = None
-)
-
-class WorldMap(worldSize: Location) extends HasWorldSpriteRendering {
-  var worldLocations: Map[Location, WorldLoc] = Map()
-
-  override def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {
-    for {
-      x <- 0 to worldSize.x.toInt
-      y <- 0 to worldSize.y.toInt
-      location <- worldLocations.get(Location(x,y))
-    } {
-      if(location.textureIndex.isEmpty) {
-        worldSpritesRenderer.textureArray.foreach(ta => {
-          val currentLoc = ta.textureFiles.indexOf(location.textureFile)
-          if(currentLoc == -1) {
-            location.textureIndex = ta.addTextureResource(location.textureFile)
-          } else {
-            location.textureIndex = Some(currentLoc)
-          }
-        })
-      }
-      worldSpritesRenderer.drawAGuyWorld(x, y, location.textureIndex.get)
-    }
-  }
-
-  def initTestData(): Unit = {
-    val texFiles: List[String] = List(
-      "/textures/world/concrete_wall.bmp",  // 0
-      "/textures/world/Fence.bmp",          // 1
-      "/textures/world/grass.bmp",          // 2
-      "/textures/entities/gun.bmp",            // 3
-      "/textures/world/sand.bmp",           // 4
-      "/textures/world/wood_floor.bmp",     // 5
-      "/textures/world/world_border.bmp" // 6
+object WorldMap {
+  def initTestData(worldSize: Location): Unit = {
+    val builders: List[CanBuild] = List(
+      ConcreteWall,
+      Fence,
+      Grass,
+      GunTurret,
+      Sand,
+      WoodFloor
     )
 
     val locationToTexIndex = List(
-//      (4, true), (4, true), (1, false), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      // (2, true)(3, true) - THE REAL STUFF START2
-      (4, true), (4, true), (1, false), (2, true),(2, true), (0, false), (0, false), (0, false), (0, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (4, true), (4, true), (4, true), (0, false), (5, true), (5, true), (5, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (4, true), (4, true), (4, true), (0, false), (5, true), (5, true), (5, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (4, true), (4, true), (4, true), (0, false), (5, true), (5, true), (5, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (4, true), (4, true), (4, true), (0, false), (5, true), (5, true), (5, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (0, false), (0, false), (0, false), (0, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      // (3, true)(0, false) - back to boring
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true),
-      (4, true), (4, true), (1, false), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true), (2, true)
-//      (4, true), (4, true), (1, false), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true), (6, true)
+      //      4, 4, 1,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      // 23 - THE REAL STUFF START2
+      4, 4, 1,  2,2, 0,  0,  0,  0,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 4, 4, 4, 0,  5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 4, 4, 4, 0,  5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 4, 4, 4, 0,  5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 4, 4, 4, 0,  5, 5, 5, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 0,  0,  0,  0,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      // 30, false) - back to boring
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2,
+      4, 4, 1,  2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2, 2
+      //      4, 4, 1,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
     )
 
-    worldLocations = (for {
+    for {
       x <- 0 until worldSize.x.toInt
       y <- 0 until worldSize.y.toInt
-      (index, traversable) <- locationToTexIndex.drop(x + (y * worldSize.y.toInt)).headOption
-      texFile <- texFiles.drop(index).headOption
+      index <- locationToTexIndex.drop(x + y * worldSize.y.toInt).headOption
+      builder <- builders.drop(index).headOption
     } yield {
-      WorldLoc(Location(x, y), traversable = traversable, texFile)
-    }).map(p => p.location -> p).toMap
+      builder.buildOn(Location(x, y))
+    }
   }
-
-  WorldMap.register(this)
-}
-
-object WorldMap extends HasRegistrySingleton {
-  override type ThisType = WorldMap
 }

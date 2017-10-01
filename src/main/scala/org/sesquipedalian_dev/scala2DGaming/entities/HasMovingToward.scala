@@ -15,9 +15,10 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
-import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Equipment
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Terrain
 import org.sesquipedalian_dev.scala2DGaming.game.HasGameUpdate
 import org.sesquipedalian_dev.util._
 
@@ -55,11 +56,10 @@ trait HasMovingToward extends HasGameUpdate with Logging {
 
       // if we move into a new grid location, check if we can move into that block
       // if not, we have to move around an obstacle
-      val traversable = WorldMap.singleton.flatMap(world => {
-        val tile = world.worldLocations.get(oneTileInDirection)
-        trace"tile is traversable $tile"
-        tile.map(_.traversable)
-      }).getOrElse(false)
+      val possibleTerrain = HasWorldSpriteRendering.all.collect({
+        case x: HasSingleWorldSpriteRendering with Terrain if (x.location == oneTileInDirection) => x.traversable
+      })
+      val traversable = possibleTerrain.exists(b => b)
 
       trace"moving a guy! $name $location $oneTileInDirection $traversable"
 
@@ -86,9 +86,10 @@ trait HasMovingToward extends HasGameUpdate with Logging {
               Math.floor(location.y).toFloat + d.y
             }
             val oneTileInNewDirection = Location(oneTileNewDX, oneTileNewDY)
-            val traversable = WorldMap.singleton.flatMap(world => {
-              world.worldLocations.get(oneTileInNewDirection).map(_.traversable)
-            }).getOrElse(false)
+            val possibleTerrain = HasWorldSpriteRendering.all.collect({
+              case x: HasSingleWorldSpriteRendering with Terrain if (x.location == oneTileInNewDirection) => x.traversable
+            })
+            val traversable = possibleTerrain.exists(b => b)
             (d, traversable)
           })
           .filter(p => {

@@ -21,6 +21,7 @@ import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.entities.enemies.BadGuySpawner
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, GunTurret, RangeArc}
 import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{GoodGuy, GoodGuyGroup, GoodGuyGroups}
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Fence
 import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
@@ -69,6 +70,7 @@ object Main extends Logging {
     new RangeOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE).init()
     val bo = new BuildOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
     bo.init()
+    bo.currentBuilder = Some(Fence)
     new UITextRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
@@ -79,8 +81,7 @@ object Main extends Logging {
     new FastButton()
     new BuyGoodGuyButton()
 
-    val world = new WorldMap(Location(WORLD_WIDTH, WORLD_HEIGHT))
-    world.initTestData()
+    WorldMap.initTestData(Location(WORLD_WIDTH, WORLD_HEIGHT))
 
     new BadGuySpawner(Location(0, 26), 5f)
 

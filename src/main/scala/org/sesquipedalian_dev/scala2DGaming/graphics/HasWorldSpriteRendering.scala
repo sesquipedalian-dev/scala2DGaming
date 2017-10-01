@@ -19,6 +19,8 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
+trait BlocksBuilding
+
 trait HasSingleWorldSpriteRendering extends HasWorldSpriteRendering {
   var textureIndex: Option[Int] = None
   def textureFile: String

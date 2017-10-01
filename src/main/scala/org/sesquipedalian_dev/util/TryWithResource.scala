@@ -25,7 +25,10 @@ object TryWithResource extends Logging {
       r = Some(resource)
       r.map(rsc => Success(doWork(rsc))).getOrElse(Failure(new Exception("probably making rsc")))
     } catch {
-      case e: Exception => Failure(e)
+      case e: Exception => {
+        warn"hit caught exception ${e.getMessage} $e ${e.getStackTrace}"
+        Failure(e)
+      }
     }
     finally {
       try {

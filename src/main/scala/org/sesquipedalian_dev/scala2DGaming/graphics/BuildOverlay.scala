@@ -23,7 +23,7 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.input.MouseInputHandler
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
@@ -70,6 +70,7 @@ class BuildOverlay(
   }
 
   var enabled: Boolean = false
+  var currentBuilder: Option[CanBuild] = None
 
   def currentWorldLoc(): Option[Location] = {
     toWorld(Location(currentX, currentY)).map(l => Location(Math.floor(l.x).toFloat, Math.floor(l.y).toFloat))
@@ -77,19 +78,29 @@ class BuildOverlay(
 
   def isValidBuildLoc(): Boolean = {
     val worldLoc = currentWorldLoc()
-    trace"isValidBuildLoc? $currentX $currentY $worldLoc"
-    worldLoc.exists(l => l.x < Main.WORLD_WIDTH / 2)
+    val result = (currentBuilder zip worldLoc).exists(p => {
+      val (builder, loc) = p
+
+      val possibleConflicts = HasWorldSpriteRendering.all.collect({
+        case x: HasSingleWorldSpriteRendering if x.location == loc => x
+      })
+
+      val f = builder.canBuildOn.lift
+      !possibleConflicts.exists(p => !f(p).getOrElse(true))
+    })
+    trace"isValidBuildLoc? $currentX $currentY $worldLoc $result"
+    result
   }
 
-  override def render(): Unit = if(enabled) {
+  override def render(): Unit = currentBuilder.foreach(builder => {
     programHandle.foreach(glUseProgram)
     WorldSpritesRenderer.singleton.flatMap(_.camera).foreach(_.updateScreenSize(programHandle, "projection"))
 
     // also render green / red depending on whether this is a valid location to build on
     val color = if(isValidBuildLoc()) {
-      Color.BLUE
+      new Color(0, 0, 255)
     }  else {
-      Color.RED
+      new Color(255, 0, 0)
     }
 
     // set geoColor uniform
@@ -102,8 +113,10 @@ class BuildOverlay(
       val g = color.getGreen.toFloat / 255
       val b = color.getBlue.toFloat / 255
       buf.put(r).put(g).put(b)
+      buf.flip()
+      trace"hooking up color uniform $r $g $b"
 
-      geoColorLoc.foreach(glUniform2fv(_, buf))
+      geoColorLoc.foreach(glUniform3fv(_, buf))
       checkError()
     })
 
@@ -111,7 +124,7 @@ class BuildOverlay(
     draw(currentWorldLoc().get.x, currentWorldLoc().get.y)
 
     super.render()
-  }
+  })
 
   override def cleanup(): Unit = {
     // free all the memory we used

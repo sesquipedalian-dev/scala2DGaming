@@ -13,23 +13,21 @@
   * See the License for the specific language governing permissions and
   * limitations under the License.
   */
-package org.sesquipedalian_dev.scala2DGaming.entities.equipment
+package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
 
-class Bed(
+class WoodFloor(
   var location: Location
-) extends HasSingleWorldSpriteRendering
-  with Equipment
+) extends HasSingleWorldSpriteRendering with Terrain
 {
-  override val textureFile: String = Bed.textureFile
-  override val name: String = Bed.name
-  override val useRange: Float = 0.5f
+  val traversable = true
+  override def textureFile = WoodFloor.textureFile
 }
 
-object Bed extends CanBuild {
-  override def buildOn(location: Location): Unit = new Bed(location)
-  override def textureFile = "/textures/entities/bed.bmp"
-  override def name = "Bed"
+object WoodFloor extends CanBuild {
+  override def textureFile: String = "/textures/world/wood_floor.bmp"
+  override def name: String = "WoodFloor"
+  override def buildOn(location: Location): Unit = new WoodFloor(location)
 }

@@ -19,6 +19,7 @@ import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.entities.enemies.{BadGuy, Projectile}
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain.ConcreteWall
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
@@ -42,9 +43,9 @@ class GunTurret(
   with WorldMouseListener
   with Logging
 {
-  val name: String = "GunTurret"
+  val name: String = GunTurret.name
   val useRange: Float = 1
-  override val textureFile: String = "/textures/entities/gun.bmp"
+  override val textureFile: String = GunTurret.textureFile
 
   var shotTimer = secondsPerShot * TimeOfDay.SLOW
 
@@ -105,5 +106,19 @@ class GunTurret(
 
   override def clicked(): Unit = {
     trace"gun turret $location click"
+  }
+}
+
+object GunTurret extends CanBuild {
+  override def textureFile: String = "/textures/entities/gun.bmp"
+  override def name: String = "GunTurret"
+  override def buildOn(location: Location): Unit = new GunTurret(
+    location, 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5)
+  )
+
+  // can only build turrets on concrete wall
+  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
+    case x: ConcreteWall => true
+    case x: HasSingleWorldSpriteRendering => false
   }
 }

@@ -1,8 +1,8 @@
 #version 150 core
 
-uniform vec3 geoColor;
+in vec3 vertColor;
 out vec4 outColor;
 
 void main() {
-	outColor = vec4(geoColor.rgb, .33);
+	outColor = vec4(vertColor.rgb, .33);
 }
