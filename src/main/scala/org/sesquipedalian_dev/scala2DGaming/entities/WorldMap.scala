@@ -17,11 +17,23 @@ package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.GunTurret
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain._
+import org.sesquipedalian_dev.util.Logging
 
 case class Location(
   x: Float,
   y: Float
-)
+) extends Logging {
+  override def equals(obj: scala.Any): Boolean = {
+    obj match {
+      case rhs: Location => {
+        val xDiff = Math.abs(rhs.x - x) < .0001
+        val yDiff = Math.abs(rhs.y - y) < .0001
+        xDiff && yDiff
+      }
+      case _ => false
+    }
+  }
+}
 
 object WorldMap {
   def initTestData(worldSize: Location): Unit = {

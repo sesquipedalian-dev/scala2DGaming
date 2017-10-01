@@ -21,7 +21,6 @@ import scala.collection.mutable
 // register game objects by string tags and provides accessor methods for manipulating that collection
 // makes it easier to destroy an object by unregistering it with everything at once
 class ObjectRegistry {
-
   val collection: mutable.HashMap[String, List[AnyRef]] = mutable.HashMap()
 
   def register(x: AnyRef, tag: String): Unit = register(x, tag :: Nil)
@@ -31,6 +30,17 @@ class ObjectRegistry {
         collection += (t -> (collection.getOrElse(t, Nil) :+ x))
       })
     })
+  }
+
+  def unregister(x: AnyRef, tag: String): Unit = {
+    collection.synchronized(({
+      val colCp = collection.toMap
+      collection.clear
+      collection ++= colCp.map({
+        case (thisTag, lst) if thisTag == tag => (thisTag -> lst.filterNot(_ == x))
+        case p => p
+      })
+    }))
   }
 
   def unregister(x: AnyRef): Unit = {

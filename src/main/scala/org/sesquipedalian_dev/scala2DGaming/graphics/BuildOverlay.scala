@@ -69,7 +69,6 @@ class BuildOverlay(
     register()
   }
 
-  var enabled: Boolean = false
   var currentBuilder: Option[CanBuild] = None
 
   def currentWorldLoc(): Option[Location] = {
@@ -158,6 +157,10 @@ class BuildOverlay(
   override def handleAction(windowHandle: Long, button: Int, action: Int) = {
     if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && isValidBuildLoc()) {
       trace"building a thing!? $currentX $currentY"
+      (currentBuilder zip currentWorldLoc).foreach(p => {
+        val (builder, loc) = p
+        builder.buildOn(loc)
+      })
       true
     } else {
       false
@@ -167,6 +170,6 @@ class BuildOverlay(
 
 object BuildOverlay extends HasRegistrySingleton {
   override type ThisType = BuildOverlay
-  def enable(): Unit = singleton.foreach(_.enabled = true)
-  def disable(): Unit = singleton.foreach(_.enabled = false)
+  def enable(canBuild: CanBuild): Unit = singleton.foreach(_.currentBuilder = Some(canBuild))
+  def disable(): Unit = singleton.foreach(_.currentBuilder = None)
 }

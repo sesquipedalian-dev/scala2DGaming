@@ -16,7 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
-import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class WoodFloor(
   var location: Location
@@ -26,8 +26,11 @@ class WoodFloor(
   override def textureFile = WoodFloor.textureFile
 }
 
-object WoodFloor extends CanBuild {
+object WoodFloor extends CanBuildTerrain {
   override def textureFile: String = "/textures/world/wood_floor.bmp"
   override def name: String = "WoodFloor"
-  override def buildOn(location: Location): Unit = new WoodFloor(location)
+  override def buildOn(location: Location): Unit = {
+    super.buildOn(location)
+    new WoodFloor(location)
+  }
 }

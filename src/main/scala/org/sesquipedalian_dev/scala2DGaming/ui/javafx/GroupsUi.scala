@@ -173,9 +173,7 @@ object GroupsUi extends SeparateThreadJavaFxWindowCompanionObject {
 class ToggleGroupsUiButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/ui/buttons/groups.bmp"
   override def location = Location(2200, 80)
-  val timeToSet: Double = TimeOfDay.PAUSE
 
-  var previousSpeed: Option[Double] = None
   override def buttonClicked(): Unit = {
     GroupsUi.singleton match {
       case Some(s) => GroupsUi.close()

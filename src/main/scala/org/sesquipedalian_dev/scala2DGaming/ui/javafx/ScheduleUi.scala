@@ -185,9 +185,7 @@ object ScheduleUi extends SeparateThreadJavaFxWindowCompanionObject {
 class ToggleScheduleUiButton extends HasSingleUiSpriteRendering with UIButtonMouseListener {
   override def textureFile = "/textures/ui/buttons/schedule.bmp"
   override def location = Location(2270, 80)
-  val timeToSet: Double = TimeOfDay.PAUSE
 
-  var previousSpeed: Option[Double] = None
   override def buttonClicked(): Unit = {
     ScheduleUi.singleton match {
       case Some(s) => ScheduleUi.close()

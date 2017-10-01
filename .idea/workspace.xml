@@ -13,111 +13,142 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DockManager">
+    <window id="2">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="GroupsUi.scala" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/GroupsUi.scala">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="540">
+                    <caret line="125" column="12" lean-forward="true" selection-start-line="125" selection-start-column="12" selection-end-line="125" selection-end-column="12" />
+                    <folding>
+                      <element signature="n#!!doc" expanded="true" />
+                    </folding>
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
-      <file leaf-file-name="BuildOverlay.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala">
+      <file leaf-file-name="HasRegistryCollection.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="395">
-              <caret line="115" column="16" lean-forward="false" selection-start-line="115" selection-start-column="16" selection-end-line="115" selection-end-column="16" />
-              <folding>
-                <element signature="e#678#699#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Renderer.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Renderer.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="301">
-              <caret line="178" column="0" lean-forward="true" selection-start-line="178" selection-start-column="0" selection-end-line="178" selection-end-column="0" />
-              <folding>
-                <element signature="e#678#718#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Camera2D.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Camera2D.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="514">
-              <caret line="70" column="26" lean-forward="true" selection-start-line="70" selection-start-column="26" selection-end-line="70" selection-end-column="26" />
-              <folding>
-                <element signature="n#!!doc" expanded="true" />
-                <element signature="e#678#718#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="ThrowsExceptionOnGLError.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/ThrowsExceptionOnGLError.scala">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="20" column="6" lean-forward="false" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
+            <state relative-caret-position="85">
+              <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="TryWithResource.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/TryWithResource.scala">
+      <file leaf-file-name="HasWorldSpriteRendering.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="20" column="7" lean-forward="false" selection-start-line="20" selection-start-column="7" selection-end-line="20" selection-end-column="7" />
+            <state relative-caret-position="472">
+              <caret line="48" column="44" lean-forward="false" selection-start-line="48" selection-start-column="44" selection-end-line="48" selection-end-column="44" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="package.scala" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/package.scala">
+      <file leaf-file-name="Terrain.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Terrain.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="23" column="11" lean-forward="true" selection-start-line="23" selection-start-column="11" selection-end-line="23" selection-end-column="11" />
-              <folding />
+              <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="buildCursor.frag" pinned="false" current-in-tab="true">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/buildCursor.frag">
+      <file leaf-file-name="CanBuild.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala">
           <provider selected="true" editor-type-id="text-editor">
             <state relative-caret-position="119">
-              <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
-              <folding />
+              <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+              <folding>
+                <element signature="e#678#778#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="buildCursor.vert" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/buildCursor.vert">
+      <file leaf-file-name="WoodFloor.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/WoodFloor.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="187">
-              <caret line="11" column="0" lean-forward="false" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="255">
+              <caret line="29" column="69" lean-forward="true" selection-start-line="29" selection-start-column="69" selection-end-line="29" selection-end-column="69" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="range.frag" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/range.frag">
+      <file leaf-file-name="ConcreteWall.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/ConcreteWall.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="153">
-              <caret line="9" column="0" lean-forward="true" selection-start-line="0" selection-start-column="0" selection-end-line="9" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="306">
+              <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="27" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="range.vert" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/range.vert">
+      <file leaf-file-name="HasMovingToward.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/HasMovingToward.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="12" column="0" lean-forward="true" selection-start-line="12" selection-start-column="0" selection-end-line="12" selection-end-column="0" />
-              <folding />
+            <state relative-caret-position="403">
+              <caret line="105" column="0" lean-forward="true" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+              <folding>
+                <element signature="e#678#787#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Fence.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Fence.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="340">
+              <caret line="34" column="27" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Grass.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Grass.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="306">
+              <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Sand.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Sand.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="323">
+              <caret line="33" column="27" lean-forward="false" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="27" />
+              <folding>
+                <element signature="e#686#759#0" expanded="true" />
+              </folding>
             </state>
           </provider>
         </entry>
@@ -128,16 +159,13 @@
     <option name="RECENT_TEMPLATES">
       <list>
         <option value="GLSL Shader" />
-        <option value="FxmlFile" />
         <option value="Package Object" />
+        <option value="FxmlFile" />
       </list>
     </option>
   </component>
   <component name="FindInProjectRecents">
     <findStrings>
-      <find>setMargin</find>
-      <find>John</find>
-      <find>textures/</find>
       <find>texture</find>
       <find>textureArray.frag</find>
       <find>GL_REPEAT</find>
@@ -152,19 +180,22 @@
       <find>info&quot;</find>
       <find>textureFile</find>
       <find>worldLoc</find>
-      <find>enabled</find>
       <find>toScreen</find>
       <find>isValidBuild</find>
       <find>Grass</find>
-      <find>Fence</find>
       <find>Sand</find>
-      <find>GunTurret</find>
       <find>WorldMap</find>
       <find>false),</find>
       <find>BuildOverlay</find>
       <find>isVali</find>
       <find>geoColor</find>
       <find>glUniform</find>
+      <find>Groups</find>
+      <find>ScheduleUi</find>
+      <find>enabled</find>
+      <find>GunTurret</find>
+      <find>ConcreteWall</find>
+      <find>Fence</find>
     </findStrings>
     <replaceStrings>
       <replace>worldCameraScale</replace>
@@ -176,10 +207,13 @@
       <replace>setPrefWidth</replace>
       <replace>setMinWidth</replace>
       <replace>setMaxWidth</replace>
-      <replace>Grass</replace>
-      <replace>Sand</replace>
       <replace>ConcreteWall</replace>
       <replace>WorldFloor</replace>
+      <replace>Build</replace>
+      <replace>WoodFloor</replace>
+      <replace>Fence</replace>
+      <replace>Grass</replace>
+      <replace>Sand</replace>
     </replaceStrings>
   </component>
   <component name="GradleLocalSettings">
@@ -190,10 +224,6 @@
   <component name="IdeDocumentHistory">
     <option name="CHANGED_PATHS">
       <list>
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryTag.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/WorldSpritesRenderer.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/UITextRenderer.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/UIButtonsRenderer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/Renderable.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/RangeOverlay.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasUiSpriteRendering.scala" />
@@ -215,32 +245,36 @@
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/TimeButtons.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistrySingleton.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/ObjectRegistry.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/FPSCounter.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/game/TimeOfDay.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/game/HasGameUpdate.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/ScheduleUi.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasRangeOverlayRendering.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/input/WorldMouseListener.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/ConvertsScreenAndWorldCoords.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/equipment/Bed.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/equipment/GunTurret.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/TryWithResource.scala" />
+        <option value="$PROJECT_DIR$/src/main/resources/shaders/buildCursor.vert" />
+        <option value="$PROJECT_DIR$/src/main/resources/shaders/buildCursor.frag" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/GroupsUi.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/ScheduleUi.scala" />
+        <option value="$PROJECT_DIR$/src/main/resources/fxml/build.fxml" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/BuildUi.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala" />
+        <option value="$PROJECT_DIR$/src/main/resources/logback.xml" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/HasMovingToward.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/ObjectRegistry.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryTag.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Terrain.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/ConcreteWall.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Fence.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Grass.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Sand.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/WoodFloor.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/equipment/GunTurret.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/HasMovingToward.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala" />
-        <option value="$PROJECT_DIR$/src/main/resources/logback.xml" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/TryWithResource.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala" />
-        <option value="$PROJECT_DIR$/src/main/resources/shaders/buildCursor.vert" />
-        <option value="$PROJECT_DIR$/src/main/resources/shaders/buildCursor.frag" />
       </list>
     </option>
   </component>
@@ -307,6 +341,14 @@
               <item name="src" type="462c0819:PsiDirectoryNode" />
               <item name="main" type="462c0819:PsiDirectoryNode" />
               <item name="resources" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
+              <item name="trunk" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="resources" type="462c0819:PsiDirectoryNode" />
+              <item name="fxml" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
@@ -804,78 +846,16 @@
         </line-breakpoint>
         <line-breakpoint enabled="true" type="scala-line">
           <url>file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala</url>
-          <line>109</line>
+          <line>108</line>
           <properties />
           <option name="timeStamp" value="51" />
         </line-breakpoint>
       </breakpoints>
-      <option name="time" value="52" />
+      <option name="time" value="53" />
     </breakpoint-manager>
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/FontTexture.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="51">
-          <caret line="17" column="0" lean-forward="false" selection-start-line="17" selection-start-column="0" selection-end-line="17" selection-end-column="0" />
-          <folding>
-            <element signature="e#678#712#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/BuyGoodGuyButton.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="214">
-          <caret line="59" column="63" lean-forward="false" selection-start-line="59" selection-start-column="63" selection-end-line="59" selection-end-column="63" />
-          <folding>
-            <element signature="e#672#693#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/Dialog.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="544">
-          <caret line="110" column="25" lean-forward="false" selection-start-line="110" selection-start-column="25" selection-end-line="110" selection-end-column="25" />
-          <folding>
-            <element signature="e#672#693#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/TimeButtons.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="46" column="37" lean-forward="false" selection-start-line="46" selection-start-column="37" selection-end-line="46" selection-end-column="37" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/ObjectRegistry.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="918">
-          <caret line="68" column="29" lean-forward="false" selection-start-line="68" selection-start-column="29" selection-end-line="68" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/FPSCounter.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="32" column="29" lean-forward="false" selection-start-line="32" selection-start-column="29" selection-end-line="32" selection-end-column="29" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="20" column="6" lean-forward="false" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistrySingleton.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -914,17 +894,6 @@
           <folding>
             <element signature="n#!!doc" expanded="false" />
             <element signature="e#674#710#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/ScheduleUi.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="448">
-          <caret line="107" column="39" lean-forward="true" selection-start-line="107" selection-start-column="39" selection-end-line="107" selection-end-column="39" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#679#713#0" expanded="false" />
           </folding>
         </state>
       </provider>
@@ -1078,132 +1047,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Terrain.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="20" column="6" lean-forward="false" selection-start-line="20" selection-start-column="6" selection-end-line="20" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/ConcreteWall.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="25" column="53" lean-forward="true" selection-start-line="25" selection-start-column="53" selection-end-line="25" selection-end-column="53" />
-          <folding>
-            <element signature="e#686#759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Grass.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
-          <folding>
-            <element signature="e#686#759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Sand.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
-          <folding>
-            <element signature="e#686#759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/WoodFloor.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="26" column="1" lean-forward="true" selection-start-line="26" selection-start-column="1" selection-end-line="26" selection-end-column="1" />
-          <folding>
-            <element signature="e#686#759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="221">
-          <caret line="27" column="6" lean-forward="false" selection-start-line="27" selection-start-column="6" selection-end-line="27" selection-end-column="6" />
-          <folding>
-            <element signature="e#678#778#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/equipment/GunTurret.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="299">
-          <caret line="45" column="35" lean-forward="false" selection-start-line="45" selection-start-column="35" selection-end-line="45" selection-end-column="35" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#688#709#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="718">
-          <caret line="96" column="6" lean-forward="false" selection-start-line="96" selection-start-column="6" selection-end-line="96" selection-end-column="6" />
-          <folding>
-            <element signature="n#!!doc" expanded="true" />
-            <element signature="e#677#749#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="359">
-          <caret line="42" column="6" lean-forward="false" selection-start-line="42" selection-start-column="6" selection-end-line="42" selection-end-column="6" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Fence.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="24" column="25" lean-forward="false" selection-start-line="24" selection-start-column="25" selection-end-line="24" selection-end-column="25" />
-          <folding>
-            <element signature="e#686#759#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/HasMovingToward.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="724">
-          <caret line="85" column="50" lean-forward="true" selection-start-line="85" selection-start-column="50" selection-end-line="85" selection-end-column="50" />
-          <folding>
-            <element signature="e#678#787#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="68" column="53" lean-forward="true" selection-start-line="68" selection-start-column="53" selection-end-line="68" selection-end-column="53" />
-          <folding>
-            <element signature="e#669#690#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/logback.xml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="170">
-          <caret line="10" column="82" lean-forward="false" selection-start-line="10" selection-start-column="82" selection-end-line="10" selection-end-column="82" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/ThrowsExceptionOnGLError.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="102">
@@ -1249,16 +1092,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="395">
-          <caret line="115" column="16" lean-forward="false" selection-start-line="115" selection-start-column="16" selection-end-line="115" selection-end-column="16" />
-          <folding>
-            <element signature="e#678#699#0" expanded="true" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/range.frag">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="153">
@@ -1283,11 +1116,221 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/ScheduleUi.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="187" column="0" lean-forward="false" selection-start-line="187" selection-start-column="0" selection-end-line="187" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/build.fxml">
+      <provider editor-type-id="JavaFX-Scene-Builder">
+        <state />
+      </provider>
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="102">
+          <caret line="11" column="0" lean-forward="true" selection-start-line="11" selection-start-column="0" selection-end-line="11" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/TextureArray.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="66" column="0" lean-forward="false" selection-start-line="66" selection-start-column="0" selection-end-line="66" selection-end-column="0" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/GroupsUi.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="540">
+          <caret line="125" column="12" lean-forward="true" selection-start-line="125" selection-start-column="12" selection-end-line="125" selection-end-column="12" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/resources/shaders/buildCursor.frag">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="119">
-          <caret line="7" column="0" lean-forward="false" selection-start-line="7" selection-start-column="0" selection-end-line="7" selection-end-column="0" />
+        <state relative-caret-position="136">
+          <caret line="8" column="0" lean-forward="true" selection-start-line="8" selection-start-column="0" selection-end-line="8" selection-end-column="0" />
           <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/BuildUi.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="231">
+          <caret line="96" column="60" lean-forward="false" selection-start-line="96" selection-start-column="60" selection-end-line="96" selection-end-column="60" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#679#713#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="545">
+          <caret line="150" column="6" lean-forward="true" selection-start-line="150" selection-start-column="6" selection-end-line="150" selection-end-column="6" />
+          <folding>
+            <element signature="e#678#699#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/equipment/GunTurret.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="33" column="15" lean-forward="false" selection-start-line="33" selection-start-column="15" selection-end-line="33" selection-end-column="15" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#688#709#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/Main.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="368">
+          <caret line="86" column="13" lean-forward="false" selection-start-line="86" selection-start-column="13" selection-end-line="86" selection-end-column="13" />
+          <folding>
+            <element signature="e#669#690#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/resources/logback.xml">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="10" column="82" lean-forward="false" selection-start-line="10" selection-start-column="82" selection-end-line="10" selection-end-column="82" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/WorldMap.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="17">
+          <caret line="20" column="0" lean-forward="true" selection-start-line="20" selection-start-column="0" selection-end-line="20" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+            <element signature="e#677#749#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/ObjectRegistry.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="34" column="6" lean-forward="false" selection-start-line="34" selection-start-column="6" selection-end-line="34" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryTag.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="19" column="6" lean-forward="false" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="19" column="43" lean-forward="false" selection-start-line="19" selection-start-column="43" selection-end-line="19" selection-end-column="43" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="472">
+          <caret line="48" column="44" lean-forward="false" selection-start-line="48" selection-start-column="44" selection-end-line="48" selection-end-column="44" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/HasMovingToward.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="403">
+          <caret line="105" column="0" lean-forward="true" selection-start-line="105" selection-start-column="0" selection-end-line="105" selection-end-column="0" />
+          <folding>
+            <element signature="e#678#787#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+          <folding>
+            <element signature="e#678#778#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Terrain.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="21" column="6" lean-forward="false" selection-start-line="21" selection-start-column="6" selection-end-line="21" selection-end-column="6" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/ConcreteWall.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="32" column="4" lean-forward="false" selection-start-line="32" selection-start-column="4" selection-end-line="32" selection-end-column="27" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Fence.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="340">
+          <caret line="34" column="27" lean-forward="false" selection-start-line="34" selection-start-column="27" selection-end-line="34" selection-end-column="27" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Grass.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="306">
+          <caret line="32" column="27" lean-forward="false" selection-start-line="32" selection-start-column="27" selection-end-line="32" selection-end-column="27" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Sand.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="323">
+          <caret line="33" column="27" lean-forward="false" selection-start-line="33" selection-start-column="27" selection-end-line="33" selection-end-column="27" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/WoodFloor.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="255">
+          <caret line="29" column="69" lean-forward="true" selection-start-line="29" selection-start-column="69" selection-end-line="29" selection-end-column="69" />
+          <folding>
+            <element signature="e#686#759#0" expanded="true" />
+          </folding>
         </state>
       </provider>
     </entry>

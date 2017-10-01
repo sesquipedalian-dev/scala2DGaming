@@ -16,7 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
-import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class Sand(
   var location: Location
@@ -26,8 +26,12 @@ class Sand(
   override def textureFile = Sand.textureFile
 }
 
-object Sand extends CanBuild {
+object Sand extends CanBuildTerrain {
   override def textureFile: String = "/textures/world/sand.bmp"
   override def name: String = "Sand"
-  override def buildOn(location: Location): Unit = new Sand(location)
+
+  override def buildOn(location: Location): Unit = {
+    super.buildOn(location)
+    new Sand(location)
+  }
 }

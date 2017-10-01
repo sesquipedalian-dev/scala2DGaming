@@ -26,7 +26,7 @@ import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, Time
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
-import org.sesquipedalian_dev.scala2DGaming.ui.javafx.{JavaFXManager, ToggleGroupsUiButton, ToggleScheduleUiButton}
+import org.sesquipedalian_dev.scala2DGaming.ui.javafx.{JavaFXManager, ToggleBuildUiButton, ToggleGroupsUiButton, ToggleScheduleUiButton}
 import org.sesquipedalian_dev.util.Logging
 
 import scala.util.Random
@@ -70,7 +70,6 @@ object Main extends Logging {
     new RangeOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE).init()
     val bo = new BuildOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
     bo.init()
-    bo.currentBuilder = Some(Fence)
     new UITextRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
@@ -104,9 +103,9 @@ object Main extends Logging {
     JavaFXManager.myInit()
     new ToggleGroupsUiButton()
     new ToggleScheduleUiButton()
+    new ToggleBuildUiButton()
 
     // TESTING
-    bo.enabled = true
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

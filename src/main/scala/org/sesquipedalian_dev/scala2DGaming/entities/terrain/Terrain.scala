@@ -15,8 +15,20 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
 
 trait Terrain {
   def traversable: Boolean
+}
+
+trait CanBuildTerrain extends CanBuild {
+  abstract override def buildOn(location: Location): Unit = {
+    super.buildOn(location)
+    val existingTerrain = HasWorldSpriteRendering.all.collect({
+      case x: HasSingleWorldSpriteRendering with Terrain if x.location == location => x
+    })
+    existingTerrain.foreach(t => HasWorldSpriteRendering.unregister(t))
+  }
 }

@@ -16,7 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
-import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class Fence(
   var location: Location
@@ -26,8 +26,13 @@ class Fence(
   override def textureFile = Fence.textureFile
 }
 
-object Fence extends CanBuild {
+
+object Fence extends CanBuildTerrain {
   override def textureFile: String = "/textures/world/Fence.bmp"
   override def name: String = "Fence"
-  override def buildOn(location: Location): Unit = new Fence(location)
+
+  override def buildOn(location: Location): Unit = {
+    super.buildOn(location)
+    new Fence(location)
+  }
 }

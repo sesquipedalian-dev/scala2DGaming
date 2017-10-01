@@ -25,7 +25,7 @@ trait CanBuild {
   def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
     case x: HasSingleWorldSpriteRendering with BlocksBuilding => false
   }
-  def buildOn(location: Location): Unit
+  def buildOn(location: Location): Unit = {}
 
   CanBuild.register(this)
 }
