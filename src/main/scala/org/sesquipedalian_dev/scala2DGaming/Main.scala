@@ -67,6 +67,8 @@ object Main extends Logging {
     new WorldSpritesRenderer(TEXTURE_SIZE, WORLD_WIDTH, WORLD_HEIGHT).init()
     new UIButtonsRenderer(UI_WIDTH, UI_HEIGHT).init()
     new RangeOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE).init()
+    val bo = new BuildOverlay(WORLD_WIDTH, WORLD_HEIGHT, TEXTURE_SIZE)
+    bo.init()
     new UITextRenderer(UI_WIDTH, UI_HEIGHT).init()
 
     new FPSCounter()
@@ -97,26 +99,13 @@ object Main extends Logging {
 
     new Commander(100)
 
-//    Dialog.open(
-//      """
-//        |There are many variations of passages of Lorem Ipsum available,
-//        |but the majority have suffered alteration in some form, by injected humour,
-//        |or randomised words which don't look even slightly believable.
-//        |If you are going to use a passage of Lorem Ipsum, you need
-//        |to be sure there isn't anything embarrassing hidden in the
-//        |middle of text. All the Lorem Ipsum generators on the Internet t
-//        |end to repeat predefined chunks as necessary, making this the
-//        |first true generator on the Internet. It uses a dictionary of over 2
-//        |00 Latin words, combined with a handful of model sentence structures, to generate
-//        |Lorem Ipsum which looks reasonable. The generated Lorem Ipsum is
-//        |therefore always free from repetition, injected humour, or
-//        |non-characteristic words etc.
-//      """.stripMargin, "/textures/ui/sarge_dialog.bmp")
-
     // fork off JavaFX UI thread
     JavaFXManager.myInit()
     new ToggleGroupsUiButton()
     new ToggleScheduleUiButton()
+
+    // TESTING
+    bo.enabled = true
 
     // loop until terminated
     window.mainLoop(HasGameUpdate.update, Renderable.render)

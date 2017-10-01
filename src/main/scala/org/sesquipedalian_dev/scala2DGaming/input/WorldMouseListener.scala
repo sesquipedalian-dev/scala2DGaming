@@ -20,40 +20,18 @@ import org.lwjgl.glfw.GLFW._
 import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.graphics.WorldSpritesRenderer
-import org.sesquipedalian_dev.util.Logging
+import org.sesquipedalian_dev.util.{ConvertsScreenAndWorldCoords, Logging}
 
 
-trait WorldMouseListener extends MouseInputHandler with Logging {
-  def textureFile: String
+trait WorldMouseListener extends MouseInputHandler with ConvertsScreenAndWorldCoords with Logging {
   def location: Location
 
-  // TODO hover state needs to be invalidated when camera's projection matrix changes
   var hovered: Boolean = false
   def hoverEnter()
   def hoverLeave()
-  var lastProjectionMatrix: Option[Matrix4f] = None
 
-  def toScreen(worldLoc: Location, offset: Location = Location(0, 0)): Option[Location] = {
-    val lastProjectionMatrix = WorldSpritesRenderer.singleton.flatMap(_.camera).flatMap(_.lastProjectionMatrix)
-    if(this.lastProjectionMatrix != lastProjectionMatrix.map(_._3)) {
-      hovered = false
-    }
-    this.lastProjectionMatrix = lastProjectionMatrix.map(_._3)
-
-    lastProjectionMatrix.map(lpm => {
-      val (_, _, matrix) = lpm
-      val screenLoc: Vector3f = new Vector3f()
-      matrix.project(
-        new Vector3f(
-          Math.floor(location.x + offset.x).toFloat * Main.TEXTURE_SIZE,
-          Math.floor(location.y + offset.y).toFloat * Main.TEXTURE_SIZE,
-          0.0f
-        ),
-        Array[Int](-1, -1, 2, 2),
-        screenLoc
-      )
-      Location(screenLoc.x, screenLoc.y)
-    })
+  override def invalidateLastProjectionMatrix(): Unit = {
+    hovered = false
   }
 
   override def handleMove(windowHandle: Long, xPos: Double, yPos: Double, lbState: Int, rbState: Int): Boolean = {
