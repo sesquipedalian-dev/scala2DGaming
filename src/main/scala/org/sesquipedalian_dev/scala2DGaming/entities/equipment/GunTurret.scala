@@ -109,7 +109,7 @@ class GunTurret(
   }
 }
 
-object GunTurret extends CanBuild {
+object GunTurret extends CanBuild with HasCostToBuild {
   override def textureFile: String = "/textures/entities/gun.bmp"
   override def name: String = "GunTurret"
   override def buildOn(location: Location): Unit = new GunTurret(
@@ -121,4 +121,6 @@ object GunTurret extends CanBuild {
     case x: ConcreteWall => true
     case x: HasSingleWorldSpriteRendering => false
   }
+
+  override def cost = 20
 }

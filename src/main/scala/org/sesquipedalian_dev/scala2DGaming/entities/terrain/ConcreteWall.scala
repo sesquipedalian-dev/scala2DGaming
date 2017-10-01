@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class ConcreteWall(
@@ -26,11 +26,13 @@ class ConcreteWall(
   override def textureFile = ConcreteWall.textureFile
 }
 
-object ConcreteWall extends CanBuildTerrain {
+object ConcreteWall extends CanBuildTerrain with HasCostToBuild {
   override def textureFile: String = "/textures/world/concrete_wall.bmp"
   override def name: String = "ConcreteWall"
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     new ConcreteWall(location)
   }
+
+  override def cost = 10
 }

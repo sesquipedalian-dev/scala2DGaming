@@ -15,7 +15,7 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 
 class Fence(
@@ -27,7 +27,7 @@ class Fence(
 }
 
 
-object Fence extends CanBuildTerrain {
+object Fence extends CanBuildTerrain with HasCostToBuild {
   override def textureFile: String = "/textures/world/Fence.bmp"
   override def name: String = "Fence"
 
@@ -35,4 +35,6 @@ object Fence extends CanBuildTerrain {
     super.buildOn(location)
     new Fence(location)
   }
+
+  override def cost = 10
 }

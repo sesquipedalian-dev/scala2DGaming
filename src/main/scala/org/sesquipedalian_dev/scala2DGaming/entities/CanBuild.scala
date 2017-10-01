@@ -15,9 +15,22 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities
 
+import org.sesquipedalian_dev.scala2DGaming.game.Commander
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistryCollection
+
+trait HasCostToBuild extends CanBuild {
+  def cost: Int // cost in GMUs
+  abstract override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+    case x if Commander.gmus < cost => false
+  }: PartialFunction[HasSingleWorldSpriteRendering, Boolean]) orElse super.canBuildOn
+
+  abstract override def buildOn(location: Location): Unit = {
+    super.buildOn(location)
+    Commander.changeMoney(-cost)
+  }
+}
 
 trait CanBuild {
   def textureFile: String
@@ -33,3 +46,5 @@ trait CanBuild {
 object CanBuild extends HasRegistryCollection {
   override type ThisType = CanBuild
 }
+
+
