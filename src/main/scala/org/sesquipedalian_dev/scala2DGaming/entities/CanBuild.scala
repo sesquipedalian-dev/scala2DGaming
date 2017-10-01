@@ -35,9 +35,11 @@ trait HasCostToBuild extends CanBuild {
 trait CanBuild {
   def textureFile: String
   def name: String
+
   def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
     case x: HasSingleWorldSpriteRendering with BlocksBuilding => false
   }
+
   def buildOn(location: Location): Unit = {}
 
   CanBuild.register(this)

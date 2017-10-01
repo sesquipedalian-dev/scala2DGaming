@@ -60,6 +60,9 @@ object Main extends Logging {
     window = new GLFWWindow(SCREEN_WIDTH, SCREEN_HEIGHT, "tut")
     window.init()
 
+    // need to refer to object so it links in?
+    Bulldozer.name
+
     // make input handlers
     new CloseHandler()
     new LoggingMouseCursorHandler()
