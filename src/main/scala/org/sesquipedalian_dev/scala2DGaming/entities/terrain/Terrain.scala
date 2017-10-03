@@ -195,11 +195,17 @@ object Terrain {
   }
 
   def idToLocation(id: NodeID): Location = {
-    adapter.map(_.terrain(id).location).getOrElse(Location(0, 0))
+    adapter.map(a => {
+      val loc = a.terrain(id).location
+      Location(Math.floor(loc.x).toInt, Math.floor(loc.y).toInt)
+    }).getOrElse(Location(0, 0))
   }
 
   def locationToId(location: Location): NodeID = {
-    adapter.map(_.terrain.indexWhere(_.location == location)).filter(_ >= 0).getOrElse(0)
+    val intLoc = Location(Math.floor(location.x).toInt, Math.floor(location.y).toInt)
+    adapter.map(_.terrain.indexWhere(t => {
+      t.location == intLoc
+    })).filter(_ >= 0).getOrElse(0)
   }
 
   def findPath(start: Location, goal: Location): Option[List[Location]] = {

@@ -134,6 +134,10 @@ trait HasMovingToward extends HasGameUpdate with Logging {
         val normalX = Math.cos(angle).toFloat
         val normalY = Math.sin(angle).toFloat
         direction = Some(Location(normalX, normalY))
+
+        // TESTING
+        val path = Terrain.findPath(location, targetTurret)
+        info"testing pathfinding algo: $location to $targetTurret = $path"
       }
     }
   }

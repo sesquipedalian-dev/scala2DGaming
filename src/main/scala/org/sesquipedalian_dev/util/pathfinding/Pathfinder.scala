@@ -207,7 +207,7 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
     }
 
     if(nodes(endId).g < Int.MaxValue) {
-      var lst: List[NodeID] = List(endId)
+      var lst: List[NodeID] = List()
       var curr: NodeID = endId
       while(curr != startId) {
         lst = curr +: lst
