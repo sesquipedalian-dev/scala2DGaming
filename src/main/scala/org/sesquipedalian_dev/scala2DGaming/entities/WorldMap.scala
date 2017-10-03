@@ -103,13 +103,15 @@ object WorldMap {
       //      4, 4, 1,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
     )
 
-    for {
-      x <- 0 until worldSize.x.toInt
-      y <- 0 until worldSize.y.toInt
-      index <- locationToTexIndex.drop(x + y * worldSize.y.toInt).headOption
-      builder <- builders.drop(index).headOption
-    } yield {
-      builder.buildOn(Location(x, y))
-    }
+    Terrain.bulkUpdateTerrain(() => {
+      for {
+        x <- 0 until worldSize.x.toInt
+        y <- 0 until worldSize.y.toInt
+        index <- locationToTexIndex.drop(x + y * worldSize.y.toInt).headOption
+        builder <- builders.drop(index).headOption
+      } yield {
+        builder.buildOn(Location(x, y))
+      }
+    })
   }
 }

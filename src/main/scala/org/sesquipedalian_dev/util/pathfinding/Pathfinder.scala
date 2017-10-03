@@ -95,7 +95,7 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
   def generateNodes(): Unit =
   {
     nodes.clear()
-    val newList = (0 to adapter.getNodeCount()).map(nodeId => {
+    val newList = (0 until adapter.getNodeCount()).map(nodeId => {
       Node(h = 0, neighbors = adapter.getNodeNeighbors(nodeId))
     })
     nodes ++= newList
@@ -145,12 +145,12 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
    *********************/
 
   // small adapter around main algorithm to convert between some other type and node IDs
-  def search[DataType](start: DataType, end: DataType, idToData: (NodeID) => DataType, dataToId: (DataType) => NodeID): List[DataType] = {
+  def search[DataType](start: DataType, end: DataType, idToData: (NodeID) => DataType, dataToId: (DataType) => NodeID): Option[List[DataType]] = {
     val path = search(dataToId(start), dataToId(end))
-    path.map(idToData)
+    path.map(lst => lst.map(idToData))
   }
 
-  def search(startId: NodeID, endId: NodeID): List[NodeID] = {
+  def search(startId: NodeID, endId: NodeID): Option[List[NodeID]] = {
     openList.clear()
 
     currentSearch += 1
@@ -213,9 +213,9 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
         lst = curr +: lst
         curr = nodes(curr).parent
       }
-      lst
+      Some(lst)
     } else {
-      Nil
+      None
     }
   }
 
