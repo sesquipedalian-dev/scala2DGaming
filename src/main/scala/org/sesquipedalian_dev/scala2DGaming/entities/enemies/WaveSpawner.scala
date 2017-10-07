@@ -19,6 +19,7 @@ import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.ui.Dialog
 import org.sesquipedalian_dev.util._
 
 import scala.util.Random
@@ -43,6 +44,29 @@ class WaveSpawner(
       // spawn a new wave
       // TODO add variations
       new BadGuySpawner(location, 4f, Main.random.getOrElse(Random).nextInt(numUnitsWiggle) + 10)
+
+      if(!WaveSpawner.seenWaveStartTutorial) {
+        WaveSpawner.seenWaveStartTutorial = true
+        Dialog.open("Here they come!", "/textures/ui/sarge_dialog.bmp")
+      }
+      if(WaveSpawner.readyForWaveTwoTutorial && !WaveSpawner.seenWaveTwoTutorial) {
+        WaveSpawner.seenWaveTwoTutorial = true
+        Dialog.open("Here comes another wave! Get back to the front!", "/textures/ui/sarge_dialog.bmp")
+      }
+    }
+  }
+}
+
+object WaveSpawner {
+  var seenWaveStartTutorial = false
+  var seenWaveOverTutorial = false
+  var seenWaveTwoTutorial = false
+  var readyForWaveTwoTutorial = false
+  def onWaveOver(wave: BadGuySpawner): Unit = {
+    if(!seenWaveOverTutorial) {
+      seenWaveOverTutorial = true
+      readyForWaveTwoTutorial = true
+      Dialog.open("It's... it's over. FOR NOW. Maybe let your soldiers have a break.", "/textures/ui/sarge_dialog.bmp")
     }
   }
 }

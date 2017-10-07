@@ -28,6 +28,9 @@ class BadGuySpawner(
   var durationUnits: Int // number of units to spawn
 ) extends HasGameUpdate {
   var spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
+
+  var guysSpawned: List[BadGuy] = Nil
+
   override def update(deltaTimeSeconds: Double): Unit = {
     spawnTimer -= deltaTimeSeconds.toFloat
     if(spawnTimer <= 0) {
@@ -42,8 +45,17 @@ class BadGuySpawner(
 
         // test bad guy
         val targetY = Main.random.map(r => r.nextInt(Main.WORLD_HEIGHT)).getOrElse(25)
-        new BadGuy(location, Some(Location(Main.WORLD_WIDTH - 1, targetY)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+        val bg = new BadGuy(location, Some(Location(Main.WORLD_WIDTH - 1, targetY)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+        guysSpawned :+= bg
+        bg.onDespawn(onGuyDespawn)
       }
+    }
+  }
+
+  def onGuyDespawn(guy: BadGuy): Unit = {
+    guysSpawned = guysSpawned.filter(_ != guy)
+    if(guysSpawned.isEmpty) {
+      WaveSpawner.onWaveOver(this)
     }
   }
 }

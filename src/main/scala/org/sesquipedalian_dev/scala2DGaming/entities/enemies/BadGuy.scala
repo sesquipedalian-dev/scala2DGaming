@@ -68,6 +68,12 @@ class BadGuy(
     super.update(deltaTimeSeconds)
   }
 
+  var despawnCallbacks: List[(BadGuy) => Unit] = List()
+
+  def onDespawn(callback: (BadGuy) => Unit): Unit = {
+    despawnCallbacks :+= callback
+  }
+
   def despawn(bounty: Option[Int]): Unit = {
     // unregister us
     Registry.unregister(this)
@@ -82,6 +88,9 @@ class BadGuy(
       }
       case _ =>
     })
+
+    despawnCallbacks.foreach(cb => cb(this))
+    despawnCallbacks = Nil
   }
 
   override def render(worldSpritesRenderer: WorldSpritesRenderer): Unit = {
