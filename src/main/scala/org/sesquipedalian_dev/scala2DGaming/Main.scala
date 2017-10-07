@@ -89,7 +89,7 @@ object Main extends Logging {
 
     WorldMap.initTestData(Location(WORLD_WIDTH, WORLD_HEIGHT))
 
-    new WaveSpawner(Location(0, 26), 40f, 10f, 2)
+    new WaveSpawner(Location(0, 26), 10f, 120f, 30f, 2)
 
     new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
     new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))

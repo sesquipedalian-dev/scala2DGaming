@@ -27,11 +27,12 @@ import scala.util.Random
 // thing to make bad guys on some timer
 class WaveSpawner(
   location: Location,
+  initialWait: Float,
   secondsPerSpawn: Float,
   wiggle: Float,
   numUnitsWiggle: Int
 ) extends HasGameUpdate {
-  var spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
+  var spawnTimer = initialWait * TimeOfDay.SLOW
   override def update(deltaTimeSeconds: Double): Unit = {
     spawnTimer -= deltaTimeSeconds.toFloat
     if(spawnTimer <= 0) {
