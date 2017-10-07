@@ -30,13 +30,12 @@ class BadGuySpawner(
     spawnTimer -= deltaTimeSeconds.toFloat
     if(spawnTimer <= 0) {
       spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
+//       TESTING - after one spawn give up
+//      spawnTimer = Double.MaxValue
 
       // test bad guy
-      Main.random.foreach(r => r.nextInt(3) match {
-        case 0 => new BadGuy(location, Some(Location(1, 0)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-        case 1 => new BadGuy(location, Some(Location(1, 1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-        case 2 => new BadGuy(location, Some(Location(1, -1)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-      })
+      val targetY = Main.random.map(r => r.nextInt(Main.WORLD_HEIGHT)).getOrElse(25)
+      new BadGuy(location, Some(Location(Main.WORLD_WIDTH - 1, targetY)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
     }
   }
 }

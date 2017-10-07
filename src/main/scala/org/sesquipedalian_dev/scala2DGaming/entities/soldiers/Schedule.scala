@@ -47,19 +47,23 @@ class Schedule {
 }
 
 object Activities {
+  // TODO some activities should not be user selectable (like IDLE)
   type Type = String
   val SLEEP = "Sleep"
   val GUARD = "Guard"
+  val IDLE = "Idle"
 
   def apply(): List[String] = List(
     SLEEP,
-    GUARD
+    GUARD,
+    IDLE
   )
 
   // get 'color string
   def apply(activityName: String): String = activityName match {
     case SLEEP => "darkgoldenrod"
     case GUARD => "red"
+    case IDLE => "purple"
     case _ => "grey"
   }
 }

@@ -19,6 +19,16 @@ import org.sesquipedalian_dev.scala2DGaming.entities.equipment.GunTurret
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain._
 import org.sesquipedalian_dev.util.Logging
 
+case class IntLocation(x: Int, y: Int) {
+  def toFloatLocation = Location(x, y)
+}
+object IntLocation {
+  def apply(location: Location): IntLocation = IntLocation(
+    Math.floor(location.x).toInt,
+    Math.floor(location.y).toInt
+  )
+}
+
 case class Location(
   x: Float,
   y: Float
@@ -26,8 +36,8 @@ case class Location(
   override def equals(obj: scala.Any): Boolean = {
     obj match {
       case rhs: Location => {
-        val xDiff = Math.abs(rhs.x - x) < .0001
-        val yDiff = Math.abs(rhs.y - y) < .0001
+        val xDiff = Math.abs(rhs.x - x) < .01
+        val yDiff = Math.abs(rhs.y - y) < .01
         xDiff && yDiff
       }
       case _ => false
@@ -36,7 +46,6 @@ case class Location(
 }
 
 object WorldMap {
-  def initTestData(worldSize: Location): Unit = {
     val builders: List[CanBuild] = List(
       ConcreteWall,
       Fence,
@@ -103,6 +112,7 @@ object WorldMap {
       //      4, 4, 1,  6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6, 6
     )
 
+  def initTestData(worldSize: Location): Unit = {
     Terrain.bulkUpdateTerrain(() => {
       for {
         x <- 0 until worldSize.x.toInt

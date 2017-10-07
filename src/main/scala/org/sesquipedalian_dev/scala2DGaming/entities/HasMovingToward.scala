@@ -26,96 +26,44 @@ trait HasMovingToward extends HasGameUpdate with Logging {
   def name: String
   val speed: Float // units / sec
   var location: Location
-  var direction: Option[Location] = None
+  var direction: List[Location] = Nil // list of way points we're moving to
 
   def worldSize: Location = Location(Main.WORLD_WIDTH, Main.WORLD_HEIGHT)
 
   def update(deltaTimeSeconds: Double): Unit = {
     trace"HasMovingToward update entry $deltaTimeSeconds $direction"
-    direction.foreach(targetDirection => {
-      val deltaX = (targetDirection.x * speed * deltaTimeSeconds.toFloat)
-      val deltaY = (targetDirection.y * speed * deltaTimeSeconds.toFloat)
+    direction.headOption.foreach(d => {
+      // get vector from here to waypoint
+      val targetX = d.x - location.x
+      val targetY = d.y - location.y
+
+      // normalize direction to unit length
+      val vLength = Math.sqrt(Math.pow(targetX, 2) + Math.pow(targetY, 2))
+      val deltaX = (targetX * speed * deltaTimeSeconds / vLength).toFloat
+      val deltaY = (targetY * speed * deltaTimeSeconds / vLength).toFloat
 
       if(deltaX > 1 || deltaY > 1) {
         // don't allow jumping multi grid locations on one update - we probably had a graphics hitch
         return
       }
 
-      // check if moving 1 in the direction would be traversable
-      val oneTileX = if(targetDirection.x < 0) {
-        Math.ceil(location.x).toFloat + targetDirection.x
-      } else {
-        Math.floor(location.x).toFloat + targetDirection.x
-      }
-      val oneTileY = if(targetDirection.y < 0) {
-        Math.ceil(location.y).toFloat + targetDirection.y
-      } else {
-        Math.floor(location.y).toFloat + targetDirection.y
-      }
-      val oneTileInDirection = Location(oneTileX, oneTileY)
+      // go new direction instead
+      val newX = location.x + deltaX
+      val newY = location.y + deltaY
+      trace"going diff direction: $d $speed $deltaTimeSeconds $location $newX $newY"
+      location = Location(Math.max(0, Math.min(worldSize.x - 1, newX)), Math.max(0, Math.min(worldSize.y - 1, newY)))
 
-      // if we move into a new grid location, check if we can move into that block
-      // if not, we have to move around an obstacle
-      val possibleTerrain = HasWorldSpriteRendering.all.collect({
-        case x: HasSingleWorldSpriteRendering with Terrain if (x.location == oneTileInDirection) => x.traversable
-      })
-      val traversable = possibleTerrain.exists(b => b)
-
-      trace"moving a guy! $name $location $oneTileInDirection $traversable"
-
-      if(!traversable) {
-        // ok, we can't go that way - move the closest direction to where we were trying to go that is traversable
-
-        val directions = List( // cardinal directions we could move
-          Location(1, 0),  // +x
-          Location(0, 1),  // +y
-          Location(-1, 0), // -x
-          Location(0, -1)  // -y
-        ).filter(_ != targetDirection)
-        val (d, _) = directions
-          .map(d => { // figure out whether each direction is traversable
-            // check if moving 1 in the direction would be traversable
-            val oneTileNewDX = if(d.x < 0) {
-              Math.ceil(location.x).toFloat + d.x
-            } else {
-              Math.floor(location.x).toFloat + d.x
-            }
-            val oneTileNewDY = if(d.y < 0) {
-              Math.ceil(location.y).toFloat + d.y
-            } else {
-              Math.floor(location.y).toFloat + d.y
-            }
-            val oneTileInNewDirection = Location(oneTileNewDX, oneTileNewDY)
-            val possibleTerrain = HasWorldSpriteRendering.all.collect({
-              case x: HasSingleWorldSpriteRendering with Terrain if (x.location == oneTileInNewDirection) => x.traversable
-            })
-            val traversable = possibleTerrain.exists(b => b)
-            (d, traversable)
-          })
-          .filter(p => {
-            trace"valid alternate direction? $p"
-            p._2
-          }) // only pick a direction that is traversable
-          .sortBy(p => {
-          val angle = Math.atan2(p._1.y, p._1.x)
-          val angleDiff = Math.abs(p._1.x - targetDirection.x) + Math.abs(p._1.y - targetDirection.y)
-          trace"sorting alternate direction $p by $angleDiff"
-          angleDiff
-        }) // pick the direction that is closest to where we were already trying to go
-          .head
-
-        // go new direction instead
-        val newX = location.x + (d.x * speed * deltaTimeSeconds)
-        val newY = location.y + (d.y * speed * deltaTimeSeconds)
-        trace"going diff direction: $d $speed $deltaTimeSeconds $location $newX $newY"
-        location = Location(Math.max(0, Math.min(worldSize.x - 1, newX)).toFloat, Math.max(0, Math.min(worldSize.y - 1, newY)).toFloat)
-      } else {
-        location = Location(
-          Math.max(0, Math.min(worldSize.x - 1, location.x + deltaX)),
-          Math.max(0, Math.min(worldSize.y - 1, location.y + deltaY))
-        )
+      // checking if we got to way point
+      trace"checking HasMovingToward got there $location $d"
+      if(location == d) {
+        // got there
+        direction = direction.tail
       }
     })
+  }
+
+  def noPathToEquipment(): Unit = {
+
   }
 
   def moveTowardsEquipment[A <: Equipment](use: (A) => Unit)(implicit mf: Manifest[A]): Unit = {
@@ -128,16 +76,61 @@ trait HasMovingToward extends HasGameUpdate with Logging {
       if(turretCloseEnoughToUse.nonEmpty) {
         use(turretCloseEnoughToUse.get._1)
       } else {
+        val selectedEquipment = turretsByRange.head._1
         val targetTurret = turretsByRange.head._1.location
-        val targetDir = Location(targetTurret.x - location.x, targetTurret.y - location.y)
-        val angle = Math.atan2(targetDir.y, targetDir.x)
-        val normalX = Math.cos(angle).toFloat
-        val normalY = Math.sin(angle).toFloat
-        direction = Some(Location(normalX, normalY))
+        // adjust this by the usable range
+        selectedEquipment.useRange
+        // first location is pathfinder target
+        // second location is getting ever so slightly closer to the thing to make sure we can use it
+        var potentialUseLocs: List[(Location, Location)] = Nil
 
-        // TESTING
-        val path = Terrain.findPath(location, targetTurret)
-        info"testing pathfinding algo: $location to $targetTurret = $path"
+        if(Terrain.isTraversable(Location(Math.ceil(targetTurret.x - selectedEquipment.useRange).toFloat, targetTurret.y))) {
+          potentialUseLocs :+= (
+            Location(Math.ceil(targetTurret.x - selectedEquipment.useRange).toFloat, targetTurret.y),
+            Location(targetTurret.x - selectedEquipment.useRange + .1f, targetTurret.y)
+          )
+        }
+        if(Terrain.isTraversable(Location(Math.floor(targetTurret.x + selectedEquipment.useRange).toFloat, targetTurret.y))) {
+          potentialUseLocs :+= (
+            Location(Math.floor(targetTurret.x + selectedEquipment.useRange).toFloat, targetTurret.y),
+            Location(targetTurret.x + selectedEquipment.useRange - .1f, targetTurret.y)
+          )
+        }
+        if(Terrain.isTraversable(Location(targetTurret.x, Math.ceil(targetTurret.y - selectedEquipment.useRange).toFloat))) {
+          potentialUseLocs :+= (
+            Location(targetTurret.x, Math.ceil(targetTurret.y - selectedEquipment.useRange).toFloat),
+            Location(targetTurret.x, targetTurret.y - selectedEquipment.useRange + .1f)
+          )
+        }
+        if(Terrain.isTraversable(Location(targetTurret.x, Math.floor(targetTurret.y + selectedEquipment.useRange).toFloat))) {
+          potentialUseLocs :+= (
+            Location(targetTurret.x, Math.floor(targetTurret.y + selectedEquipment.useRange).toFloat),
+            Location(targetTurret.x, targetTurret.y + selectedEquipment.useRange - .1f)
+          )
+        }
+
+        if(potentialUseLocs.isEmpty) {
+          info"no path to destination 1 for $name ${turretsByRange.head._1} $targetTurret"
+          noPathToEquipment()
+        } else {
+          val targetUseLoc = Main.random.map(_.shuffle(potentialUseLocs).head).getOrElse(potentialUseLocs.head)
+
+          val path = Terrain.findPath(location, targetUseLoc._1)
+          trace"testing pathfinding algo: $location to $targetUseLoc = $path"
+          path match {
+            case Some(p) => {
+              direction = p :+ targetUseLoc._2
+              Terrain.onTerrainChanged(name, () => {
+                direction = Nil // re-trigger pathfinding behaviour
+                Terrain.stopOnTerrainChanged(name)
+              })
+            }
+            case _ => {
+              info"no path to destination for $name ${turretsByRange.head._1} $targetUseLoc"
+              noPathToEquipment()
+            }
+          }
+        }
       }
     }
   }

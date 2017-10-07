@@ -15,26 +15,46 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 
+import org.sesquipedalian_dev.scala2DGaming.Main
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Terrain
 import org.sesquipedalian_dev.scala2DGaming.entities.{HasMovingToward, Location}
 import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering, WorldSpritesRenderer}
 import org.sesquipedalian_dev.util._
 
+import scala.util.Random
+
 class BadGuy(
   var location: Location,
-  _direction: Option[Location], // expected to be +/- 1 (or 0) in each axis
+  destination: Option[Location], // expected to be +/- 1 (or 0) in each axis
   worldSize: Location,
   var health: Int
 ) extends HasGameUpdate
   with HasSingleWorldSpriteRendering
   with HasMovingToward
 {
+  // path find to destination
+
   val name: String = "BadGuy"
-  direction = _direction
   override val textureFile: String = "/textures/entities/badguy.bmp"
   final val speed: Float = 1f / TimeOfDay.SLOW.toFloat // blocks / sec
 
   override def update(deltaTimeSeconds: Double): Unit = {
+    if(direction.isEmpty && destination.nonEmpty) {
+      val newDirection = Terrain.findPath(location, destination.get)
+      trace"BadGuy moving in new direction $location $destination $newDirection"
+      if(newDirection.isEmpty) {
+        direction = destination.get :: Nil // if user has blocked our path, just go straight through
+      } else {
+        direction = newDirection.get
+        val key = Main.random.getOrElse(Random).nextInt().toString
+        Terrain.onTerrainChanged(key, () => {
+          Terrain.stopOnTerrainChanged(key)
+          direction = Nil
+        })
+      }
+    }
+
     // check for killed
     if(health <= 0) {
       despawn(Some(1))

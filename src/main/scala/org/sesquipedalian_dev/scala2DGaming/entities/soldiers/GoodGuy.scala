@@ -21,6 +21,7 @@ import org.sesquipedalian_dev.scala2DGaming.Main
 import org.sesquipedalian_dev.scala2DGaming.entities._
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, Equipment, GunTurret}
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
+import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Terrain
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.WorldMouseListener
@@ -39,6 +40,7 @@ class GoodGuy(
   with Logging
 {
   override val speed = 1.0f / TimeOfDay.SLOW.toFloat
+  var overrideActivity: Option[Activities.Type] = None
 
   // TODO make needs init more flexible - some good guys could have traits that adjust how their needs work,
   // or what needs they even have
@@ -50,23 +52,38 @@ class GoodGuy(
   override def textureFile: String = "/textures/entities/MilitaryMan.bmp"
 
   override def update(deltaTimeSeconds: Double): Unit = {
-    direction = None
-
     // determine anything to do based on activity
-    GoodGuyGroups.groupForGuy(this).foreach(group => {
-      val activity = group.schedule.get()
+    val currentActivity = overrideActivity orElse {
+      GoodGuyGroups.groupForGuy(this).map(group => {
+        group.schedule.get()
+      })
+    }
+
+    currentActivity.foreach(activity => {
       trace"Good guy deciding based on activity? $name $activity"
       activity match {
+        // IDLE - do nothing - maybe eventually we should play some sort of frustrated animation
+        case Activities.IDLE =>
         // we found some equipment, keep it up
         case Activities.GUARD if equipmentImUsing.collect({case x: GunTurret => x}).nonEmpty =>
         // if guarding and on wrong equipment, drop it
-        case Activities.GUARD if equipmentImUsing.nonEmpty => equipmentImUsing.foreach(drop)
+        case Activities.GUARD if equipmentImUsing.nonEmpty => {
+          equipmentImUsing.foreach(drop)
+          direction = Nil
+        }
+        // not using a gun && have a cached direction - go towards it
+        case Activities.GUARD if direction.nonEmpty =>
         // not using a gun, move towards one
         case Activities.GUARD => moveTowardsEquipment[GunTurret](use)
         // if we usin' a bed keep it up
         case Activities.SLEEP if equipmentImUsing.collect({case x: Bed => x}).nonEmpty =>
         // put down the equipment
-        case Activities.SLEEP if equipmentImUsing.nonEmpty => equipmentImUsing.foreach(drop)
+        case Activities.SLEEP if equipmentImUsing.nonEmpty => {
+          equipmentImUsing.foreach(drop)
+          direction = Nil
+        }
+        // not using a bed && Have a cachred direction - nop
+        case Activities.SLEEP if direction.nonEmpty =>
         // we not usin' a bed, move on towards one
         case Activities.SLEEP => moveTowardsEquipment[Bed](use)
       }
@@ -169,5 +186,13 @@ class GoodGuy(
     s"GoodGuy($name)"
   }
 
-
+  override def noPathToEquipment(): Unit = {
+    overrideActivity = Some(Activities.IDLE)
+    Terrain.onTerrainChanged(name, () => {
+      Terrain.stopOnTerrainChanged(name)
+      overrideActivity = None
+      // try again when terrain updated again
+      moveTowardsEquipment(use)
+    })
+  }
 }

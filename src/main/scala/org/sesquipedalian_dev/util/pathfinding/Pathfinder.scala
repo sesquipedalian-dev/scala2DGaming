@@ -70,17 +70,20 @@ case class HeapElement(
   id: Pathfinder.NodeID,
   g: Pathfinder.Cost, // Used for tie-breaking
   f: Pathfinder.Cost // Main key
-) extends Ordered[HeapElement] {
+) extends Ordered[HeapElement] with Logging {
   def compare(that: HeapElement): Int = {
-    if(Math.abs(f - that.f) < Pathfinder.EPSILON) {
-      Math.round(g - that.g)
+    val result = if(Math.abs(f - that.f) < Pathfinder.EPSILON) {
+      val v = that.g - g
+      Math.round(v / Math.abs(v))
     } else {
-      Math.round(that.f - f)
+      val v = f - that.f
+      Math.round(v / Math.abs(v))
     }
+    result
   }
 }
 
-class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
+class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) extends Logging {
   import Pathfinder._ // get shared types / constants
 
   val nodes: ListBuffer[Node] = ListBuffer[Node]()
@@ -146,6 +149,9 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
 
   // small adapter around main algorithm to convert between some other type and node IDs
   def search[DataType](start: DataType, end: DataType, idToData: (NodeID) => DataType, dataToId: (DataType) => NodeID): Option[List[DataType]] = {
+    val realStart = dataToId(start)
+    val realGoal = dataToId(end)
+    trace"starting search with data $start $end $realStart $realGoal"
     val path = search(dataToId(start), dataToId(end))
     path.map(lst => lst.map(idToData))
   }
@@ -164,35 +170,43 @@ class Pathfinder(adapter: Adapter, weight: Pathfinder.Cost = 1.0f) {
     addToOpen(startId)
 
     while(openList.nonEmpty && nodes(endId).g > getMin().f + EPSILON) {
-      val currId = popMin().id
+      val curId = popMin().id
 
       // Lazy Theta* assumes that there is always line-of-sight from the parent of an expanded state to a successor state.
       // When expanding a state, check if this is true.
-      if(!adapter.lineOfSight(nodes(currId).parent, currId)) {
+      val curNode = nodes(curId)
+      val curParent = curNode.parent
+      val inLos = adapter.lineOfSight(nodes(curId).parent, curId)
+      if(inLos) {
+//        trace"TRUE checking node in los $curId  $curNode $curParent $inLos"
+      } else {
+//        trace"FALSE checking node in los $curId  $curNode $curParent $inLos"
+      }
+      if(!inLos) {
         // Since the previous parent is invalid, set g-value to infinity.
-        nodes(currId).g = Int.MaxValue
+        nodes(curId).g = Int.MaxValue
 
         // Go over potential parents and update its parent to the parent that yields the lowest g-value for s.
-        nodes(currId).neighbors.foreach(p => {
+        nodes(curId).neighbors.foreach(p => {
           val (newParent, nCost) = p
 
           generateState(newParent, endId)
           if(nodes(newParent).list == CLOSED_LIST) {
             val newG: Cost = nodes(newParent).g + nCost
-            if(newG < nodes(currId).g) {
-              nodes(currId).g = newG
-              nodes(currId).parent = newParent
+            if(newG < nodes(curId).g) {
+              nodes(curId).g = newG
+              nodes(curId).parent = newParent
             }
           }
         })
       }
 
-      nodes(currId).neighbors.foreach(p => {
+      nodes(curId).neighbors.foreach(p => {
         val (neighborId, _) = p
 
         generateState(neighborId, endId)
 
-        val newParent: NodeID = nodes(currId).parent
+        val newParent: NodeID = nodes(curId).parent
 
         if(nodes(neighborId).list != CLOSED_LIST) {
           val newG: Cost = nodes(newParent).g + adapter.distance(newParent, neighborId)

@@ -16,7 +16,7 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, IntLocation, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.pathfinding.Pathfinder.NodeID
@@ -38,7 +38,7 @@ trait CanBuildTerrain extends CanBuild {
   }
 }
 
-class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
+class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter with Logging {
   override def getNodeCount() = terrain.size
 
   override def distance(n1: NodeID, n2: NodeID) = {
@@ -54,18 +54,21 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
     // one cell by cell. dx and dy specify how many cells to move in each direction. Suppose dx is longer and we are moving along the x axis. For each
     // cell we pass in the x direction, we increase variable f by dy, which is initially 0. When f >= dx, we move along the y axis and set f -= dx. This way,
     // after dx movements along the x axis, we also move dy moves along the y axis.
-    var l1: Location = terrain(n1).location
-    var l2: Location = terrain(n2).location
+    val ol1 = terrain(n1).location
+    val ol2 = terrain(n2).location
+    var l1: IntLocation = IntLocation(ol1)
+    var l2: IntLocation = IntLocation(ol2)
+//    trace"lineOfSight initial locs $ol1 == $l1 $ol2 == $l2"
 
-    var diff: Location = Location(l2.x - l1.x, l2.y - l2.y)
+    var diff: IntLocation = IntLocation(l2.x - l1.x, l2.y - l1.y)
 
     var f: Int = 0
 
-    var dir: Location = Location(0, 0) // Direction of movement. Value can be either 1 or -1.
+    var dir: IntLocation = IntLocation(0, 0) // Direction of movement. Value can be either 1 or -1.
 
     // The x and y locations correspond to nodes, not cells. We might need to check different surrounding cells depending on the direction we do the
     // line of sight check. The following values are used to determine which cell to check to see if it is unblocked.
-    var offset: Location = Location(0, 0)
+    var offset: IntLocation = IntLocation(0, 0)
 
     if(diff.y < 0) {
       diff = diff.copy(y = -diff.y)
@@ -76,7 +79,7 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
       offset = offset.copy(y = 1) // Cell is to the South
     }
 
-    if(dir.x < 0) {
+    if(diff.x < 0) {
       diff = diff.copy(x = -diff.x)
       dir = dir.copy(x = -1)
       offset = offset.copy(x = 0)
@@ -84,7 +87,6 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
       dir = dir.copy(x = 1)
       offset = offset.copy(x = 1)
     }
-
 
     // Move along the x axis and increment/decrement y when f >= diff.x.
     if(diff.x >= diff.y) {
@@ -96,6 +98,11 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
           }
 
           l1 = l1.copy(y = l1.y + dir.y)
+
+          if(!isTraversable(l1.toFloatLocation)) {
+            return false
+          }
+
           f -= Math.round(diff.x)
         }
 
@@ -119,6 +126,11 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
           }
 
           l1 = l1.copy(x = l1.x + dir.x)
+
+          if(!isTraversable(l1.toFloatLocation)) {
+            return false
+          }
+
           f -= Math.round(diff.y)
         }
 
@@ -126,7 +138,10 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
           return false
         }
 
-        if(diff.x == 0 && !isTraversable(l1.copy(y = l1.y + offset.y)) && !isTraversable(l1.copy(x = l1.x + 1, l1.y + offset.y))) {
+        if(diff.x == 0 &&
+          !isTraversable(l1.copy(y = l1.y + offset.y).toFloatLocation) &&
+          !isTraversable(l1.copy(x = l1.x + 1, l1.y + offset.y).toFloatLocation)
+        ) {
           return false
         }
 
@@ -161,21 +176,27 @@ class TerrainPathfinderAdapter(val terrain: List[Terrain]) extends Adapter {
 
     val validLocs = neighborLocs.filter(isTraversable)
 
-    neighborLocs.map(l => terrain.indexWhere(_.location == l))
+    validLocs.map(l => terrain.indexWhere(_.location == l))
       .filter(_ >= 0)
       .map(index => (index -> 1.0f)) // everything only costs 1 to go between since it's a grid
   }
 
   def isTraversable(location: Location): Boolean = {
     // only the top left corners of non-traversable tiles are non-traversable
-    terrain.find(t => t.location == location).map(_.traversable).getOrElse(false)
+    val node = terrain.find(t => t.location == location)
+    val result = node.map(_.traversable).getOrElse(false)
+//    if(!result) {
+//      trace"checking is location traversable $location $node $result"
+//    }
+    result
   }
 }
 
-object Terrain {
+object Terrain extends Logging {
   var adapter: Option[TerrainPathfinderAdapter] = None
   var pathfinder: Option[Pathfinder] = None
   var suppressPathfinderUpdate: Boolean = false
+  var onTerrainChangedCallbacks: Map[String, () => Unit] = Map()
   def informTerrainChanged(): Unit = {
     if(!suppressPathfinderUpdate) {
       val terrainNodes = HasWorldSpriteRendering.all.collect({
@@ -184,8 +205,13 @@ object Terrain {
 
       adapter = Some(new TerrainPathfinderAdapter(terrainNodes))
       pathfinder = Some(new Pathfinder(adapter.get))
+
+      onTerrainChangedCallbacks.foreach(p => p._2())
     }
   }
+
+  def onTerrainChanged(key: String, func: () => Unit): Unit = onTerrainChangedCallbacks += (key -> func)
+  def stopOnTerrainChanged(key: String): Unit = onTerrainChangedCallbacks -= key
 
   def bulkUpdateTerrain(block: () => Unit): Unit = {
     suppressPathfinderUpdate = true
@@ -197,20 +223,28 @@ object Terrain {
   def idToLocation(id: NodeID): Location = {
     adapter.map(a => {
       val loc = a.terrain(id).location
-      Location(Math.floor(loc.x).toInt, Math.floor(loc.y).toInt)
-    }).getOrElse(Location(0, 0))
+//      Location(Math.floor(loc.x).toInt, Math.floor(loc.y).toInt)
+      loc
+    }).getOrElse(throw new RuntimeException(s"Couldn't find location for id $id"))
   }
 
   def locationToId(location: Location): NodeID = {
-    val intLoc = Location(Math.floor(location.x).toInt, Math.floor(location.y).toInt)
+//    val intLoc = Location(Math.floor(location.x).toInt, Math.floor(location.y).toInt)
     adapter.map(_.terrain.indexWhere(t => {
-      t.location == intLoc
-    })).filter(_ >= 0).getOrElse(0)
+      t.location == location
+    })).filter(_ >= 0).getOrElse(throw new RuntimeException(s"Couldn't find id for location $location"))
+  }
+
+  def isTraversable(location: Location): Boolean = {
+    val id = locationToId(location)
+    adapter.map(_.terrain(id).traversable).getOrElse(false)
   }
 
   def findPath(start: Location, goal: Location): Option[List[Location]] = {
     pathfinder.flatMap(p => {
-      p.search[Location](start, goal, idToLocation _, locationToId _)
+      val result = p.search[Location](start, goal, idToLocation _, locationToId _)
+      trace"findPath result $start $goal $result"
+      result
     })
   }
 }
