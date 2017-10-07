@@ -91,11 +91,11 @@ object Main extends Logging {
 
     new WaveSpawner(Location(0, 26), 10f, 120f, 30f, 2)
 
-    new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
-    new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
+    new GunTurret(Location(25, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
+    new GunTurret(Location(25, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
 
-    val gunner1 = new GoodGuy("Washington", Location(15, 24))
-    val gunner2 = new GoodGuy("Jefferson", Location(15, 27))
+    val gunner1 = new GoodGuy("Washington", Location(30, 24))
+    val gunner2 = new GoodGuy("Jefferson", Location(30, 27))
 
     val groups = new GoodGuyGroups()
     val group1 = new GoodGuyGroup("Group 1", List(gunner1, gunner2))
