@@ -19,7 +19,7 @@ import java.util.Date
 
 import org.sesquipedalian_dev.scala2DGaming.Main.TestTerrain
 import org.sesquipedalian_dev.scala2DGaming.entities._
-import org.sesquipedalian_dev.scala2DGaming.entities.enemies.BadGuySpawner
+import org.sesquipedalian_dev.scala2DGaming.entities.enemies.{BadGuySpawner, WaveSpawner}
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, GunTurret, RangeArc}
 import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.{GoodGuy, GoodGuyGroup, GoodGuyGroups}
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Terrain.adapter
@@ -89,7 +89,7 @@ object Main extends Logging {
 
     WorldMap.initTestData(Location(WORLD_WIDTH, WORLD_HEIGHT))
 
-    new BadGuySpawner(Location(0, 26), 5f)
+    new WaveSpawner(Location(0, 26), 40f, 10f, 2)
 
     new GunTurret(Location(5, 24), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))
     new GunTurret(Location(5, 27), 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5))

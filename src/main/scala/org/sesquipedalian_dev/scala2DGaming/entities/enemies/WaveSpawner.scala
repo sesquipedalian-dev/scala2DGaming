@@ -21,29 +21,27 @@ import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.util._
 
+import scala.util.Random
+
+
 // thing to make bad guys on some timer
-class BadGuySpawner(
+class WaveSpawner(
   location: Location,
   secondsPerSpawn: Float,
-  var durationUnits: Int // number of units to spawn
+  wiggle: Float,
+  numUnitsWiggle: Int
 ) extends HasGameUpdate {
   var spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
   override def update(deltaTimeSeconds: Double): Unit = {
     spawnTimer -= deltaTimeSeconds.toFloat
     if(spawnTimer <= 0) {
-      durationUnits -= 1
-      if(durationUnits <= 0) {
-        // wave over
-        Registry.unregister(this)
-      } else {
-        spawnTimer = secondsPerSpawn * TimeOfDay.SLOW
-        //       TESTING - after one spawn give up
-        //      spawnTimer = Double.MaxValue
+      // wiggle the wave spawn timer up to +/- wiggle
+      val thisWiggle = (Main.random.getOrElse(Random).nextFloat() * wiggle * 2) - wiggle
+      spawnTimer = (secondsPerSpawn + thisWiggle) * TimeOfDay.SLOW
 
-        // test bad guy
-        val targetY = Main.random.map(r => r.nextInt(Main.WORLD_HEIGHT)).getOrElse(25)
-        new BadGuy(location, Some(Location(Main.WORLD_WIDTH - 1, targetY)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
-      }
+      // spawn a new wave
+      // TODO add variations
+      new BadGuySpawner(location, 4f, Main.random.getOrElse(Random).nextInt(numUnitsWiggle) + 10)
     }
   }
 }
