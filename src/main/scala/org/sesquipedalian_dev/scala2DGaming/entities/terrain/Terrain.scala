@@ -242,7 +242,7 @@ object Terrain extends Logging {
 
   def findPath(start: Location, goal: Location): Option[List[Location]] = {
     pathfinder.flatMap(p => {
-      val result = p.search[Location](start, goal, idToLocation _, locationToId _)
+      val result = p.search[Location](IntLocation(start).toFloatLocation, IntLocation(goal).toFloatLocation, idToLocation _, locationToId _)
       trace"findPath result $start $goal $result"
       result
     })
