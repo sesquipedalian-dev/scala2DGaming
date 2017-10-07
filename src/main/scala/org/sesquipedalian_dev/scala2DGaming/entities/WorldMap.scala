@@ -50,7 +50,7 @@ object WorldMap {
       ConcreteWall,
       Fence,
       Grass,
-      GunTurret,
+      GunTurret.leftTurretBuilder,
       Sand,
       WoodFloor
     )

@@ -109,11 +109,12 @@ class GunTurret(
   }
 }
 
-object GunTurret extends CanBuild with HasCostToBuild {
-  override def textureFile: String = "/textures/entities/gun.bmp"
-  override def name: String = "GunTurret"
+class GunTurretBuilder(range: RangeArc, override val name: String) extends CanBuild with HasCostToBuild {
+  override def textureFile: String = GunTurret.textureFile
+  override def cost = 20
+
   override def buildOn(location: Location): Unit = new GunTurret(
-    location, 1, 20, RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5)
+    location, 1, 20, range
   )
 
   // can only build turrets on concrete wall
@@ -121,6 +122,14 @@ object GunTurret extends CanBuild with HasCostToBuild {
     case x: ConcreteWall => true
     case x: HasSingleWorldSpriteRendering => false
   }
+}
 
-  override def cost = 20
+object GunTurret {
+  def textureFile: String = "/textures/entities/gun.bmp"
+  def name: String = "GunTurret"
+
+  val leftTurretBuilder = new GunTurretBuilder(RangeArc(Math.PI.toFloat / 2, 3 * Math.PI.toFloat / 2, 5), s"Left$name")
+  val rightTurretBuilder = new GunTurretBuilder(RangeArc(3 * Math.PI.toFloat / 2, 5 * Math.PI.toFloat / 2, 5), s"Right$name")
+  val downTurretBuilder = new GunTurretBuilder(RangeArc(0, Math.PI.toFloat, 5), s"Down$name")
+  val upTurretBuilder = new GunTurretBuilder(RangeArc(Math.PI.toFloat, 2 * Math.PI.toFloat, 5), s"Up$name")
 }
