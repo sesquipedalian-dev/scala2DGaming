@@ -18,9 +18,9 @@ package org.sesquipedalian_dev.scala2DGaming.entities.soldiers
 import java.awt.Color
 
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities._
-import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, Equipment, GunTurret}
-import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
+import org.sesquipedalian_dev.scala2DGaming.entities.{needs, _}
+import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, Equipment, GunTurret, NeedFulfillingEquipment}
+import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, RecreationNeed, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain.Terrain
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.graphics._
@@ -45,7 +45,8 @@ class GoodGuy(
   // TODO make needs init more flexible - some good guys could have traits that adjust how their needs work,
   // or what needs they even have
   var needs: List[Need] = List(
-    SleepNeed(this)
+    SleepNeed(this),
+    RecreationNeed(this)
   )
 
   var equipmentImUsing: Option[Equipment] = None
@@ -64,6 +65,17 @@ class GoodGuy(
       activity match {
         // IDLE - do nothing - maybe eventually we should play some sort of frustrated animation
         case Activities.IDLE =>
+        // we found some equipment, keep it up
+        case Activities.RECREATE if equipmentImUsing.collect({case x: NeedFulfillingEquipment if x.associatedNeed == RecreationNeed.name => x}).nonEmpty =>
+        // if guarding and on wrong equipment, drop it
+        case Activities.RECREATE if equipmentImUsing.nonEmpty => {
+          equipmentImUsing.foreach(drop)
+          direction = Nil
+        }
+        // not using a gun && have a cached direction - go towards it
+        case Activities.RECREATE if direction.nonEmpty =>
+        // not using a gun, move towards one
+        case Activities.RECREATE => moveTowardsEquipment[NeedFulfillingEquipment](use, _.associatedNeed == RecreationNeed.name)
         // we found some equipment, keep it up
         case Activities.GUARD if equipmentImUsing.collect({case x: GunTurret => x}).nonEmpty =>
         // if guarding and on wrong equipment, drop it
@@ -153,7 +165,8 @@ class GoodGuy(
       val smallYSize = UITextRenderer.sizeToInt(UITextRenderer.SMALL)
 
       uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y + smallYSize, "=[Needs]=", Color.WHITE, UITextRenderer.MEDIUM)
-      needs.foreach(need => {
+      needs.zipWithIndex.foreach(p => {
+        val (need, needIndex) = p
         val needTexts = (1 to 10).map(i => if(need.degree > i * 10) { "+" } else { " " }).reduce(_ + _) + need.name
                 val color = need.degree match {
           case x if x > 90 => Color.RED
@@ -161,7 +174,7 @@ class GoodGuy(
           case x if x < 20 => Color.GREEN
           case _ => Color.WHITE
         }
-        uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y + smallYSize + medYSize, needTexts, color, UITextRenderer.SMALL)
+        uiRenderer.drawTextOnWorld(uiLoc.x, uiLoc.y + smallYSize + medYSize + (smallYSize * needIndex), needTexts, color, UITextRenderer.SMALL)
       })
     }
   }
@@ -175,9 +188,10 @@ class GoodGuy(
 
       uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y, name.size, UITextRenderer.SMALL)
       uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize, 9, UITextRenderer.MEDIUM)
-      needs.foreach(need => {
+      needs.zipWithIndex.foreach(p => {
+        val (need, needIndex) = p
         val needTexts = (0 to 10).map(i => if(need.degree > i * 10) { "+" } else { " " }).reduce(_ + _) + need.name
-        uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize + medYSize, needTexts.size, UITextRenderer.SMALL)
+        uiSpritesRenderer.drawTextBacking(uiLoc.x, uiLoc.y + smallYSize + medYSize + (smallYSize * needIndex), needTexts.size, UITextRenderer.SMALL)
       })
     }
   }

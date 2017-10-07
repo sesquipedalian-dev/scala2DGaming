@@ -18,26 +18,23 @@ package org.sesquipedalian_dev.scala2DGaming.entities.needs
 import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuy
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.{Bed, NeedFulfillingEquipment}
 
-// soldiers need sleep
-// target should be 8hr sleep / 24 hr period for max effectiveness -
-// so increase at rate of (100 / 16 / 60 / 60 per second) and
-// 'sleep off' (when using Bed equipment) at rate of (100 / 8 / 60 / 60)
-//
-case class SleepNeed(target: GoodGuy) extends Need(target) {
-  override val name: String = SleepNeed.name
+// soldiers need to recreate every now and again - 48 hrs w/out recreating is enough to
+// heighten this to dangerous levels
+case class RecreationNeed(target: GoodGuy) extends Need(target) {
+  override val name: String = RecreationNeed.name
   override def update(deltaTimeSeconds: Double): Unit = {
     val equipmentFixRate = target.equipmentImUsing.collect{
       case x: NeedFulfillingEquipment if x.associatedNeed == name => x.fulfillmentRateHours
     }
     val tickRate: Float = if(equipmentFixRate.nonEmpty) {
-      -100.toFloat / equipmentFixRate.get / 60 / 60  // sleeping for 8 hours fully sets you up, but give 'em a few minutes to get to the beds
+      -100.toFloat / equipmentFixRate.get / 60 / 60
     } else {
-      100.toFloat / 16 / 60 / 60 // being awake for 16 hours fully exacerbates this need
+      100.toFloat / 48 / 60 / 60 // no recreating for 48 hours fully exacerbates this need
     }
     adjustByRate(deltaTimeSeconds, tickRate)
   }
 }
 
-object SleepNeed {
-  val name: String = "Sleep"
+object RecreationNeed {
+  val name: String = "Recreation"
 }

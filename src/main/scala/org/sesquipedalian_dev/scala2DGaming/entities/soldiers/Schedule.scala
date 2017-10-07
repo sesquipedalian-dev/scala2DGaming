@@ -52,11 +52,13 @@ object Activities {
   val SLEEP = "Sleep"
   val GUARD = "Guard"
   val IDLE = "Idle"
+  val RECREATE = "RECREATE"
 
   def apply(): List[String] = List(
     SLEEP,
     GUARD,
-    IDLE
+    IDLE,
+    RECREATE
   )
 
   // get 'color string
@@ -64,6 +66,7 @@ object Activities {
     case SLEEP => "darkgoldenrod"
     case GUARD => "red"
     case IDLE => "purple"
+    case RECREATE => "blue"
     case _ => "grey"
   }
 }

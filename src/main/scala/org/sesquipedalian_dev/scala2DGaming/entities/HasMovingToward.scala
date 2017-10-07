@@ -66,10 +66,15 @@ trait HasMovingToward extends HasGameUpdate with Logging {
 
   }
 
-  def moveTowardsEquipment[A <: Equipment](use: (A) => Unit)(implicit mf: Manifest[A]): Unit = {
-    val turretsByRange = Registry.objects[HasWorldSpriteRendering](HasWorldSpriteRendering.tag).collect({case gun: A => {
-      gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
-    }}).sortBy(_._2)
+  def moveTowardsEquipment[A <: Equipment](
+    use: (A) => Unit,
+    filter: (HasWorldSpriteRendering with A) => Boolean = (a: HasWorldSpriteRendering with A) => true
+  )(implicit mf: Manifest[A]): Unit = {
+    val turretsByRange = Registry.objects[HasWorldSpriteRendering](HasWorldSpriteRendering.tag).collect({
+      case gun: A if(filter(gun)) => {
+        gun -> (Math.abs(gun.location.x - location.x) + Math.abs(gun.location.y - location.y))
+      }
+    }).sortBy(_._2)
 
     if(turretsByRange.nonEmpty) {
       val turretCloseEnoughToUse = turretsByRange.find(p => p._2 <= p._1.useRange && p._1.user.isEmpty)

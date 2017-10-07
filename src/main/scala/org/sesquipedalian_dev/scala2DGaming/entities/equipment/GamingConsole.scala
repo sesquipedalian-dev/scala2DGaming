@@ -15,25 +15,25 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 
-import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
+import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, RecreationNeed, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
 
-class Bed(
+class GameConsole(
   var location: Location
 ) extends HasSingleWorldSpriteRendering
   with Equipment
   with NeedFulfillingEquipment
 {
-  override val textureFile: String = Bed.textureFile
-  override val name: String = Bed.name
+  override val textureFile: String = GameConsole.textureFile
+  override val name: String = GameConsole.name
   override val useRange: Float = 0.5f
-  override val fulfillmentRateHours: Float = 7f
-  override val associatedNeed: String = SleepNeed.name
+  override val fulfillmentRateHours: Float = 2f
+  override val associatedNeed: String = RecreationNeed.name
 }
 
-object Bed extends CanBuild {
-  override def buildOn(location: Location): Unit = new Bed(location)
-  override def textureFile = "/textures/entities/bed.bmp"
-  override def name = "Bed"
+object GameConsole extends CanBuild {
+  override def buildOn(location: Location): Unit = new GameConsole(location)
+  override def textureFile = "/textures/entities/game_console.bmp"
+  override def name = "GameConsole"
 }

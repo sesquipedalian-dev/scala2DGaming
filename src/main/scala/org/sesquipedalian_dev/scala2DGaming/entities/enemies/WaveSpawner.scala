@@ -16,11 +16,9 @@
 package org.sesquipedalian_dev.scala2DGaming.entities.enemies
 
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 import org.sesquipedalian_dev.scala2DGaming.entities.Location
 import org.sesquipedalian_dev.scala2DGaming.game.{HasGameUpdate, TimeOfDay}
 import org.sesquipedalian_dev.scala2DGaming.ui.Dialog
-import org.sesquipedalian_dev.util._
 
 import scala.util.Random
 

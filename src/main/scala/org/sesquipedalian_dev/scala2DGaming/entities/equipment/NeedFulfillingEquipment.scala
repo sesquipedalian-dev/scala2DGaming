@@ -15,25 +15,18 @@
   */
 package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 
-import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.entities.needs.Need
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.util._
 
-class Bed(
-  var location: Location
-) extends HasSingleWorldSpriteRendering
+trait NeedFulfillingEquipment extends HasSingleWorldSpriteRendering
   with Equipment
-  with NeedFulfillingEquipment
 {
-  override val textureFile: String = Bed.textureFile
-  override val name: String = Bed.name
-  override val useRange: Float = 0.5f
-  override val fulfillmentRateHours: Float = 7f
-  override val associatedNeed: String = SleepNeed.name
+  // linear fulfillment Rate in hours - after this many hours, associated need will be totally filled
+  def fulfillmentRateHours: Float
+  // need that we work on
+  def associatedNeed: String
 }
 
-object Bed extends CanBuild {
-  override def buildOn(location: Location): Unit = new Bed(location)
-  override def textureFile = "/textures/entities/bed.bmp"
-  override def name = "Bed"
-}
+
