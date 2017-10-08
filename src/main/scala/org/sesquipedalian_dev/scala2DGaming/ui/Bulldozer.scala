@@ -25,11 +25,15 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
   override def textureFile = "/textures/ui/bulldozer.bmp"
   override def name = "Bulldozer"
 
-  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+  def canBulldoze: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
     case x: HasSingleWorldSpriteRendering with BlocksBuilding => true // can only bulldoze things that would block building
     case x: Equipment => true
     case _ => false
-  }: PartialFunction[HasSingleWorldSpriteRendering, Boolean]) orElse super.canBuildOn
+  }
+
+  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
+    case x if canBulldoze.isDefinedAt(x) && super.canBuildOn.isDefinedAt(x) => canBulldoze(x) && super.canBuildOn(x)
+  }
 
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
@@ -48,5 +52,5 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
     }
   }
 
-  override def cost = 20
+  override def cost = 1
 }

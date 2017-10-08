@@ -73,15 +73,37 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="GoodGuy.scala" pinned="false" current-in-tab="true">
+      <file leaf-file-name="GoodGuy.scala" pinned="false" current-in-tab="false">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/soldiers/GoodGuy.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="15" column="8" lean-forward="true" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="62" />
+            <state relative-caret-position="425">
+              <caret line="58" column="28" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
               <folding>
                 <element signature="n#!!doc" expanded="true" />
                 <element signature="e#687#708#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Bulldozer.scala" pinned="false" current-in-tab="true">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/Bulldozer.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="404">
+              <caret line="39" column="44" lean-forward="false" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="CanBuild.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="119">
+              <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -129,26 +151,6 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="Logger.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/slf4j-api-1.7.25-sources.jar!/org/slf4j/Logger.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-430">
-              <caret line="63" column="17" lean-forward="false" selection-start-line="63" selection-start-column="17" selection-end-line="63" selection-end-column="17" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="PatternLayoutBase.java" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-core-1.2.3-sources.jar!/ch/qos/logback/core/pattern/PatternLayoutBase.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="215">
-              <caret line="85" column="49" lean-forward="true" selection-start-line="85" selection-start-column="49" selection-end-line="85" selection-end-column="49" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
     </leaf>
   </component>
   <component name="FileTemplateManagerImpl">
@@ -190,8 +192,8 @@
       <find>head</find>
       <find>updating log ui</find>
       <find>getRoot</find>
-      <find>trace</find>
       <find>println</find>
+      <find>trace</find>
     </findStrings>
     <replaceStrings>
       <replace>worldCameraScale</replace>
@@ -251,7 +253,6 @@
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Grass.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/BuildOverlay.scala" />
-        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/Bulldozer.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/pathfinding/Pathfinder.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/terrain/Terrain.scala" />
@@ -274,6 +275,7 @@
         <option value="$PROJECT_DIR$/src/main/resources/logback.xml" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/AboutUi.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/LogsUiController.scala" />
+        <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/Bulldozer.scala" />
       </list>
     </option>
   </component>
@@ -890,22 +892,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/game/TimeOfDay.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="375">
-          <caret line="74" column="17" lean-forward="true" selection-start-line="74" selection-start-column="17" selection-end-line="74" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://C:/Program Files/Java/jdk1.8.0_144/src.zip!/java/rmi/registry/Registry.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="131">
-          <caret line="77" column="17" lean-forward="false" selection-start-line="77" selection-start-column="17" selection-end-line="77" selection-end-column="17" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/ObjectRegistry.scala">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="340">
@@ -1345,11 +1331,29 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/soldiers/GoodGuy.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="15" column="8" lean-forward="true" selection-start-line="15" selection-start-column="8" selection-end-line="15" selection-end-column="62" />
+        <state relative-caret-position="425">
+          <caret line="58" column="28" lean-forward="true" selection-start-line="58" selection-start-column="28" selection-end-line="58" selection-end-column="28" />
           <folding>
             <element signature="n#!!doc" expanded="true" />
             <element signature="e#687#708#0" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="24" column="24" lean-forward="false" selection-start-line="24" selection-start-column="24" selection-end-line="24" selection-end-column="24" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/Bulldozer.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="404">
+          <caret line="39" column="44" lean-forward="false" selection-start-line="39" selection-start-column="44" selection-end-line="39" selection-end-column="44" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
           </folding>
         </state>
       </provider>
