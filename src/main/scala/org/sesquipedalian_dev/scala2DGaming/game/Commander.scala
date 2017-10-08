@@ -61,5 +61,9 @@ object Commander extends HasRegistrySingleton {
     }
   })
 
+  def setMoney(amt: Int): Unit = singleton.foreach(s => {
+    changeMoney(amt - s.gmus)
+  })
+
   def gmus: Int = singleton.map(_.gmus).getOrElse(0)
 }

@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
 <?import javafx.scene.control.ScrollPane?>
 <?import javafx.scene.control.Tab?>
@@ -8,6 +9,7 @@
 <?import javafx.scene.layout.AnchorPane?>
 <?import javafx.scene.layout.FlowPane?>
 <?import javafx.scene.layout.HBox?>
+<?import javafx.scene.layout.VBox?>
 <?import javafx.scene.text.Font?>
 <?import javafx.scene.text.Text?>
 
@@ -225,9 +227,38 @@
         </content>
       </Tab>
       <Tab text="Cheat Console">
-        <content>
-          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
-        </content>
+         <content>
+            <FlowPane prefHeight="200.0" prefWidth="200.0">
+               <children>
+                  <HBox prefHeight="30.0" prefWidth="400.0">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Enter Cheat Command:" />
+                        <TextField fx:id="cheatText" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefWidth="190.0">
+                           <HBox.margin>
+                              <Insets left="10.0" right="10.0" />
+                           </HBox.margin>
+                        </TextField>
+                        <Button fx:id="cheatButton" mnemonicParsing="false" text="Execute" />
+                     </children>
+                  </HBox>
+                  <VBox prefHeight="75.0" prefWidth="380.0" style="-fx-border-width: 3; -fx-border-color: black;">
+                     <children>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Cheat error?" />
+                        <Text fx:id="cheatErrorText" strokeType="OUTSIDE" strokeWidth="0.0" />
+                     </children>
+                  </VBox>
+                  <ScrollPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="260.0" prefWidth="400.0">
+                    <content>
+                      <AnchorPane minHeight="0.0" minWidth="0.0" prefWidth="380.0">
+                           <children>
+                              <Text strokeType="OUTSIDE" strokeWidth="0.0" text="ChangeSoldierNeed &lt;soldier name&gt; &lt;need name&gt; - adjust soldiers’ need levels&#10;ChangeGMU &lt;amount&gt; - change GMU to amount &#10;SpawnBadGuy &lt;count?&gt; - spawn (number?) of bad guys? &#10;SpawnWave - spawn a bad guy wave&#10;SetTimeRate &lt;float&gt; - set time rate to something outside of the allowed 3 buttons&#10;" wrappingWidth="380.0" AnchorPane.topAnchor="0.0" />
+                           </children>
+                        </AnchorPane>
+                    </content>
+                  </ScrollPane>
+               </children>
+            </FlowPane>
+         </content>
       </Tab>
   </tabs>
 </TabPane>

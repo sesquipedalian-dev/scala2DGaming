@@ -48,22 +48,21 @@ class AboutUiController extends HasGameUpdate with Logging {
   var filterText: TextField = null
   @FXML
   var filterButton: Button = null
+  @FXML
+  var cheatText: TextField = null
+  @FXML
+  var cheatButton: Button = null
+  @FXML
+  var cheatErrorText: Text = null
 
   var logsUiController: Option[LogsUiController] = None
+  var cheatController: Option[CheatController] = None
 
   override def update(deltaTimeSeconds: Double): Unit = {
-    trace"AboutUiController update has $logsUiController $logText"
     if(logText != null && logsUiController.isEmpty) {
       logsUiController = Some(new LogsUiController(logText, logLayoutText, logLayoutButton, filterText, filterButton))
+      cheatController = Some(new CheatController(cheatText, cheatButton, cheatErrorText))
     }
-  }
-
-  def redraw(): Unit = {
-    Platform.runLater(new Runnable() {
-      def run() {
-        trace"updating build UI $cachedAbout"
-      }
-    })
   }
 }
 
