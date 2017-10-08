@@ -7,12 +7,15 @@
         </encoder>
     </appender>
 
+    <appender name="LogUI" class="org.sesquipedalian_dev.scala2DGaming.ui.javafx.UIAppender">
+    </appender>
+
     <!-- specific-class debuging -->
     <!--<logger name="org.sesquipedalian_dev.util.pathfinding" level="TRACE" additivity="false">-->
         <!--<appender-ref ref="STDOUT"/>-->
     <!--</logger>-->
 
-    <!--<logger name="org.sesquipedalian_dev.scala2DGaming.entities.terrain" level="TRACE" additivity="false">-->
+    <!--<logger name="org.sesquipedalian_dev.scala2DGaming.ui.javafx" level="TRACE" additivity="false">-->
         <!--<appender-ref ref="STDOUT"/>-->
     <!--</logger>-->
 
@@ -20,5 +23,6 @@
     <!-- default logger if nothing more specific is said -->
     <root level="INFO">
         <appender-ref ref="STDOUT" />
+        <appender-ref ref="LogUI" />
     </root>
 </configuration>

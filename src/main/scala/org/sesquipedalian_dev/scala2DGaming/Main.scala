@@ -28,7 +28,7 @@ import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate, Time
 import org.sesquipedalian_dev.scala2DGaming.graphics._
 import org.sesquipedalian_dev.scala2DGaming.input.{CloseHandler, LoggingMouseCursorHandler}
 import org.sesquipedalian_dev.scala2DGaming.ui._
-import org.sesquipedalian_dev.scala2DGaming.ui.javafx.{JavaFXManager, ToggleBuildUiButton, ToggleGroupsUiButton, ToggleScheduleUiButton}
+import org.sesquipedalian_dev.scala2DGaming.ui.javafx._
 import org.sesquipedalian_dev.util.Logging
 import org.sesquipedalian_dev.util.pathfinding.{Adapter, Pathfinder}
 import org.sesquipedalian_dev.util.pathfinding.Pathfinder.NodeID
@@ -111,6 +111,7 @@ object Main extends Logging {
     new ToggleGroupsUiButton()
     new ToggleScheduleUiButton()
     new ToggleBuildUiButton()
+    new ToggleAboutUiButton()
 
     // TESTING
 

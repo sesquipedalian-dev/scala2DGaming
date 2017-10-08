@@ -1,0 +1,226 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.Tab?>
+<?import javafx.scene.control.TabPane?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.FlowPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="400.0" prefWidth="400.0" tabClosingPolicy="UNAVAILABLE" xmlns="http://javafx.com/javafx/8.0.60" xmlns:fx="http://javafx.com/fxml/1" fx:controller="org.sesquipedalian_dev.scala2DGaming.ui.javafx.AboutUiController">
+  <tabs>
+    <Tab text="Help">
+      <content>
+        <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="0.0" minWidth="0.0" prefHeight="370.0" prefWidth="400.0">
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="10.0" layoutY="10.0" prefHeight="370.0" prefWidth="400.0" AnchorPane.leftAnchor="0.0" AnchorPane.topAnchor="0.0">
+                     <content>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="&#9;MilBase architect is a management / tower defense game about defending your patch of soil while keeping up the morale and efficiency of the troops that are your bulwark against the B.A.D guys. &#10;&#9;Troops are your basic unit that can get stuff done.  They are divided into units called groups.  Groups may be tasked with specific activities, such as Guard or Sleep.  &#10;&#9;Troops have needs, for example sleep.  Most needs increase as the unit is active without fulfilling that need.  Needs can be lowered by doing certain activities or using certain equipment.  Soldiers with a high need get worse at operating gun turrets, and so if you don't manage your troops' needs, you may be overrun by the B.A.D guys.  Needs are displayed by hovering your mouse over a soldier.&#10;&#9;Setting up groups or activities is done via the extra UI that pops up when clicking the buttons in the upper right of the screen. &#10;&#9;The simulation uses a 24-hour clock for the in-game 'real time'.  This may be paused or sped up using the controls in the upper right. &#10;&#9;You can build new terrain (e.g. fences and walls) or equipment using the build UI (button in the upper right).  Click an item to sticky it to your cursor for building.  To cancel, click again on the same build, or click another item.  The bulldozer deletes items that have been placed.  Buildings may require Generic Money Units to build.&#10;&#9;To get more units, use the 'guy' button in the lower left.  The cost goes up for each guy you buy.  Your GMU total is also shown in the lower left.&#10;&#9;" wrappingWidth="380.0">
+                           <font>
+                              <Font name="Consolas" size="14.0" />
+                           </font>
+                        </Text>
+                     </content>
+                  </ScrollPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+    <Tab text="Technical Info">
+      <content>
+        <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0">
+               <children>
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="370.0" prefWidth="400.0">
+                     <content>
+                        <Text strokeType="OUTSIDE" strokeWidth="0.0" text="  The game engine behind MilBase Architect is written in Scala, interfacing to a number of Java libraries. &#10;  LWJGL is a big component for interfacing with several native libraries, including GLFW for window management and keyboard / mouse input, and openGL for the main graphics layer. JOML is used for some help with matrices passed to open GL, e.g. for camera projections.  STB to load textures in. &#10;  JavaFX is used for the UIs that open in separate windows; this is more convenient for doing the more 'UI' portions of the interface. &#10;  We also use slf4j with classic logback for logging." wrappingWidth="380.0">
+                           <font>
+                              <Font name="Consolas" size="14.0" />
+                           </font>
+                        </Text>
+                     </content>
+                  </ScrollPane>
+               </children></AnchorPane>
+      </content>
+    </Tab>
+      <Tab text="LIcenses">
+        <content>
+          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="371.0" prefWidth="400.0">
+               <children>
+                  <TabPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="400.0" side="LEFT" tabClosingPolicy="UNAVAILABLE">
+                    <tabs>
+                      <Tab text="LWJGL 3.1.2">
+                        <content>
+                          <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2012-present Lightweight Java Game Library&#10;All rights reserved.&#10;&#10;Redistribution and use in source and binary forms, with or without&#10;modification, are permitted provided that the following conditions are&#10;met:&#10;&#10;- Redistributions of source code must retain the above copyright&#10;  notice, this list of conditions and the following disclaimer.&#10;&#10;- Redistributions in binary form must reproduce the above copyright&#10;  notice, this list of conditions and the following disclaimer in the&#10;  documentation and/or other materials provided with the distribution.&#10;&#10;- Neither the name Lightweight Java Game Library nor the names of&#10;  its contributors may be used to endorse or promote products derived&#10;  from this software without specific prior written permission.&#10;&#10;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS&#10;&quot;AS IS&quot; AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED&#10;TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR&#10;PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR&#10;CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL,&#10;EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO,&#10;PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR&#10;PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&#10;LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING&#10;NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS&#10;SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#9;" wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                        </content>
+                      </Tab>
+                        <Tab text="GLFW">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2002-2006 Marcus Geelnard&#10;Copyright (c) 2006-2010 Camilla Berglund &lt;elmindreda@elmindreda.org&gt;&#10;&#10;This software is provided 'as-is', without any express or implied&#10;warranty. In no event will the authors be held liable for any damages&#10;arising from the use of this software.&#10;&#10;Permission is granted to anyone to use this software for any purpose,&#10;including commercial applications, and to alter it and redistribute it&#10;freely, subject to the following restrictions:&#10;&#10;1. The origin of this software must not be misrepresented; you must not&#10;   claim that you wrote the original software. If you use this software&#10;   in a product, an acknowledgment in the product documentation would&#10;   be appreciated but is not required.&#10;&#10;2. Altered source versions must be plainly marked as such, and must not&#10;   be misrepresented as being the original software.&#10;&#10;3. This notice may not be removed or altered from any source&#10;   distribution.&#10;" wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="jemalloc">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (C) 2002-2014 Jason Evans &lt;jasone@canonware.com&gt;.&#10;All rights reserved.&#10;Copyright (C) 2007-2012 Mozilla Foundation.  All rights reserved.&#10;Copyright (C) 2009-2014 Facebook, Inc.  All rights reserved.&#10;&#10;Redistribution and use in source and binary forms, with or without&#10;modification, are permitted provided that the following conditions are met:&#10;1. Redistributions of source code must retain the above copyright notice(s),&#10;   this list of conditions and the following disclaimer.&#10;2. Redistributions in binary form must reproduce the above copyright notice(s),&#10;   this list of conditions and the following disclaimer in the documentation&#10;   and/or other materials provided with the distribution.&#10;&#10;THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDER(S) ``AS IS'' AND ANY EXPRESS&#10;OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF&#10;MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED.  IN NO&#10;EVENT SHALL THE COPYRIGHT HOLDER(S) BE LIABLE FOR ANY DIRECT, INDIRECT,&#10;INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT&#10;LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR&#10;PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF&#10;LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE&#10;OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF&#10;ADVISED OF THE POSSIBILITY OF SUCH DAMAGE.&#10;" wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="dyncall">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2007-2015 Daniel Adler &lt;dadler AT uni-goettingen DOT de&gt;,&#10;                        Tassilo Philipp &lt;tphilipp AT potion-studios DOT com&gt;&#10;&#10;Permission to use, copy, modify, and distribute this software for any&#10;purpose with or without fee is hereby granted, provided that the above&#10;copyright notice and this permission notice appear in all copies.&#10;&#10;THE SOFTWARE IS PROVIDED &quot;AS IS&quot; AND THE AUTHOR DISCLAIMS ALL WARRANTIES&#10;WITH REGARD TO THIS SOFTWARE INCLUDING ALL IMPLIED WARRANTIES OF&#10;MERCHANTABILITY AND FITNESS. IN NO EVENT SHALL THE AUTHOR BE LIABLE FOR&#10;ANY SPECIAL, DIRECT, INDIRECT, OR CONSEQUENTIAL DAMAGES OR ANY DAMAGES&#10;WHATSOEVER RESULTING FROM LOSS OF USE, DATA OR PROFITS, WHETHER IN AN&#10;ACTION OF CONTRACT, NEGLIGENCE OR OTHER TORTIOUS ACTION, ARISING OUT OF&#10;OR IN CONNECTION WITH THE USE OR PERFORMANCE OF THIS SOFTWARE.&#10;&#9;" wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="slf4j 1.7.25">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2004-2017 QOS.ch&#10; All rights reserved.&#10;&#10; Permission is hereby granted, free  of charge, to any person obtaining&#10; a  copy  of this  software  and  associated  documentation files  (the&#10; &quot;Software&quot;), to  deal in  the Software without  restriction, including&#10; without limitation  the rights to  use, copy, modify,  merge, publish,&#10; distribute,  sublicense, and/or sell  copies of  the Software,  and to&#10; permit persons to whom the Software  is furnished to do so, subject to&#10; the following conditions:&#10; &#10; The  above  copyright  notice  and  this permission  notice  shall  be&#10; included in all copies or substantial portions of the Software.&#10; &#10; THE  SOFTWARE IS  PROVIDED  &quot;AS  IS&quot;, WITHOUT  WARRANTY  OF ANY  KIND,&#10; EXPRESS OR  IMPLIED, INCLUDING  BUT NOT LIMITED  TO THE  WARRANTIES OF&#10; MERCHANTABILITY,    FITNESS    FOR    A   PARTICULAR    PURPOSE    AND&#10; NONINFRINGEMENT. IN NO EVENT SHALL THE AUTHORS OR COPYRIGHT HOLDERS BE&#10; LIABLE FOR ANY CLAIM, DAMAGES OR OTHER LIABILITY, WHETHER IN AN ACTION&#10; OF CONTRACT, TORT OR OTHERWISE,  ARISING FROM, OUT OF OR IN CONNECTION&#10; WITH THE SOFTWARE OR THE USE OR OTHER DEALINGS IN THE SOFTWARE.&#10;  " wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="logback 1.2.3">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Logback: the reliable, generic, fast and flexible logging framework.&#10;Copyright (C) 1999-2017, QOS.ch. All rights reserved. &#10;&#10;This program and the accompanying materials are dual-licensed under&#10;either the terms of the Eclipse Public License v1.0 as published by&#10;the Eclipse Foundation&#10; &#10;  or (per the licensee's choosing)&#10; &#10;under the terms of the GNU Lesser General Public License version 2.1&#10;as published by the Free Software Foundation." wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="JavaFX / Java SE">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="http://www.oracle.com/technetwork/java/javase/terms/license/index.html&#9;" wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                        <Tab text="Scala">
+                           <content>
+                              <AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="380.0">
+                                 <children>
+                                    <ScrollPane fitToHeight="true" fitToWidth="true" maxHeight="-Infinity" maxWidth="-Infinity" minHeight="-Infinity" minWidth="-Infinity" prefHeight="370.0" prefWidth="360.0">
+                                       <content>
+                                          <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Copyright (c) 2002-  EPFLCopyright (c) 2011-  Lightbend, Inc.All rights reserved.Redistribution and use in source and binary forms, with or without modification, are permitted provided that the following conditions are met:Redistributions of source code must retain the above copyright notice, this list of conditions and the following disclaimer.Redistributions in binary form must reproduce the above copyright notice, this list of conditions and the following disclaimer in the documentation and/or other materials provided with the distribution.Neither the name of the EPFL nor the names of its contributors may be used to endorse or promote products derived from this software without specific prior written permission.THIS SOFTWARE IS PROVIDED BY THE COPYRIGHT HOLDERS AND CONTRIBUTORS “AS IS” AND ANY EXPRESS OR IMPLIED WARRANTIES, INCLUDING, BUT NOT LIMITED TO, THE IMPLIED WARRANTIES OF MERCHANTABILITY AND FITNESS FOR A PARTICULAR PURPOSE ARE DISCLAIMED. IN NO EVENT SHALL THE COPYRIGHT OWNER OR CONTRIBUTORS BE LIABLE FOR ANY DIRECT, INDIRECT, INCIDENTAL, SPECIAL, EXEMPLARY, OR CONSEQUENTIAL DAMAGES (INCLUDING, BUT NOT LIMITED TO, PROCUREMENT OF SUBSTITUTE GOODS OR SERVICES; LOSS OF USE, DATA, OR PROFITS; OR BUSINESS INTERRUPTION) HOWEVER CAUSED AND ON ANY THEORY OF LIABILITY, WHETHER IN CONTRACT, STRICT LIABILITY, OR TORT (INCLUDING NEGLIGENCE OR OTHERWISE) ARISING IN ANY WAY OUT OF THE USE OF THIS SOFTWARE, EVEN IF ADVISED OF THE POSSIBILITY OF SUCH DAMAGE." wrappingWidth="340.0">
+                                             <font>
+                                                <Font name="Consolas" size="14.0" />
+                                             </font>
+                                          </Text>
+                                       </content>
+                                    </ScrollPane>
+                                 </children>
+                              </AnchorPane>
+                           </content>
+                        </Tab>
+                    </tabs>
+                  </TabPane>
+               </children>
+            </AnchorPane>
+        </content>
+      </Tab>
+      <Tab text="Log">
+        <content>
+            <FlowPane>
+               <children>
+                  <Text strokeType="OUTSIDE" strokeWidth="0.0" text="Log pattern:" />
+                  <TextField fx:id="logLayoutText" prefWidth="260.0" text="\%d{HH:mm:ss.SSS} [%thread] [%level] %logger: %msg">
+                     <FlowPane.margin>
+                        <Insets left="10.0" right="10.0" />
+                     </FlowPane.margin>
+                  </TextField>
+                  <Button fx:id="logLayoutButton" mnemonicParsing="false" text="Update" />
+                  <ScrollPane fitToHeight="true" fitToWidth="true" prefHeight="345.0" prefWidth="400.0">
+                     <content>
+                        <Text fx:id="logText" strokeType="OUTSIDE" strokeWidth="0.0" wrappingWidth="1000000.0">
+                           <font>
+                              <Font name="Consolas" size="14.0" />
+                           </font>
+                        </Text>
+                     </content>
+                  </ScrollPane>
+               </children>
+            </FlowPane>
+        </content>
+      </Tab>
+      <Tab text="Cheat Console">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0" prefHeight="180.0" prefWidth="200.0" />
+        </content>
+      </Tab>
+  </tabs>
+</TabPane>
