@@ -18,8 +18,8 @@
       <file leaf-file-name="CheatController.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/CheatController.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="255">
-              <caret line="29" column="74" lean-forward="false" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
+            <state relative-caret-position="340">
+              <caret line="34" column="74" lean-forward="false" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
               <folding>
                 <element signature="e#679#714#0" expanded="true" />
               </folding>
@@ -1103,16 +1103,16 @@
         <state relative-caret-position="121">
           <caret line="9" column="39" lean-forward="false" selection-start-line="9" selection-start-column="39" selection-end-line="9" selection-end-column="39" />
           <folding>
-            <marker date="1507494727717" expanded="true" signature="25782:26594" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25782:26618" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25782:26638" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25782:26651" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25782:26661" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25782:26672" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25803:26567" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25833:26535" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25917:26504" ph="..." />
-            <marker date="1507494727717" expanded="true" signature="25955:26466" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29290" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29314" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29334" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29347" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29357" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28478:29368" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28499:29263" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28529:29231" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28613:29200" ph="..." />
+            <marker date="1507496970632" expanded="true" signature="28651:29162" ph="..." />
           </folding>
         </state>
       </provider>
@@ -1244,8 +1244,8 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/CheatController.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="255">
-          <caret line="29" column="74" lean-forward="false" selection-start-line="29" selection-start-column="74" selection-end-line="29" selection-end-column="74" />
+        <state relative-caret-position="340">
+          <caret line="34" column="74" lean-forward="false" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
           <folding>
             <element signature="e#679#714#0" expanded="true" />
           </folding>
