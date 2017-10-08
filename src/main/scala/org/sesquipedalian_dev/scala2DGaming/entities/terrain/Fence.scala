@@ -17,6 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities.terrain
 
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
+import org.sesquipedalian_dev.util.Logging
 
 class Fence(
   var location: Location
@@ -27,13 +28,15 @@ class Fence(
 }
 
 
-object Fence extends CanBuildTerrain with HasCostToBuild {
+object Fence extends CanBuildTerrain with HasCostToBuild with Logging {
   override def textureFile: String = "/textures/world/Fence.bmp"
   override def name: String = "Fence"
+  override def buildTimeSeconds: Float = 30 * 60
 
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     new Fence(location)
+    Terrain.informTerrainChanged()
   }
 
   override def cost = 10

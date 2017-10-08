@@ -32,5 +32,6 @@ object WoodFloor extends CanBuildTerrain {
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     new WoodFloor(location)
+    Terrain.informTerrainChanged()
   }
 }

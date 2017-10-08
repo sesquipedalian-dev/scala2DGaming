@@ -32,5 +32,6 @@ object Grass extends CanBuildTerrain {
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     new Grass(location)
+    Terrain.informTerrainChanged()
   }
 }

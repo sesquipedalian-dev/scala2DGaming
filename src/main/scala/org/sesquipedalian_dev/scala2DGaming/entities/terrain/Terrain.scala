@@ -26,15 +26,13 @@ trait Terrain extends HasSingleWorldSpriteRendering {
   def traversable: Boolean
 }
 
-trait CanBuildTerrain extends CanBuild {
+trait CanBuildTerrain extends CanBuild with Logging {
   abstract override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     val existingTerrain = HasWorldSpriteRendering.all.collect({
       case x: HasSingleWorldSpriteRendering with Terrain if x.location == location => x
     })
     existingTerrain.foreach(t => HasWorldSpriteRendering.unregister(t))
-
-    Terrain.informTerrainChanged()
   }
 }
 

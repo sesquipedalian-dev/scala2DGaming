@@ -66,6 +66,17 @@ class GoodGuy(
         // IDLE - do nothing - maybe eventually we should play some sort of frustrated animation
         case Activities.IDLE =>
         // we found some equipment, keep it up
+        case Activities.BUILD if equipmentImUsing.collect({case x: PendingBuild => x}).nonEmpty =>
+        // if guarding and on wrong equipment, drop it
+        case Activities.BUILD if equipmentImUsing.nonEmpty => {
+          equipmentImUsing.foreach(drop)
+          direction = Nil
+        }
+        // not using a gun && have a cached direction - go towards it
+        case Activities.BUILD if direction.nonEmpty =>
+        // not using a gun, move towards one
+        case Activities.BUILD => moveTowardsEquipment[PendingBuild](use)
+        // we found some equipment, keep it up
         case Activities.RECREATE if equipmentImUsing.collect({case x: NeedFulfillingEquipment if x.associatedNeed == RecreationNeed.name => x}).nonEmpty =>
         // if guarding and on wrong equipment, drop it
         case Activities.RECREATE if equipmentImUsing.nonEmpty => {

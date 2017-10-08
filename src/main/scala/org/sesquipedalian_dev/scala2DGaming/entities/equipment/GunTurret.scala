@@ -109,16 +109,17 @@ class GunTurret(
   }
 }
 
-class GunTurretBuilder(range: RangeArc, override val name: String) extends CanBuild with HasCostToBuild {
+class GunTurretBuilder(range: RangeArc, override val name: String) extends CanBuild with HasCostToBuild with Logging {
   override def textureFile: String = GunTurret.textureFile
   override def cost = 20
+  override def buildTimeSeconds: Float = 45 * 60
 
   override def buildOn(location: Location): Unit = new GunTurret(
     location, 1, 20, range
   )
 
   // can only build turrets on concrete wall
-  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
+  override def canBuildOnInternal: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
     case x: ConcreteWall => true
     case x: HasSingleWorldSpriteRendering => false
   }

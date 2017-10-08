@@ -18,6 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, RecreationNeed, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.util.Logging
 
 class GameConsole(
   var location: Location
@@ -32,8 +33,9 @@ class GameConsole(
   override val associatedNeed: String = RecreationNeed.name
 }
 
-object GameConsole extends CanBuild {
+object GameConsole extends CanBuild with Logging {
   override def buildOn(location: Location): Unit = new GameConsole(location)
   override def textureFile = "/textures/entities/game_console.bmp"
   override def name = "GameConsole"
+  override def buildTimeSeconds: Float = 30 * 60
 }

@@ -33,5 +33,6 @@ object Sand extends CanBuildTerrain {
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     new Sand(location)
+    Terrain.informTerrainChanged()
   }
 }

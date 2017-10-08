@@ -18,6 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.entities.equipment
 import org.sesquipedalian_dev.scala2DGaming.entities.needs.{Need, SleepNeed}
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
 import org.sesquipedalian_dev.scala2DGaming.graphics.HasSingleWorldSpriteRendering
+import org.sesquipedalian_dev.util.Logging
 
 class Bed(
   var location: Location
@@ -32,8 +33,9 @@ class Bed(
   override val associatedNeed: String = SleepNeed.name
 }
 
-object Bed extends CanBuild {
+object Bed extends CanBuild with Logging {
   override def buildOn(location: Location): Unit = new Bed(location)
   override def textureFile = "/textures/entities/bed.bmp"
   override def name = "Bed"
+  override def buildTimeSeconds: Float = 30 * 60
 }

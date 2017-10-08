@@ -17,7 +17,7 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Equipment
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain.{Grass, Terrain}
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location, PendingBuild}
 import org.sesquipedalian_dev.scala2DGaming.game.Commander
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
@@ -26,7 +26,18 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
   override def textureFile = "/textures/ui/bulldozer.bmp"
   override def name = "Bulldozer"
 
-  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+  override def canBuildOn(worldLoc: Location): Boolean = {
+    val possibleConflicts = HasWorldSpriteRendering.all.collect({
+      case x: HasSingleWorldSpriteRendering if x.location == worldLoc => x
+    })
+
+    val f = canBuildOnInternal.lift
+
+    possibleConflicts.exists(pc => f(pc).getOrElse(false))
+  }
+
+  override def canBuildOnInternal: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+    case x: PendingBuild => true
     case x: HasSingleWorldSpriteRendering with BlocksBuilding if Commander.gmus > cost => true // can only bulldoze things that would block building
     case x: Equipment if Commander.gmus > cost => true
     case _ => false
@@ -35,6 +46,7 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)
     val existingEquipment = HasWorldSpriteRendering.all.collectFirst({
+      case x: PendingBuild if x.location == location => x
       case x: Equipment if x.location == location => x
     })
     val existingTerrain = HasWorldSpriteRendering.all.collectFirst({
@@ -42,7 +54,16 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
     })
     val preferredDeleteTarget = (existingEquipment orElse existingTerrain)
     trace"Bulldozer preferred delete? $existingEquipment $existingTerrain $preferredDeleteTarget"
-    preferredDeleteTarget.foreach(t => HasWorldSpriteRendering.unregister(t))
+    preferredDeleteTarget.foreach(t => {
+      if(t.isInstanceOf[PendingBuild]) {
+        val builder = t.asInstanceOf[PendingBuild].realBuilder
+        builder match {
+          case x: HasCostToBuild => Commander.changeMoney(x.cost) // refund build cost of underlying builder if deleted a PendingBuild
+          case _ =>
+        }
+      }
+      HasWorldSpriteRendering.unregister(t)
+    })
 
     if(preferredDeleteTarget == existingTerrain) {
       new Grass(location)

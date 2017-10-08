@@ -16,27 +16,34 @@
 package org.sesquipedalian_dev.scala2DGaming.entities
 
 import org.sesquipedalian_dev.scala2DGaming.game.Commander
-import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering}
+import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 
-trait HasCostToBuild extends CanBuild {
+trait HasCostToBuild extends CanBuild { this: Logging =>
   def cost: Int // cost in GMUs
-  abstract override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+  abstract override def canBuildOnInternal: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
     case x if Commander.gmus <= cost => false
-  }: PartialFunction[HasSingleWorldSpriteRendering, Boolean]) orElse super.canBuildOn
-
-  abstract override def buildOn(location: Location): Unit = {
-    super.buildOn(location)
-    Commander.changeMoney(-cost)
-  }
+  }: PartialFunction[HasSingleWorldSpriteRendering, Boolean]) orElse super.canBuildOnInternal
 }
 
-trait CanBuild {
+trait CanBuild { this: Logging =>
   def textureFile: String
   def name: String
+  def buildTimeSeconds: Float  = 0 // real-time seconds needed to build this
+  def userCanBuild: Boolean = true
 
-  def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
+  def canBuildOn(worldLoc: Location): Boolean = {
+    val possibleConflicts = HasWorldSpriteRendering.all.collect({
+      case x: HasSingleWorldSpriteRendering if x.location == worldLoc => x
+    })
+
+    val f = canBuildOnInternal.lift
+
+    !possibleConflicts.exists(p => !f(p).getOrElse(true))
+  }
+
+  def canBuildOnInternal: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
     case x: HasSingleWorldSpriteRendering with BlocksBuilding => false
   }
 

@@ -23,7 +23,8 @@ import org.lwjgl.opengl.GL11._
 import org.lwjgl.opengl.GL20._
 import org.lwjgl.system.{MemoryStack, MemoryUtil}
 import org.sesquipedalian_dev.scala2DGaming.Main
-import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location, PendingBuild}
+import org.sesquipedalian_dev.scala2DGaming.game.Commander
 import org.sesquipedalian_dev.scala2DGaming.input.MouseInputHandler
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
@@ -80,12 +81,7 @@ class BuildOverlay(
     val result = (currentBuilder zip worldLoc).exists(p => {
       val (builder, loc) = p
 
-      val possibleConflicts = HasWorldSpriteRendering.all.collect({
-        case x: HasSingleWorldSpriteRendering if x.location == loc => x
-      })
-
-      val f = builder.canBuildOn.lift
-      !possibleConflicts.exists(p => !f(p).getOrElse(true))
+      builder.canBuildOn(loc)
     })
     trace"isValidBuildLoc? $currentX $currentY $worldLoc $result"
     result
@@ -153,13 +149,20 @@ class BuildOverlay(
 
   BuildOverlay.register(this)
 
-  // Nop() - don't do anything on click
   override def handleAction(windowHandle: Long, button: Int, action: Int) = {
     if(action == GLFW_RELEASE && button == GLFW_MOUSE_BUTTON_LEFT && isValidBuildLoc()) {
-      trace"building a thing!? $currentX $currentY"
+      info"building a thing!? $currentX $currentY"
       (currentBuilder zip currentWorldLoc).foreach(p => {
         val (builder, loc) = p
-        builder.buildOn(loc)
+        if(builder.buildTimeSeconds > 0) {
+          builder match {
+            case x: HasCostToBuild => Commander.changeMoney(-x.cost)
+            case _ =>
+          }
+          new PendingBuild(loc, builder.buildTimeSeconds, builder)
+        } else {
+          builder.buildOn(loc)
+        }
       })
       true
     } else {

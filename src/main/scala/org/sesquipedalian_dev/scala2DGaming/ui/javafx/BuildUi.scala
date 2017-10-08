@@ -66,43 +66,46 @@ class BuildUiController extends HasGameUpdate with Logging {
 
         cachedBuild.foreach(builderName => {
           val _builder = CanBuild.all.find(b => b.name == builderName)
-          _builder.foreach(builder => {
-            if(!textureImages.contains(builderName)) {
-              textureImages = textureImages + (builderName -> (new Image(builder.textureFile, 40.0, 40.0, false, true)))
-            }
-
-            val image = textureImages(builderName)
-
-            val itemPane = new FlowPane()
-
-            itemPane.setPrefHeight(50)
-            itemPane.setPrefWidth(50)
-
-            val tex = new ImageView(image)
-            itemPane.getChildren().add(tex)
-
-            val nameText = new Text(builderName)
-            itemPane.getChildren().add(nameText)
-
-            if(Some(builderName) == cachedActiveBuilder) {
-              itemPane.setStyle(
-                s"""
-                   |-fx-border-width: 3;
-                   |-fx-border-color: black;
-                 """.stripMargin)
-            }
-
-            itemPane.setOnMouseClicked(new EventHandler[MouseEvent](){
-              override def handle(event: MouseEvent) = {
-                if(Some(builderName) == cachedActiveBuilder) {
-                  BuildOverlay.disable()
-                } else {
-                  BuildOverlay.enable(builder)
-                }
+          _builder.foreach({
+            case builder if builder.userCanBuild => {
+              if(!textureImages.contains(builderName)) {
+                textureImages = textureImages + (builderName -> (new Image(builder.textureFile, 40.0, 40.0, false, true)))
               }
-            })
 
-            contentPane.getChildren().add(itemPane)
+              val image = textureImages(builderName)
+
+              val itemPane = new FlowPane()
+
+              itemPane.setPrefHeight(50)
+              itemPane.setPrefWidth(50)
+
+              val tex = new ImageView(image)
+              itemPane.getChildren().add(tex)
+
+              val nameText = new Text(builderName)
+              itemPane.getChildren().add(nameText)
+
+              if(Some(builderName) == cachedActiveBuilder) {
+                itemPane.setStyle(
+                  s"""
+                     |-fx-border-width: 3;
+                     |-fx-border-color: black;
+                 """.stripMargin)
+              }
+
+              itemPane.setOnMouseClicked(new EventHandler[MouseEvent](){
+                override def handle(event: MouseEvent) = {
+                  if(Some(builderName) == cachedActiveBuilder) {
+                    BuildOverlay.disable()
+                  } else {
+                    BuildOverlay.enable(builder)
+                  }
+                }
+              })
+
+              contentPane.getChildren().add(itemPane)
+            }
+            case _ =>
           })
         })
       }
