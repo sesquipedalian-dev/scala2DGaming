@@ -18,6 +18,7 @@ package org.sesquipedalian_dev.scala2DGaming.ui
 import org.sesquipedalian_dev.scala2DGaming.entities.equipment.Equipment
 import org.sesquipedalian_dev.scala2DGaming.entities.terrain.{Grass, Terrain}
 import org.sesquipedalian_dev.scala2DGaming.entities.{CanBuild, HasCostToBuild, Location}
+import org.sesquipedalian_dev.scala2DGaming.game.Commander
 import org.sesquipedalian_dev.scala2DGaming.graphics.{BlocksBuilding, HasSingleWorldSpriteRendering, HasWorldSpriteRendering}
 import org.sesquipedalian_dev.util._
 
@@ -25,15 +26,11 @@ object Bulldozer extends CanBuild with HasCostToBuild with Logging {
   override def textureFile = "/textures/ui/bulldozer.bmp"
   override def name = "Bulldozer"
 
-  def canBulldoze: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
-    case x: HasSingleWorldSpriteRendering with BlocksBuilding => true // can only bulldoze things that would block building
-    case x: Equipment => true
+  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
+    case x: HasSingleWorldSpriteRendering with BlocksBuilding if Commander.gmus > cost => true // can only bulldoze things that would block building
+    case x: Equipment if Commander.gmus > cost => true
     case _ => false
-  }
-
-  override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = {
-    case x if canBulldoze.isDefinedAt(x) && super.canBuildOn.isDefinedAt(x) => canBulldoze(x) && super.canBuildOn(x)
-  }
+  }: PartialFunction[HasSingleWorldSpriteRendering, Boolean])
 
   override def buildOn(location: Location): Unit = {
     super.buildOn(location)

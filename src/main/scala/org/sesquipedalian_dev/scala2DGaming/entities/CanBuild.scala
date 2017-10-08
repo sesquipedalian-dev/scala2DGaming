@@ -23,7 +23,7 @@ import org.sesquipedalian_dev.util.registry.HasRegistryCollection
 trait HasCostToBuild extends CanBuild {
   def cost: Int // cost in GMUs
   abstract override def canBuildOn: PartialFunction[HasSingleWorldSpriteRendering, Boolean] = ({
-    case x if Commander.gmus < cost => false
+    case x if Commander.gmus <= cost => false
   }: PartialFunction[HasSingleWorldSpriteRendering, Boolean]) orElse super.canBuildOn
 
   abstract override def buildOn(location: Location): Unit = {
