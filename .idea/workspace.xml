@@ -13,16 +13,102 @@
   <component name="CreatePatchCommitExecutor">
     <option name="PATCH_PATH" value="" />
   </component>
+  <component name="DockManager">
+    <window id="1">
+      <content type="file-editors">
+        <state>
+          <leaf>
+            <file leaf-file-name="CheatGrammar.g4" pinned="false" current-in-tab="true">
+              <entry file="file://$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4">
+                <provider selected="true" editor-type-id="text-editor">
+                  <state relative-caret-position="204">
+                    <caret line="12" column="16" lean-forward="false" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+                    <folding />
+                  </state>
+                </provider>
+              </entry>
+            </file>
+          </leaf>
+        </state>
+      </content>
+    </window>
+  </component>
   <component name="FileEditorManager">
     <leaf SIDE_TABS_SIZE_LIMIT_KEY="300">
       <file leaf-file-name="CheatController.scala" pinned="false" current-in-tab="true">
         <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/CheatController.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="340">
-              <caret line="34" column="74" lean-forward="false" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
+            <state relative-caret-position="268">
+              <caret line="64" column="3" lean-forward="false" selection-start-line="64" selection-start-column="3" selection-end-line="64" selection-end-column="3" />
               <folding>
                 <element signature="e#679#714#0" expanded="true" />
               </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="TimeButtons.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/TimeButtons.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="WaveSpawner.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/enemies/WaveSpawner.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="BadGuySpawner.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/enemies/BadGuySpawner.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="0">
+              <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+              <folding>
+                <element signature="n#!!doc" expanded="true" />
+              </folding>
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="Need.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/Need.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="233">
+              <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HasWorldSpriteRendering.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="495">
+              <caret line="48" column="49" lean-forward="false" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
+              <folding />
+            </state>
+          </provider>
+        </entry>
+      </file>
+      <file leaf-file-name="HasRegistryCollection.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala">
+          <provider selected="true" editor-type-id="text-editor">
+            <state relative-caret-position="85">
+              <caret line="19" column="6" lean-forward="false" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+              <folding />
             </state>
           </provider>
         </entry>
@@ -37,99 +123,21 @@
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheatGrammarBaseListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/sesquipedalian_dev/scala2DGaming/cheatgrammar/CheatGrammarBaseListener.java">
+      <file leaf-file-name="RecreationNeed.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/RecreationNeed.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-310">
-              <caret line="12" column="13" lean-forward="false" selection-start-line="12" selection-start-column="13" selection-end-line="12" selection-end-column="13" />
+            <state relative-caret-position="119">
+              <caret line="22" column="11" lean-forward="false" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
               <folding />
             </state>
           </provider>
         </entry>
       </file>
-      <file leaf-file-name="CheatGrammar.g4" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4">
+      <file leaf-file-name="SleepNeed.scala" pinned="false" current-in-tab="false">
+        <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/SleepNeed.scala">
           <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="102">
-              <caret line="6" column="20" lean-forward="false" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CheatGrammarListener.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/sesquipedalian_dev/scala2DGaming/cheatgrammar/CheatGrammarListener.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="136">
-              <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
-              <folding>
-                <marker date="1507496285918" expanded="true" signature="420:857" ph="/**...*/" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CheatGrammarParser.java" pinned="false" current-in-tab="false">
-        <entry file="file://$PROJECT_DIR$/src/main/java/org/sesquipedalian_dev/scala2DGaming/cheatgrammar/CheatGrammarParser.java">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="204">
-              <caret line="99" column="30" lean-forward="false" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="30" />
-              <folding>
-                <element signature="e#1782#1783#0" expanded="true" />
-                <element signature="e#1806#1807#0" expanded="true" />
-                <element signature="e#1856#1857#0" expanded="true" />
-                <element signature="e#1880#1881#0" expanded="true" />
-                <element signature="e#2399#2400#0" expanded="true" />
-                <element signature="e#2455#2456#0" expanded="true" />
-                <element signature="e#2524#2525#0" expanded="true" />
-                <element signature="e#2561#2562#0" expanded="true" />
-                <element signature="e#3638#3639#0" expanded="true" />
-                <element signature="e#3675#3676#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Parser.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/antlr-4.7-complete.jar!/org/antlr/v4/runtime/Parser.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="212">
-              <caret line="110" column="31" lean-forward="false" selection-start-line="110" selection-start-column="31" selection-end-line="110" selection-end-column="31" />
-              <folding>
-                <element signature="e#3724#3725#0" expanded="true" />
-                <element signature="e#3768#3769#0" expanded="true" />
-                <element signature="e#8116#8117#0" expanded="true" />
-                <element signature="e#8171#8172#0" expanded="true" />
-              </folding>
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="Recognizer.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/antlr-4.7-complete.jar!/org/antlr/v4/runtime/Recognizer.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="-1903">
-              <caret line="18" column="22" lean-forward="false" selection-start-line="18" selection-start-column="22" selection-end-line="18" selection-end-column="22" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CommonTokenStream.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/antlr-4.7-complete.jar!/org/antlr/runtime/CommonTokenStream.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="7" column="13" lean-forward="false" selection-start-line="7" selection-start-column="13" selection-end-line="7" selection-end-column="13" />
-              <folding />
-            </state>
-          </provider>
-        </entry>
-      </file>
-      <file leaf-file-name="CharStream.class" pinned="false" current-in-tab="false">
-        <entry file="jar://$PROJECT_DIR$/../../programming_libs/antlr-4.7-complete.jar!/org/antlr/runtime/CharStream.class">
-          <provider selected="true" editor-type-id="text-editor">
-            <state relative-caret-position="68">
-              <caret line="7" column="17" lean-forward="false" selection-start-line="7" selection-start-column="17" selection-end-line="7" selection-end-column="17" />
+            <state relative-caret-position="170">
+              <caret line="25" column="11" lean-forward="false" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
               <folding />
             </state>
           </provider>
@@ -257,8 +265,8 @@
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/CanBuild.scala" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/AboutUi.scala" />
         <option value="$PROJECT_DIR$/../../programming_libs/antlr-4.7-complete.jar!/org/antlr/v4/runtime/Lexer.class" />
-        <option value="$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/game/Commander.scala" />
+        <option value="$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4" />
         <option value="$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/CheatController.scala" />
       </list>
     </option>
@@ -382,6 +390,27 @@
               <item name="scala" type="462c0819:PsiDirectoryNode" />
               <item name="sesquipedalian_dev" type="462c0819:PsiDirectoryNode" />
               <item name="scala2DGaming" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
+              <item name="trunk" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="sesquipedalian_dev" type="462c0819:PsiDirectoryNode" />
+              <item name="scala2DGaming" type="462c0819:PsiDirectoryNode" />
+              <item name="entities" type="462c0819:PsiDirectoryNode" />
+            </path>
+            <path>
+              <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
+              <item name="trunk" type="462c0819:PsiDirectoryNode" />
+              <item name="src" type="462c0819:PsiDirectoryNode" />
+              <item name="main" type="462c0819:PsiDirectoryNode" />
+              <item name="scala" type="462c0819:PsiDirectoryNode" />
+              <item name="sesquipedalian_dev" type="462c0819:PsiDirectoryNode" />
+              <item name="scala2DGaming" type="462c0819:PsiDirectoryNode" />
+              <item name="entities" type="462c0819:PsiDirectoryNode" />
+              <item name="needs" type="462c0819:PsiDirectoryNode" />
             </path>
             <path>
               <item name="trunk" type="b2602c69:ProjectViewProjectNode" />
@@ -800,73 +829,6 @@
     <watches-manager />
   </component>
   <component name="editorHistoryManager">
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-core-1.2.3-sources.jar!/ch/qos/logback/core/encoder/LayoutWrappingEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="267">
-          <caret line="124" column="19" lean-forward="true" selection-start-line="124" selection-start-column="19" selection-end-line="124" selection-end-column="19" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-classic-1.2.3-sources.jar!/ch/qos/logback/classic/encoder/PatternLayoutEncoder.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="85">
-          <caret line="19" column="13" lean-forward="false" selection-start-line="19" selection-start-column="13" selection-end-line="19" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-core-1.2.3-sources.jar!/ch/qos/logback/core/OutputStreamAppender.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="17">
-          <caret line="35" column="13" lean-forward="false" selection-start-line="35" selection-start-column="13" selection-end-line="35" selection-end-column="13" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-core-1.2.3-sources.jar!/ch/qos/logback/core/AppenderBase.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="215">
-          <caret line="92" column="28" lean-forward="false" selection-start-line="92" selection-start-column="28" selection-end-line="92" selection-end-column="28" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/ScheduleUi.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="0">
-          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/BuildUi.scala">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="642">
-          <caret line="134" column="0" lean-forward="true" selection-start-line="134" selection-start-column="0" selection-end-line="134" selection-end-column="0" />
-          <folding>
-            <element signature="n#!!doc" expanded="false" />
-            <element signature="e#679#713#0" expanded="false" />
-          </folding>
-        </state>
-      </provider>
-    </entry>
-    <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-classic-1.2.3-sources.jar!/ch/qos/logback/classic/PatternLayout.java">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="217">
-          <caret line="103" column="0" lean-forward="true" selection-start-line="103" selection-start-column="0" selection-end-line="103" selection-end-column="0" />
-        </state>
-      </provider>
-    </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/resources/fxml/schedule.fxml">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="187">
-          <caret line="11" column="103" lean-forward="true" selection-start-line="11" selection-start-column="103" selection-end-line="11" selection-end-column="170" />
-          <folding />
-        </state>
-      </provider>
-      <provider editor-type-id="JavaFX-Scene-Builder">
-        <state />
-      </provider>
-    </entry>
     <entry file="jar://$PROJECT_DIR$/../../programming_libs/logback-classic-1.2.3-sources.jar!/ch/qos/logback/classic/pattern/EnsureExceptionHandling.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="233">
@@ -1173,7 +1135,7 @@
         <state relative-caret-position="136">
           <caret line="8" column="17" lean-forward="false" selection-start-line="8" selection-start-column="17" selection-end-line="8" selection-end-column="17" />
           <folding>
-            <marker date="1507496285918" expanded="true" signature="420:857" ph="/**...*/" />
+            <marker date="1507499618674" expanded="true" signature="420:857" ph="/**...*/" />
           </folding>
         </state>
       </provider>
@@ -1199,14 +1161,6 @@
         </state>
       </provider>
     </entry>
-    <entry file="file://$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4">
-      <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="102">
-          <caret line="6" column="20" lean-forward="false" selection-start-line="6" selection-start-column="20" selection-end-line="6" selection-end-column="20" />
-          <folding />
-        </state>
-      </provider>
-    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/sesquipedalian_dev/scala2DGaming/cheatgrammar/CheatGrammarBaseListener.java">
       <provider selected="true" editor-type-id="text-editor">
         <state relative-caret-position="-310">
@@ -1217,20 +1171,9 @@
     </entry>
     <entry file="file://$PROJECT_DIR$/src/main/java/org/sesquipedalian_dev/scala2DGaming/cheatgrammar/CheatGrammarParser.java">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="204">
-          <caret line="99" column="30" lean-forward="false" selection-start-line="99" selection-start-column="30" selection-end-line="99" selection-end-column="30" />
-          <folding>
-            <element signature="e#1782#1783#0" expanded="true" />
-            <element signature="e#1806#1807#0" expanded="true" />
-            <element signature="e#1856#1857#0" expanded="true" />
-            <element signature="e#1880#1881#0" expanded="true" />
-            <element signature="e#2399#2400#0" expanded="true" />
-            <element signature="e#2455#2456#0" expanded="true" />
-            <element signature="e#2524#2525#0" expanded="true" />
-            <element signature="e#2561#2562#0" expanded="true" />
-            <element signature="e#3638#3639#0" expanded="true" />
-            <element signature="e#3675#3676#0" expanded="true" />
-          </folding>
+        <state relative-caret-position="289">
+          <caret line="104" column="30" lean-forward="false" selection-start-line="104" selection-start-column="30" selection-end-line="104" selection-end-column="30" />
+          <folding />
         </state>
       </provider>
     </entry>
@@ -1242,10 +1185,88 @@
         </state>
       </provider>
     </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/SleepNeed.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="170">
+          <caret line="25" column="11" lean-forward="false" selection-start-line="25" selection-start-column="11" selection-end-line="25" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/RecreationNeed.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="119">
+          <caret line="22" column="11" lean-forward="false" selection-start-line="22" selection-start-column="11" selection-end-line="22" selection-end-column="11" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/util/registry/HasRegistryCollection.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="85">
+          <caret line="19" column="6" lean-forward="false" selection-start-line="19" selection-start-column="6" selection-end-line="19" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/graphics/HasWorldSpriteRendering.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="495">
+          <caret line="48" column="49" lean-forward="false" selection-start-line="48" selection-start-column="49" selection-end-line="48" selection-end-column="49" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/needs/Need.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="233">
+          <caret line="30" column="6" lean-forward="false" selection-start-line="30" selection-start-column="6" selection-end-line="30" selection-end-column="6" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/enemies/BadGuySpawner.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/entities/enemies/WaveSpawner.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/TimeButtons.scala">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="0">
+          <caret line="0" column="0" lean-forward="false" selection-start-line="0" selection-start-column="0" selection-end-line="0" selection-end-column="0" />
+          <folding>
+            <element signature="n#!!doc" expanded="true" />
+          </folding>
+        </state>
+      </provider>
+    </entry>
+    <entry file="file://$PROJECT_DIR$/src/main/antlr/CheatGrammar.g4">
+      <provider selected="true" editor-type-id="text-editor">
+        <state relative-caret-position="204">
+          <caret line="12" column="16" lean-forward="false" selection-start-line="12" selection-start-column="16" selection-end-line="12" selection-end-column="16" />
+          <folding />
+        </state>
+      </provider>
+    </entry>
     <entry file="file://$PROJECT_DIR$/src/main/scala/org/sesquipedalian_dev/scala2DGaming/ui/javafx/CheatController.scala">
       <provider selected="true" editor-type-id="text-editor">
-        <state relative-caret-position="340">
-          <caret line="34" column="74" lean-forward="false" selection-start-line="34" selection-start-column="74" selection-end-line="34" selection-end-column="74" />
+        <state relative-caret-position="268">
+          <caret line="64" column="3" lean-forward="false" selection-start-line="64" selection-start-column="3" selection-end-line="64" selection-end-column="3" />
           <folding>
             <element signature="e#679#714#0" expanded="true" />
           </folding>

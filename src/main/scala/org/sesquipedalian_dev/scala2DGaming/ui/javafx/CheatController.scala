@@ -22,13 +22,53 @@ import javafx.scene.text.Text
 
 import org.antlr.v4.runtime.tree.{ErrorNode, ParseTreeWalker, TerminalNode}
 import org.antlr.v4.runtime.{ANTLRInputStream, CommonTokenStream, ParserRuleContext, RecognitionException}
+import org.sesquipedalian_dev.scala2DGaming.Main
+import org.sesquipedalian_dev.scala2DGaming.Main.{WORLD_HEIGHT, WORLD_WIDTH}
 import org.sesquipedalian_dev.scala2DGaming.cheatgrammar.{CheatGrammarBaseListener, CheatGrammarLexer, CheatGrammarListener, CheatGrammarParser}
-import org.sesquipedalian_dev.scala2DGaming.game.Commander
+import org.sesquipedalian_dev.scala2DGaming.entities.Location
+import org.sesquipedalian_dev.scala2DGaming.entities.enemies.{BadGuy, BadGuySpawner}
+import org.sesquipedalian_dev.scala2DGaming.entities.soldiers.GoodGuy
+import org.sesquipedalian_dev.scala2DGaming.game.{Commander, TimeOfDay}
+import org.sesquipedalian_dev.scala2DGaming.graphics.HasWorldSpriteRendering
 import org.sesquipedalian_dev.util._
+
+import scala.util.Random
 
 class RealCheatGrammarListener extends CheatGrammarBaseListener with Logging {
   override def exitChangeGMU(ctx: CheatGrammarParser.ChangeGMUContext) = {
     Commander.setMoney(ctx.IntAmt().getText().toInt)
+  }
+
+  override def exitChangeSoldierNeed(ctx: CheatGrammarParser.ChangeSoldierNeedContext): Unit = {
+    val soldierName = ctx.ID().getText()
+    val needName = ctx.NeedName().getText()
+
+    HasWorldSpriteRendering.all.foreach({
+      case s: GoodGuy if s.name == soldierName => s.needs.foreach({
+        case n if n.name == needName => n.degree = Math.max(0, Math.min(ctx.IntAmt().getText().toInt, 100))
+        case _ =>
+      })
+      case _ =>
+    })
+  }
+
+  override def exitSpawnBadGuy(ctx: CheatGrammarParser.SpawnBadGuyContext): Unit = {
+    val amt = Option(ctx.IntAmt()).map(_.getText().toInt).getOrElse(1)
+    for{i <- 1 to amt} {
+      val targetY = Main.random.map(r => r.nextInt(Main.WORLD_HEIGHT)).getOrElse(25)
+      new BadGuy(Location(0, 25), Some(Location(Main.WORLD_WIDTH - 1, targetY)), Location(WORLD_WIDTH, WORLD_HEIGHT), 50)
+    }
+  }
+
+  override def exitSpawnWave(ctx: CheatGrammarParser.SpawnWaveContext): Unit = {
+    new BadGuySpawner(Location(0, 25), 4f, Main.random.getOrElse(Random).nextInt(2) + 10)
+  }
+
+  override def exitSetTimeRate(ctx: CheatGrammarParser.SetTimeRateContext): Unit = {
+    val amt = Option(ctx.FloatAmt()).map(_.getText.toFloat) orElse
+    Option(ctx.IntAmt()).map(_.getText.toFloat) getOrElse
+    0.0f
+    TimeOfDay.singleton.foreach(_.speed = amt)
   }
 }
 
