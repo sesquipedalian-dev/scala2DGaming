@@ -20,7 +20,7 @@ import javafx.event.{ActionEvent, EventHandler}
 import javafx.scene.control.{Button, TextField}
 import javafx.scene.text.Text
 
-import ch.qos.logback.classic.PatternLayout
+import ch.qos.logback.classic.{Level, PatternLayout}
 import ch.qos.logback.classic.encoder.PatternLayoutEncoder
 import ch.qos.logback.classic.spi.ILoggingEvent
 import ch.qos.logback.core.filter.Filter
@@ -29,8 +29,15 @@ import ch.qos.logback.core.status.Status
 import org.sesquipedalian_dev.scala2DGaming.game.{Commander, HasGameUpdate}
 import org.sesquipedalian_dev.util._
 import org.sesquipedalian_dev.util.registry.HasRegistrySingleton
+import org.slf4j.LoggerFactory
 
-class LogsUiController(logText: Text, layoutText: TextField, layoutUpdate: Button) extends HasGameUpdate with Logging {
+class LogsUiController(
+  logText: Text,
+  layoutText: TextField,
+  layoutUpdate: Button,
+  filterText: TextField,
+  filterButton: Button
+) extends HasGameUpdate with Logging {
   final val maxLogFileEntries = 1000
   override def update(deltaTimeSeconds: Double): Unit = {
     UIAppender.singleton.foreach(uia => {
@@ -57,6 +64,25 @@ class LogsUiController(logText: Text, layoutText: TextField, layoutUpdate: Butto
   UIAppender.singleton.foreach(uia => {
     uia.updateLayout(layoutText.getText())
     logText.setText(uia.makeString())
+  })
+
+  var lastDetailName: Option[String] = None
+  filterButton.setOnAction(new EventHandler[ActionEvent]() {
+    override def handle(event: ActionEvent) = {
+      val filter = filterText.getText()
+      trace"adding filter appender $filter"
+      lastDetailName.foreach(ldn => {
+        // reset previous to default logging level of info
+        val newLogger = LoggerFactory.getLogger(ldn).asInstanceOf[ch.qos.logback.classic.Logger]
+        newLogger.setLevel(Level.INFO)
+      })
+      if(filter.nonEmpty) {
+        // set the desired filter to trace level
+        val newLogger = LoggerFactory.getLogger(filter).asInstanceOf[ch.qos.logback.classic.Logger]
+        newLogger.setLevel(Level.TRACE)
+        lastDetailName = Some(filter)
+      }
+    }
   })
 }
 

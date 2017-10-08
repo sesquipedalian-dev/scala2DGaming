@@ -44,13 +44,17 @@ class AboutUiController extends HasGameUpdate with Logging {
   var logLayoutText: TextField = null
   @FXML
   var logLayoutButton: Button = null
+  @FXML
+  var filterText: TextField = null
+  @FXML
+  var filterButton: Button = null
 
   var logsUiController: Option[LogsUiController] = None
 
   override def update(deltaTimeSeconds: Double): Unit = {
     trace"AboutUiController update has $logsUiController $logText"
     if(logText != null && logsUiController.isEmpty) {
-      logsUiController = Some(new LogsUiController(logText, logLayoutText, logLayoutButton))
+      logsUiController = Some(new LogsUiController(logText, logLayoutText, logLayoutButton, filterText, filterButton))
     }
   }
 
