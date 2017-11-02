@@ -61,9 +61,9 @@ object WorldMap {
     (Location(25, 24), 3),  // turrets
     (Location(25, 27), 3),
     (Location(40, 24), 7),  // beds
-    (Location(40, 27), 7),
-    (Location(39, 24), 6), // game consoles
-    (Location(39, 27), 6)
+    (Location(40, 27), 7)
+//    (Location(39, 24), 6), // game consoles
+//    (Location(39, 27), 6)
   )
 
     val locationToTexIndex = List(
