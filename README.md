@@ -1,6 +1,12 @@
 # scala2DGaming
 2d game engine in scala - graphics based on openGL
 
+# Video
+Here's what the game looks like while running: 
+![game screenshot](https://raw.githubusercontent.com/sesquipedalian-dev/towerDefenseArchitect/master/img/ss1.jpg)
+
+https://youtu.be/qENAkFrqxAw
+
 # Running
 * grab prerequsities:
 ** IntelliJ IDE
