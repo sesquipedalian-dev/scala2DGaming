@@ -3,7 +3,7 @@
 
 # Video
 Here's what the game looks like while running: 
-![game screenshot](https://raw.githubusercontent.com/sesquipedalian-dev/towerDefenseArchitect/master/img/ss1.jpg)
+![game screenshot](https://raw.githubusercontent.com/sesquipedalian-dev/towerDefenseArchitect/master/ss1.jpg)
 
 https://youtu.be/qENAkFrqxAw
 
